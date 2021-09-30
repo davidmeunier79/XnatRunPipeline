@@ -460,9 +460,10 @@ public class XnatRunPipelineApi
 
         final UserI xnatUser = XDAT.getUserDetails();
         final List<String> subjectsList = new LinkedList<String>();
-         String SCRIPT_SBATCH_GLOBAL = "";
+        String listOfSubjectWithCamasSeparated = "";
+        String SCRIPT_SBATCH_GLOBAL = "";
 
-        log("**Start  pipeline **\n");
+        log("** Start  pipeline **\n");
         
         log("Runin pipeLine from [" + id_project + "]");
 
@@ -503,6 +504,7 @@ public class XnatRunPipelineApi
                     ssid.add(xnatSubject.getLabel());
                 }
                 final String listOfSubject = String.join(" ", ssid);
+                listOfSubjectWithCamasSeparated = String.join(",",ssid);
                 log("list of subject " + listOfSubject);
 
 
@@ -522,13 +524,12 @@ public class XnatRunPipelineApi
         SCRIPT_SBATCH_GLOBAL = SCRIPT_SBATCH_GLOBAL 
             + SCRIPT_SBATCH  
             + NUMBER_OF_JOBS_PER_NODES
-            + MAXIMAL_TIME_COMPUTATION
             + NUMBER_OF_NODES
             + STANDARD_OUTPUT_FILE + "./" + selectPipeline + "_" + id_project + "_" + datTimeNow + ".out"
             + "\n" + STANDARD_ERROR_FILE + "./" + selectPipeline + "_" + id_project + "_" + datTimeNow + ".err"
             + "\n" + NAME_OF_SLURM_JOB + " " + idCluster + "_" + selectPipeline
             + "\n" + LOAD_MODULES 
-            + "\n" + "singularity run /hpc/shared/apps/x86_64/softs/singularity_images/cow";
+            + "\n" + "";
             
             log(SCRIPT_SBATCH_GLOBAL);
 
@@ -561,6 +562,8 @@ public class XnatRunPipelineApi
 
 
     }
+
+
     
 
 
@@ -881,16 +884,30 @@ public class XnatRunPipelineApi
     }
 
 
-    public static String  getCommande(String pipeLine, String commande){
+    public static String  commandeDownloadData(String subjectSelected, String projectName, String dirIputdata){
 
-        
+        String commande = "Xnatdownload -p " + projectName + "-d " + dirIputdata + " --subj ";
+
+          if(subjectSelected.equals("all")){
+
+              commande += " all -s all --rs all";
+
+          }else {
+              
+              commande += subjectSelected + "  -s all --rs all";
+          }   
 
         return commande;
 
     }
 
 
-    public void  getCommandeMacapype(){
+    public void  getCommandeMacapype(String subjectSelected ){
+
+
+        String commande = "";
+
+
 
 
     }
