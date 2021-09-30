@@ -886,17 +886,21 @@ public class XnatRunPipelineApi
 
     public static String  commandeDownloadData(String subjectSelected, String projectName, String dirIputdata){
 
-        String commande = "Xnatdownload -p " + projectName + "-d " + dirIputdata + " --subj ";
+        String commande = "source activate dax_env"
+                + "\n" + "Xnatdownload -p " + projectName + "-d " + dirIputdata + " --subj ";
 
           if(subjectSelected.equals("all")){
 
-              commande += " all -s all --rs all";
+              commande += " all -s all --rs all \n";
 
           }else {
               
-              commande += subjectSelected + "  -s all --rs all";
-          }   
+              commande += subjectSelected + "  -s all --rs all \n";
+          }  
 
+          commande += "\nsource deactivate \n"; 
+
+        // faut supprimer les fichier générer par Xnatdownload
         return commande;
 
     }
