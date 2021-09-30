@@ -1,0 +1,4 @@
+<!-- Sequence 30 -->
+<li class="yuimenuitem">
+	<a class="yuimenuitemlabel" href="$link.setPage('XDATScreen_project_run_pipeline_data.vm').addPathInfo('project', $project.getId())"> Run Pipeline Cluster</a>
+</li>
