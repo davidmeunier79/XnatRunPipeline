@@ -73,7 +73,7 @@ public class XnatRunPipelineApi
 
 
     public static String listImages[] = null;
-	
+	private static String allOrListSubject;
 	
 
 
@@ -462,6 +462,7 @@ public class XnatRunPipelineApi
         final List<String> subjectsList = new LinkedList<String>();
         String listOfSubjectWithCamasSeparated = "";
         String SCRIPT_SBATCH_GLOBAL = "";
+        allOrListSubject = subject_ids ;
 
         log("** Start  pipeline **\n");
         
@@ -470,7 +471,7 @@ public class XnatRunPipelineApi
         log(" vous avez selectionné le pojet ou sujets :  : [" + subject_ids + "]");
 
         log("le export path param   est : " +nameExportDir );
-        
+
 
 
         try {
@@ -531,7 +532,8 @@ public class XnatRunPipelineApi
             + "\n" + STANDARD_ERROR_FILE + "./" + selectPipeline + "_" + id_project + "_" + datTimeNow + ".err"
             + "\n" + NAME_OF_SLURM_JOB + " " + idCluster + "_" + selectPipeline
             + "\n" + LOAD_MODULES 
-            + "\n" + "";
+            + "\n" + "" + commandeDownloadData(listOfSubjectWithCamasSeparated, id_project, nameExportDir)
+            + "\n";
             
             log(SCRIPT_SBATCH_GLOBAL);
 
@@ -891,13 +893,14 @@ public class XnatRunPipelineApi
         String commande = "source activate dax_env"
                 + "\n" + "Xnatdownload -p " + projectName + "-d " + dirIputdata + " --subj ";
 
-          if(subjectSelected.equals("all")){
+          if(!allOrListSubject.equals("all")){
 
-              commande += " all -s all --rs all \n";
+            commande += subjectSelected + "  -s all --rs all \n";
 
           }else {
               
-              commande += subjectSelected + "  -s all --rs all \n";
+            commande += " all -s all --rs all \n";
+              
           }  
 
           commande += "\nsource deactivate \n"; 
