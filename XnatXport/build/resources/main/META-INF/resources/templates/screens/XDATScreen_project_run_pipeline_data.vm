@@ -105,7 +105,7 @@ $page.setVlinkColor($ui.vlink)
 				<input type="text" id="nameSlurmJob" name="nameSlurmJob">
 				<br/>
 				<label > Name Export Dir(/hpc/team/name.f/pipelineOutput) </label>
-				<input type="text" id="nameDirTeam" name="nameDirTeam">
+				<input type="text" id="nameExportDir" name="nameExportDir">
 
 			</div>
 			<button class="btn1" id="btnStartPipline" data="$content.getURI("/xapi/int-run-pipline/start-pipeline/$project")" > Sart Calcul</button>
@@ -203,6 +203,7 @@ $('#btnStartPipline').on("click" , function(e) {
 		//let subject_ids = $('#subject_ids').val();
 		
 		  let subject_ids = $('#subjects_list').val();
+		  let nameExportDir = $('#nameExportDir').val();
  		  subject_ids = subject_ids.toString();
 			  if (subject_ids == "" && $('#all_subjects').attr("checked", "checked")){
 
@@ -212,7 +213,7 @@ $('#btnStartPipline').on("click" , function(e) {
 
 		$.ajax({
 			url: _urlStarttPiplines,
-			data: {"idCluster":idCluster, "selectPipeline":selectPipeline, "subject_ids":subject_ids},
+			data: {"idCluster":idCluster, "selectPipeline":selectPipeline, "subject_ids":subject_ids,"nameExportDir":nameExportDir},
 			method:'POST',
 			success: function(data) {
 				

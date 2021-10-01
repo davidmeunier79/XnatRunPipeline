@@ -456,7 +456,7 @@ public class XnatRunPipelineApi
     @ApiResponses({ @ApiResponse(code = 200, message = "Connection success "), @ApiResponse(code = 401, message = "Must be authenticated to access the XNAT Rest Api"), @ApiResponse(code = 500, message = "Unexpected internal serval error") })
     @RequestMapping(value = { "/start-pipeline/{id_project}" }, produces = { "application/json" }, method = { RequestMethod.POST })
     @ResponseBody
-    public void startPipelineInCluster(final HttpServletResponse response, @PathVariable final String id_project, @RequestParam("selectPipeline") final String selectPipeline,  @RequestParam("idCluster") final String idCluster, @RequestParam("subject_ids") final String subject_ids)  throws IOException{
+    public void startPipelineInCluster(final HttpServletResponse response, @PathVariable final String id_project, @RequestParam("selectPipeline") final String selectPipeline,  @RequestParam("idCluster") final String idCluster, @RequestParam("subject_ids") final String subject_ids, @RequestParam("nameExportDir") final String nameExportDir)  throws IOException{
 
         final UserI xnatUser = XDAT.getUserDetails();
         final List<String> subjectsList = new LinkedList<String>();
@@ -469,6 +469,8 @@ public class XnatRunPipelineApi
 
         log(" vous avez selectionné le pojet ou sujets :  : [" + subject_ids + "]");
 
+        log("le export path param   est : " +nameExportDir );
+        
 
 
         try {
