@@ -889,9 +889,15 @@ public class XnatRunPipelineApi
 
 
     public static String  commandeDownloadData(String subjectSelected, String projectName, String dirIputdata){
-
-        String commande = "source activate dax_env"
-                + "\n" + "Xnatdownload -p " + projectName + "-d " + dirIputdata + " --subj ";
+        
+        String filenameTxt = "\"" + dirIputdata + "/download_commandLine.txt" +"\"";
+        
+        String filenameCsv = "\"" + dirIputdata + "/download_report.csv" +"\"";
+        
+        String commande = "source activate dax_env\n"
+                + "\n" + "filenameTxt=" + filenameTxt
+                + "\n" + "filenameCsv=" + filenameCsv
+                + "\n" + "Xnatdownload -p " + projectName + " -d " + dirIputdata + " --subj ";
 
           if(!allOrListSubject.equals("all")){
 
@@ -901,7 +907,17 @@ public class XnatRunPipelineApi
               
             commande += " all -s all --rs all \n";
               
-          }  
+          } 
+
+          commande += "\n"
+                    + "\n" +  "if [ -f $filenameTxt  ]; then"
+                    + "\n" +  "   rm $filenameTxt"  
+                    + "\n" +  "   echo \"download_txt removed\""
+                    + "\n" +  "fi"
+                    + "\n" +  "if [ -f $filenameCsv  ]; then"
+                    + "\n" +  "   rm $filenameCsv"  
+                    + "\n" +  "   echo \"download_csv removed\""
+                    + "\n" +  "fi";
 
           commande += "\nsource deactivate \n"; 
 
