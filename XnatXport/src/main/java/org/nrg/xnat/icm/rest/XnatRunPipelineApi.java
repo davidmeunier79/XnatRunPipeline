@@ -917,8 +917,11 @@ public class XnatRunPipelineApi
                     + "\n" +  "if [ -f $filenameCsv  ]; then"
                     + "\n" +  "   rm $filenameCsv"  
                     + "\n" +  "   echo \"download_csv removed\""
-                    + "\n" +  "fi";
-
+                    + "\n" +  "fi"
+                    + "\n" +  "\n" + "\n" + "\n"
+                    + "\n" +  "mkdir -p " + dirIputdata + "/" + projectName + "BIDS\n";
+                    
+            
           commande += "\nsource deactivate \n"; 
 
         // faut supprimer les fichier générer par Xnatdownload
