@@ -893,10 +893,13 @@ public class XnatRunPipelineApi
         String filenameTxt = "\"" + dirIputdata + "/download_commandLine.txt" +"\"";
         
         String filenameCsv = "\"" + dirIputdata + "/download_report.csv" +"\"";
+
+        String dirDataInBIDS =  dirIputdata + "/" + projectName + "BIDS";
         
         String commande = "source activate dax_env\n"
                 + "\n" + "filenameTxt=" + filenameTxt
                 + "\n" + "filenameCsv=" + filenameCsv
+                + "\n \n" + "mkdir -p " + dirIputdata
                 + "\n" + "Xnatdownload -p " + projectName + " -d " + dirIputdata + " --subj ";
 
           if(!allOrListSubject.equals("all")){
@@ -919,7 +922,8 @@ public class XnatRunPipelineApi
                     + "\n" +  "   echo \"download_csv removed\""
                     + "\n" +  "fi"
                     + "\n" +  "\n" + "\n" + "\n"
-                    + "\n" +  "mkdir -p " + dirIputdata + "/" + projectName + "BIDS\n";
+                    + "\n" +  "mkdir -p " + dirDataInBIDS + "\n"
+                    + "\n" +  "python xnat2bids_reconstruct.py " + dirIputdata + "/" + projectName + " " + dirDataInBIDS + "\n";
                     
             
           commande += "\nsource deactivate \n"; 
