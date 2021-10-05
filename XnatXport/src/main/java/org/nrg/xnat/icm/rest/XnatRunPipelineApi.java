@@ -460,9 +460,11 @@ public class XnatRunPipelineApi
 
         final UserI xnatUser = XDAT.getUserDetails();
         final List<String> subjectsList = new LinkedList<String>();
+        String listOfSubjectWithSpaceSeparated = null;
         String listOfSubjectWithCamasSeparated = "";
         String SCRIPT_SBATCH_GLOBAL = "";
         allOrListSubject = subject_ids ;
+
 
         log("** Start  pipeline **\n");
         
@@ -507,6 +509,7 @@ public class XnatRunPipelineApi
                     ssid.add(xnatSubject.getLabel());
                 }
                 final String listOfSubject = String.join(" ", ssid);
+                listOfSubjectWithSpaceSeparated = listOfSubject;
                 listOfSubjectWithCamasSeparated = String.join(",",ssid);
                 log("list of subject " + listOfSubject);
 
@@ -532,7 +535,7 @@ public class XnatRunPipelineApi
             + "\n" + STANDARD_ERROR_FILE + "./" + selectPipeline + "_" + id_project + "_" + datTimeNow + ".err"
             + "\n" + NAME_OF_SLURM_JOB + " " + idCluster + "_" + selectPipeline
             + "\n" + LOAD_MODULES 
-            + "\n" + "" + commandeDownloadData(listOfSubjectWithCamasSeparated, id_project, nameExportDir)
+            + "\n" + "" + commandeDownloadData(listOfSubjectWithCamasSeparated, id_project, nameExportDir, listOfSubjectWithSpaceSeparated)
             + "\n";
             
             log(SCRIPT_SBATCH_GLOBAL);
@@ -888,7 +891,7 @@ public class XnatRunPipelineApi
     }
 
 
-    public static String  commandeDownloadData(String subjectSelected, String projectName, String dirIputdata){
+    public static String  commandeDownloadData(String subjectSelected, String projectName, String dirIputdata, String lisSubjectWithSpaceSeparated){
         
         String filenameTxt = "\"" + dirIputdata + "/download_commandLine.txt" +"\"";
         
@@ -923,7 +926,7 @@ public class XnatRunPipelineApi
                     + "\n" +  "fi"
                     + "\n" +  "\n" + "\n" + "\n"
                     + "\n" +  "mkdir -p " + dirDataInBIDS + "\n"
-                    + "\n" +  "python xnat2bids_reconstruct.py " + dirIputdata + "/" + projectName + " " + dirDataInBIDS + "\n";
+                    + "\n" +  "python xnat2bids_reconstruct.py " + dirIputdata + "/" + projectName + " " + dirDataInBIDS +  " " + lisSubjectWithSpaceSeparated +"\n";
                     
             
           commande += "\nsource deactivate \n"; 
