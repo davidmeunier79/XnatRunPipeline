@@ -536,7 +536,7 @@ public class XnatRunPipelineApi
             + "\n" + NAME_OF_SLURM_JOB + " " + idCluster + "_" + selectPipeline
             + "\n" + LOAD_MODULES 
             + "\n" + "" + commandeDownloadData(listOfSubjectWithCamasSeparated, id_project, nameExportDir, listOfSubjectWithSpaceSeparated)
-            + "\n";
+            + "\n" + getCommandeMacapype(selectPipeline, nameExportDir + "/" + id_project + "BIDS");
             
             log(SCRIPT_SBATCH_GLOBAL);
 
@@ -929,7 +929,7 @@ public class XnatRunPipelineApi
                     + "\n" +  "python xnat2bids_reconstruct.py " + dirIputdata + "/" + projectName + " " + dirDataInBIDS +  " " + lisSubjectWithSpaceSeparated +"\n";
                     
             
-          commande += "\nsource deactivate \n"; 
+          commande += "\nsource deactivate \n" + "\nmodule load singularity_images" + "\n"; 
 
         // faut supprimer les fichier générer par Xnatdownload
         return commande;
@@ -937,14 +937,14 @@ public class XnatRunPipelineApi
     }
 
 
-    public void  getCommandeMacapype(String subjectSelected ){
+    public String  getCommandeMacapype(String version, String inputDirBIDS){
 
+        String commande = "\nsingularity run -B " + inputDirBIDS + ":/data/macapype ";
+        commande += "/hpc/shared/apps/x86_64/softs/singularity_images/" + version + " ";
 
-        String commande = "";
-
-
-
-
+        commande += "python /opt/packages/macapype/workflows/segment_pnh.py -data /data/macapype/ -out /data/macapype/outputSingularity -soft ANTS -params /opt/packages/macapype/workflows/params_segment_macaque_ants_based.json\n";
+    
+    return commande;
     }
     
 
