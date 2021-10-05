@@ -771,7 +771,7 @@ public class XnatRunPipelineApi
             
             sftpChannel.exit();
 
-            
+           
             channelShell = (ChannelShell) session.openChannel("shell");
             
             inputStream = channelShell.getInputStream();//The data arriving from the far end can be read from this stream.
@@ -781,15 +781,45 @@ public class XnatRunPipelineApi
             channelShell.connect();
             
             log ("sell  channel is opned ! ");
+
             outputStream = channelShell.getOutputStream();
             
             PrintWriter printWriter = new PrintWriter(outputStream);
             
             printWriter.println("chmod +x " + remoteDir + "/" + nameFileGenerated);
-            
-            //printWriter.println(" sbatch ./"+nameFileGenerated);
-            
 
+            log("le scripte slum reçu est ====> "+remoteDir + "/" + nameFileGenerated);
+            
+            printWriter.println(" sbatch ./"+nameFileGenerated);
+             
+
+            printWriter.flush () ; // force the buffer data output
+        
+            
+            byte[] tmp = new byte[1024];
+            while(true){
+                
+                while(inputStream.available() > 0){
+                    int i = inputStream.read(tmp, 0, 1024);
+                    if(i < 0) break;
+                    String s = new String(tmp, 0, i);
+                    if(s.indexOf("--More--") >= 0){
+                        outputStream.write((" ").getBytes());
+                        outputStream.flush();
+                    }
+                    //System.out.println(s);
+                }
+                if(channelShell.isClosed()){
+                    System.out.println("exit-status:"+channelShell.getExitStatus());
+                    break;
+                }
+                try{
+                    Thread.sleep(1000);
+                }catch(Exception e){
+                    
+                }
+                
+            }
 
         }catch (JSchException e) {
 
@@ -888,7 +918,14 @@ public class XnatRunPipelineApi
       } catch (FileNotFoundException e) {
          e.printStackTrace();
       }
-      
+        try{
+
+            Runtime rt = Runtime.getRuntime();
+            Process proc = rt.exec("chmod +777 " + fullPathScriptSlurm );
+
+        }catch (Exception e) {
+                log(e.toString()); 
+        }      
 
         return suiteName;
     }
