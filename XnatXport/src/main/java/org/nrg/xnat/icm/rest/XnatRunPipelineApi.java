@@ -542,13 +542,15 @@ public class XnatRunPipelineApi
 
         
 
-        generateFIleScripte(SCRIPT_SBATCH_GLOBAL, selectPipeline, idCluster);
+        final String namFileGenerated = generateFIleScripte(SCRIPT_SBATCH_GLOBAL, selectPipeline, idCluster);
+
+        log( "le fichier a envoyer est  " + namFileGenerated );
         
-        /*
+       
 
         try{
 
-           sendFileToCluster(passwordniolon,fullPathScriptSlurm);
+           sendFileToCluster(passwordniolon,namFileGenerated);
 
         }catch (InterruptedException e) { 
             
@@ -563,7 +565,7 @@ public class XnatRunPipelineApi
         }catch (SftpException sftpe){
             
         }   
-        */
+        
         log("done !");
         
 
@@ -713,7 +715,7 @@ public class XnatRunPipelineApi
     }
 
     /* Cette fonction à pour but d'envoyer le fichier généré au cluster de calcul */
-    public  void sendFileToCluster(String password, String pathFile) throws InterruptedException, JSchException, IOException, SftpException {
+    public  void sendFileToCluster(String password, String nameFileGenerated) throws InterruptedException, JSchException, IOException, SftpException {
 
         /* Chemin vers le local file */
         String localFile = fullPathScriptSlurm;
@@ -769,7 +771,7 @@ public class XnatRunPipelineApi
             
             sftpChannel.exit();
 
-            /*
+            
             channelShell = (ChannelShell) session.openChannel("shell");
             
             inputStream = channelShell.getInputStream();//The data arriving from the far end can be read from this stream.
@@ -778,14 +780,15 @@ public class XnatRunPipelineApi
             
             channelShell.connect();
             
+            log ("sell  channel is opned ! ");
             outputStream = channelShell.getOutputStream();
             
             PrintWriter printWriter = new PrintWriter(outputStream);
             
-            printWriter.println("chmod +x " + fullPathScriptSlurm);
+            printWriter.println("chmod +x " + remoteDir + "/" + nameFileGenerated);
             
-            //printWriter.println(" sbatch ./"+fullPathScriptSlurm);
-            */
+            //printWriter.println(" sbatch ./"+nameFileGenerated);
+            
 
 
         }catch (JSchException e) {
@@ -802,7 +805,7 @@ public class XnatRunPipelineApi
                 }
             if (channel != null) {
                 channel.disconnect();
-                //channelShell.disconnect();
+                channelShell.disconnect();
             }
            
         }
@@ -844,7 +847,7 @@ public class XnatRunPipelineApi
 
     // A partir de cette méthode on génère le fichier final à soumetre au cluster
     // Penser à passer le nom de projet en paramétre
-    public static   void generateFIleScripte(String codeSbatch, String pipeLineSelected, String userIdCluster) {
+    public static String generateFIleScripte(String codeSbatch, String pipeLineSelected, String userIdCluster) {
 
       String    dirOutputpath = "/data/xnat/tmp/";
       String suiteName = userIdCluster + "_" + pipeLineSelected + "_" + datTimeNow + ".sh";
@@ -887,7 +890,7 @@ public class XnatRunPipelineApi
       }
       
 
-
+        return suiteName;
     }
 
 
