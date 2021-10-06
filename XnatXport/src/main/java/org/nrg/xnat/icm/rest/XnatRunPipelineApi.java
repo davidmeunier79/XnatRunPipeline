@@ -1005,7 +1005,7 @@ public class XnatRunPipelineApi
                 commande = "";
         }
 
-        return "";
+        return commande;
     }
 
     public String  getCommandeMacapype(String version, String inputDirBIDS){
