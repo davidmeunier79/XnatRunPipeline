@@ -537,7 +537,7 @@ public class XnatRunPipelineApi
             + "\n" + getOtherParamatersSbatch(selectPipeline)
             + "\n" + LOAD_MODULES 
             + "\n" + "" + commandeDownloadData(listOfSubjectWithCamasSeparated, id_project, nameExportDir, listOfSubjectWithSpaceSeparated)
-            + "\n" + getCommandeMacapype(selectPipeline, nameExportDir + "/" + id_project + "BIDS");
+            + "\n" + whichCommandSingularity(selectPipeline, nameExportDir + "/" + id_project + "BIDS");
             
             log(SCRIPT_SBATCH_GLOBAL);
 
@@ -1010,17 +1010,17 @@ public class XnatRunPipelineApi
 
 
 
-    public String whichCommandSingularity(String whichPipeline, String version, String inputDirBIDS){
+    public String whichCommandSingularity(String whichPipeline, String inputDirBIDS){
 
         if (whichPipeline.equals("fmriprep_20.2.3.simg")) {
 
-            return getCommandeFmriPrepSimg(version, inputDirBIDS);
+            return getCommandeFmriPrepSimg(whichPipeline, inputDirBIDS);
 
         }
 
         if (whichPipeline.equals("macapype_v0.2.2.3")) {
 
-            return getCommandeMacapype(version, inputDirBIDS);
+            return getCommandeMacapype(whichPipeline, inputDirBIDS);
         }
 
         else return "";
