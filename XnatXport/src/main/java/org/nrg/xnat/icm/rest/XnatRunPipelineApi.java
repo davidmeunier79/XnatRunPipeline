@@ -1008,9 +1008,29 @@ public class XnatRunPipelineApi
         return commande;
     }
 
+
+
+    public String whichCommandSingularity(String whichPipeline, String version, String inputDirBIDS){
+
+        if (whichPipeline.equals("fmriprep_20.2.3.simg")) {
+
+            return getCommandeFmriPrepSimg(version, inputDirBIDS);
+
+        }
+
+        if (whichPipeline.equals("macapype_v0.2.2.3")) {
+
+            return getCommandeMacapype(version, inputDirBIDS);
+        }
+
+        else return "";
+
+    }
+
+
     public String  getCommandeMacapype(String version, String inputDirBIDS){
 
-        String commande = "\nsingularity run -B " + inputDirBIDS + ":/data/macapype ";
+        String commande = "\n" + "singularity run -B " + inputDirBIDS + ":/data/macapype ";
         commande += "/hpc/shared/apps/x86_64/softs/singularity_images/" + version + " ";
 
         commande += "python /opt/packages/macapype/workflows/segment_pnh.py -data /data/macapype/ -out /data/macapype/outputSingularity -soft ANTS -params /opt/packages/macapype/workflows/params_segment_macaque_ants_based.json\n";
@@ -1018,14 +1038,19 @@ public class XnatRunPipelineApi
     return commande;
     }
     
-    public String getCommandeFmriPrep(String version , String inputDir){
 
-        String commande = "";
+    public String getCommandeFmriPrepSimg(String version , String inputDirBIDS){
+
+        String commande = "\n" + "singularity run --cleanenv -B " + inputDirBIDS + ":/work_dir "
+                        + "/hpc/shared/apps/x86_64/softs/singularity_images/" + version + " "
+                        + "--fs-license-file /work_dir/freesurfer_licence/license.txt "
+                        + "/work_dir/PredictEye/bids_data/ /work_dir/PredictEye/deriv_data_test/fmriprep/ "
+                        + "participant --participant-label 01 -w /work_dir/PredictEye/temp_data_test/ "
+                        + "--bold2t1w-dof 12 --output-spaces T1w MNI152NLin2009cAsym "
+                        + "--cifti-output --low-mem --mem-mb 32000 --nthreads 64";
 
         return commande; 
     }
-
-
 
 
     public ZipOutputStream exportSubjectFiles(final ZipOutputStream zos, final String id_project, final String fileName, final List<String> subjectsList, final List<String> listOfSubject) {
