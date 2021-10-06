@@ -954,11 +954,11 @@ public class XnatRunPipelineApi
 
           if(!allOrListSubject.equals("all")){
 
-            commande += subjectSelected + "  -s all --rs all --overwrite\n";
+            commande += subjectSelected + "  -s all --rs all \n";
 
           }else {
               
-            commande += " all -s all --rs all --overwrite\n";
+            commande += " all -s all --rs all \n";
               
           } 
 
@@ -1045,9 +1045,8 @@ public class XnatRunPipelineApi
                         + "-B /hpc/shared/apps/x86_64/softs/freesurfer/7.1.1:/license_path "
                         + "/hpc/shared/apps/x86_64/softs/singularity_images/" + version + " "
                         + "--fs-license-file /license_path/.license "
-                        + "/work_dir/PredictEye/bids_data/ /work_dir/PredictEye/deriv_data_test/fmriprep/ "
-                        + "participant --participant-label 01 -w /work_dir/PredictEye/temp_data_test/ "
-                        + "--bold2t1w-dof 12 --output-spaces T1w MNI152NLin2009cAsym "
+                        + "/workdir /workdir/derivatives/fmriprep "
+                        + "participant --participant-label 01 -w /work_dir/temp_data_test/ "
                         + "--cifti-output --low-mem --mem-mb 32000 --nthreads 64";
 
         return commande; 
