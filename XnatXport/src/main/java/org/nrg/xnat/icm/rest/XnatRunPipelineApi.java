@@ -534,6 +534,7 @@ public class XnatRunPipelineApi
             + STANDARD_OUTPUT_FILE + "./" + selectPipeline + "_" + id_project + "_" + datTimeNow + ".out"
             + "\n" + STANDARD_ERROR_FILE + "./" + selectPipeline + "_" + id_project + "_" + datTimeNow + ".err"
             + "\n" + NAME_OF_SLURM_JOB + " " + idCluster + "_" + selectPipeline
+            + "\n" + getOtherParamatersSbatch(selectPipeline)
             + "\n" + LOAD_MODULES 
             + "\n" + "" + commandeDownloadData(listOfSubjectWithCamasSeparated, id_project, nameExportDir, listOfSubjectWithSpaceSeparated)
             + "\n" + getCommandeMacapype(selectPipeline, nameExportDir + "/" + id_project + "BIDS");
@@ -547,7 +548,7 @@ public class XnatRunPipelineApi
         log( "le fichier a envoyer est  " + namFileGenerated );
         
        
-
+        /*
         try{
 
            sendFileToCluster(passwordniolon,namFileGenerated);
@@ -564,7 +565,7 @@ public class XnatRunPipelineApi
 
         }catch (SftpException sftpe){
             
-        }   
+        }  */ 
         
         log("done !");
         
@@ -766,6 +767,10 @@ public class XnatRunPipelineApi
             
             /* la méthod  put pour envoyer le fichier */
             sftpChannel.put(localFile, remoteDir);
+
+            sftpChannel.put("/var/lib/tomcat8/Bureau/xnat2bids_reconstruct.py", remoteDir);
+
+
             
             log(" submit  file with sucess ");
             
@@ -839,6 +844,8 @@ public class XnatRunPipelineApi
             }
            
         }
+
+
 
     }
 
@@ -976,6 +983,30 @@ public class XnatRunPipelineApi
 
     }
 
+    /* Cette methode renvoi d'autre paramétre sbatch a rajouter au script en slurm */
+    public String getOtherParamatersSbatch(String selectPipeline){
+        
+        String commande = ""; 
+
+        switch(selectPipeline){
+
+            case "fmriprep_20.2.3.simg" :
+               commande += "\n" + "#SBATCH --mem=48gb"
+                         + "\n" + "#SBATCH --cpus-per-task=64"
+                         + "\n" + "#SBATCH --time=20:00:00"
+                         + "\n";
+                break;
+
+            case "   " : 
+
+                break;
+
+            default:
+                commande = "";
+        }
+
+        return "";
+    }
 
     public String  getCommandeMacapype(String version, String inputDirBIDS){
 
@@ -987,7 +1018,12 @@ public class XnatRunPipelineApi
     return commande;
     }
     
+    public String getCommandeFmriPrep(String version , String inputDir){
 
+        String commande = "";
+
+        return commande; 
+    }
 
 
 
