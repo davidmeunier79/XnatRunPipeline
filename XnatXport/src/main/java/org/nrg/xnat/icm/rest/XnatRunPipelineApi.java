@@ -88,13 +88,13 @@ public class XnatRunPipelineApi
     private static ChannelShell channelShell = null;
 
     private static String fullPathScriptSlurm = "";
- 	// Les paramètres à distance 
-	
+ 	// Les paramètres du cluster à distance 
     public  static String user = "rahamani.a";
     private  static String passwordniolon = "";
     //private  static String host = "niolon.int.univ-amu.fr";
     private  static String host = "niolon02";
 
+    private static String ID_PROJECT = "";
     private static String datTimeNow = "";
 	private static String SCRIPT_SBATCH = "#!/bin/bash\n"
                                         + "#SBATCH -p batch\n";
@@ -464,6 +464,7 @@ public class XnatRunPipelineApi
         String listOfSubjectWithCamasSeparated = "";
         String SCRIPT_SBATCH_GLOBAL = "";
         allOrListSubject = subject_ids ;
+        ID_PROJECT =  id_project;
 
 
         log("** Start  pipeline **\n");
@@ -537,7 +538,7 @@ public class XnatRunPipelineApi
             + "\n" + getOtherParamatersSbatch(selectPipeline)
             + "\n" + LOAD_MODULES 
             + "\n" + "" + commandeDownloadData(listOfSubjectWithCamasSeparated, id_project, nameExportDir, listOfSubjectWithSpaceSeparated)
-            + "\n" + whichCommandSingularity(selectPipeline, nameExportDir + "/" + id_project + "BIDS");
+            + "\n" + whichCommandSingularity(selectPipeline, nameExportDir);
             
             log(SCRIPT_SBATCH_GLOBAL);
 
@@ -547,7 +548,7 @@ public class XnatRunPipelineApi
 
         log( "le fichier a envoyer est  " + namFileGenerated );
         
-       
+       /*
         
         try{
 
@@ -566,7 +567,7 @@ public class XnatRunPipelineApi
         }catch (SftpException sftpe){
             
         }  
-        
+        */
         log("done !");
         
 
@@ -1029,6 +1030,8 @@ public class XnatRunPipelineApi
 
 
     public String  getCommandeMacapype(String version, String inputDirBIDS){
+        
+        inputDirBIDS +=  "/" + ID_PROJECT + "BIDS";
 
         String commande = "\n" + "singularity run -B " + inputDirBIDS + ":/data/macapype ";
         commande += "/hpc/shared/apps/x86_64/softs/singularity_images/" + version + " ";
