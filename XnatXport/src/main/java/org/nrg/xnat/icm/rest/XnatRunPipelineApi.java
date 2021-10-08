@@ -1052,7 +1052,7 @@ public class XnatRunPipelineApi
                         + "--fs-license-file /license_path/.license "
                         + "/workdir" + "/" + ID_PROJECT + "BIDS" + " /workdir/derivatives/fmriprep "
                         + "participant -w /work_dir/temp_data_test/ "
-                        + "--skip_bids_validation "
+                        + ""
                         + "--cifti-output --low-mem --mem-mb 32000 --nthreads 64";
 
                         /*
