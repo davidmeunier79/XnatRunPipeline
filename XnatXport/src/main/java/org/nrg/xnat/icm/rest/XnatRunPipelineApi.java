@@ -1036,7 +1036,9 @@ public class XnatRunPipelineApi
         String commande = "\n" + "singularity run -B " + inputDirBIDS + ":/data/macapype ";
         commande += "/hpc/shared/apps/x86_64/softs/singularity_images/" + version + " ";
 
-        commande += "python /opt/packages/macapype/workflows/segment_pnh.py -data /data/macapype/ -out /data/macapype/outputSingularity -soft ANTS -params /opt/packages/macapype/workflows/params_segment_macaque_ants_based.json\n";
+        commande += "python /opt/packages/macapype/workflows/segment_pnh.py "
+                  + "-data /data/macapype/ -out /data/macapype/outputSingularity "
+                  + "-soft ANTS -params /opt/packages/macapype/workflows/params_segment_macaque_ants_based.json\n";
     
     return commande;
     }
@@ -1048,9 +1050,17 @@ public class XnatRunPipelineApi
                         + "-B /hpc/shared/apps/x86_64/softs/freesurfer/7.1.1:/license_path "
                         + "/hpc/shared/apps/x86_64/softs/singularity_images/" + version + " "
                         + "--fs-license-file /license_path/.license "
+                        + "/workdir" + "/" + ID_PROJECT + "BIDS" + " /workdir/derivatives/fmriprep "
+                        + "participant -w /work_dir/temp_data_test/ "
+                        + "--skip_bids_validation "
+                        + "--cifti-output --low-mem --mem-mb 32000 --nthreads 64";
+
+                        /*
+                        + "--fs-license-file /license_path/.license "
                         + "/workdir /workdir/derivatives/fmriprep "
                         + "participant --participant-label 01 -w /work_dir/temp_data_test/ "
                         + "--cifti-output --low-mem --mem-mb 32000 --nthreads 64";
+                        */
 
         return commande; 
     }
