@@ -108,6 +108,7 @@ public class XnatRunPipelineApi
     private static String LOAD_MODULES = "\n\nmodule purge\n"
                                        + "module load all\n"
                                        + "\nmodule load anaconda/3\n";
+    private static String LOAD_IMG_SINGULARITY = "";
 
 
     
@@ -528,6 +529,8 @@ public class XnatRunPipelineApi
 
         datTimeNow = getDateTimeNow();
 
+        sifOrSimg(selectPipeline);
+
         SCRIPT_SBATCH_GLOBAL = SCRIPT_SBATCH_GLOBAL 
             + SCRIPT_SBATCH  
             + NUMBER_OF_JOBS_PER_NODES
@@ -538,6 +541,7 @@ public class XnatRunPipelineApi
             + "\n" + getOtherParamatersSbatch(selectPipeline)
             + "\n" + LOAD_MODULES 
             + "\n" + "" + commandeDownloadData(listOfSubjectWithCamasSeparated, id_project, nameExportDir, listOfSubjectWithSpaceSeparated)
+            + "\n" + LOAD_IMG_SINGULARITY
             + "\n" + whichCommandSingularity(selectPipeline, nameExportDir);
             
             log(SCRIPT_SBATCH_GLOBAL);
@@ -881,6 +885,23 @@ public class XnatRunPipelineApi
 
     }
 
+    /* pour détérminer si l'img termine par .sif ou  */
+    public void sifOrSimg(String imageSingularity){
+
+        if (imageSingularity.contains(".sif")){
+
+        LOAD_IMG_SINGULARITY = "\nmodule load singularity\n";
+
+        }
+        else {
+
+            LOAD_IMG_SINGULARITY = "\n\n";
+
+        }
+
+
+    }
+
 
 
     // A partir de cette méthode on génère le fichier final à soumetre au cluster
@@ -977,7 +998,7 @@ public class XnatRunPipelineApi
                     + "\n" +  "python xnat2bids_reconstruct.py " + dirIputdata + "/" + projectName + " " + dirDataInBIDS +  " " + lisSubjectWithSpaceSeparated +"\n";
                     
             
-          commande += "\nsource deactivate \n" + "\nmodule load singularity_images" + "\n"; 
+          commande += "\nsource deactivate \n\n"; 
 
         // faut supprimer les fichier générer par Xnatdownload
         return commande;
@@ -1013,17 +1034,22 @@ public class XnatRunPipelineApi
 
     public String whichCommandSingularity(String whichPipeline, String inputDirBIDS){
 
-        if (whichPipeline.equals("fmriprep_20.2.3.simg")) {
+        if (whichPipeline.contains("fmriprep")) {
 
             return getCommandeFmriPrepSimg(whichPipeline, inputDirBIDS);
 
         }
 
-        if (whichPipeline.equals("macapype_v0.2.2.3")) {
+        if (whichPipeline.contains("macapype")) {
 
             return getCommandeMacapype(whichPipeline, inputDirBIDS);
         }
 
+        if (whichPipeline.contains("mriqc")) {
+
+            return getCommandeMriqc(whichPipeline, inputDirBIDS);
+        }
+        
         else return "";
 
     }
@@ -1063,6 +1089,23 @@ public class XnatRunPipelineApi
                         */
 
         return commande; 
+    }
+
+
+
+    public String getCommandeMriqc(String version , String workDir){
+
+        
+        workDir +=  "/" + ID_PROJECT + "BIDS";
+
+        String commande = "\n" + "singularity run --cleanenv -B " + workDir + ":/data "
+                        + "-B " + workDir + ":/out "
+                        + "/hpc/shared/apps/x86_64/softs/singularity_images/" + version + " "
+                        + "/data /out/" + "output" + ID_PROJECT + "_" + datTimeNow + " participant "
+                        + " group";
+                  
+        return commande;
+         
     }
 
 
