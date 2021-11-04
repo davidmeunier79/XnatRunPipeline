@@ -109,6 +109,7 @@ public class XnatRunPipelineApi
                                        + "module load all\n"
                                        + "\nmodule load anaconda/3\n";
     private static String LOAD_IMG_SINGULARITY = "";
+    private static String ADDITIONAL_PARAMS = "\n";
 
 
     
@@ -457,7 +458,8 @@ public class XnatRunPipelineApi
     @ApiResponses({ @ApiResponse(code = 200, message = "Connection success "), @ApiResponse(code = 401, message = "Must be authenticated to access the XNAT Rest Api"), @ApiResponse(code = 500, message = "Unexpected internal serval error") })
     @RequestMapping(value = { "/start-pipeline/{id_project}" }, produces = { "application/json" }, method = { RequestMethod.POST })
     @ResponseBody
-    public void startPipelineInCluster(final HttpServletResponse response, @PathVariable final String id_project, @RequestParam("selectPipeline") final String selectPipeline,  @RequestParam("idCluster") final String idCluster, @RequestParam("subject_ids") final String subject_ids, @RequestParam("nameExportDir") final String nameExportDir)  throws IOException{
+    public void startPipelineInCluster(final HttpServletResponse response, @PathVariable final String id_project, @RequestParam("selectPipeline") final String selectPipeline,  @RequestParam("idCluster") final String idCluster, @RequestParam("subject_ids") final String subject_ids, @RequestParam("nameExportDir") final String nameExportDir, 
+                 @RequestParam("additionalParams") final String additionalParams)  throws IOException{
 
         final UserI xnatUser = XDAT.getUserDetails();
         final List<String> subjectsList = new LinkedList<String>();
@@ -468,6 +470,7 @@ public class XnatRunPipelineApi
         ID_PROJECT =  id_project;
 
 
+
         log("** Start  pipeline **\n");
         
         log("Runin pipeLine from [" + id_project + "]");
@@ -476,8 +479,8 @@ public class XnatRunPipelineApi
 
         log("le export path param   est : " +nameExportDir );
 
-
-
+        
+            
         try {
             //System.out.println("Subjects = " + subject_ids);
             if ("all".equals(subject_ids)) {
@@ -530,6 +533,11 @@ public class XnatRunPipelineApi
         datTimeNow = getDateTimeNow();
 
         sifOrSimg(selectPipeline);
+        if (!additionalParams.equals(null)){
+            ADDITIONAL_PARAMS = additionalParams;
+        }else {
+            ADDITIONAL_PARAMS = "\n";
+        }
 
         SCRIPT_SBATCH_GLOBAL = SCRIPT_SBATCH_GLOBAL 
             + SCRIPT_SBATCH  
@@ -553,7 +561,7 @@ public class XnatRunPipelineApi
         log( "le fichier a envoyer est  " + namFileGenerated );
         
        
-        
+        /*
         try{
 
            sendFileToCluster(passwordniolon,namFileGenerated);
@@ -571,7 +579,7 @@ public class XnatRunPipelineApi
 
         }catch (SftpException sftpe){
             
-        }  
+        }  */
         
         log("done !");
         

@@ -101,15 +101,14 @@ $page.setVlinkColor($ui.vlink)
 			<label class="access-label" title="All subjects in the project"> </label>
 			
 			<div class="containerItem">
-				<label > <b> Name of Slurm Job  </b></label>
+				<label > <b> Name of Slurm Job (optional) </b></label>
 				<input type="text" id="nameSlurmJob" name="nameSlurmJob">
 				<br/>
-				<label > <b>Name Additionnal parameters </b></label>
+				<label > <b> Additionnal parameters </b></label>
 				<input type="text" id="additionalParams" name="additionalParams">
 				<br/>
-				<label > Name Export Dir <b>(/hpc/team/name.f/pipelineOutput) </b></label>
+				<label > <b> Name Export Dir ( E.G :  /hpc/team/name.f/pipelineOutput) </b></label>
 				<input type="text" id="nameExportDir" name="nameExportDir">
-
 			</div>
 			<button class="btn1" id="btnStartPipline" data="$content.getURI("/xapi/int-run-pipline/start-pipeline/$project")" > Sart Calcul</button>
 		</div>
@@ -207,6 +206,8 @@ $('#btnStartPipline').on("click" , function(e) {
 		
 		  let subject_ids = $('#subjects_list').val();
 		  let nameExportDir = $('#nameExportDir').val();
+		  let additionalParams = $('#additionalParams').val();
+
  		  subject_ids = subject_ids.toString();
 			  if (subject_ids == "" && $('#all_subjects').attr("checked", "checked")){
 
@@ -216,7 +217,7 @@ $('#btnStartPipline').on("click" , function(e) {
 
 		$.ajax({
 			url: _urlStarttPiplines,
-			data: {"idCluster":idCluster, "selectPipeline":selectPipeline, "subject_ids":subject_ids,"nameExportDir":nameExportDir},
+			data: {"idCluster":idCluster, "selectPipeline":selectPipeline, "subject_ids":subject_ids,"nameExportDir":nameExportDir, "additionalParams":additionalParams},
 			method:'POST',
 			success: function(data) {
 				
