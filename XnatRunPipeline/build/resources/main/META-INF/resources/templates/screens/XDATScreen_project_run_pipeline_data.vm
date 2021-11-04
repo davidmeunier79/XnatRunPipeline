@@ -101,10 +101,13 @@ $page.setVlinkColor($ui.vlink)
 			<label class="access-label" title="All subjects in the project"> </label>
 			
 			<div class="containerItem">
-				<label >Name of Slurm Job  </label>
+				<label > <b> Name of Slurm Job  </b></label>
 				<input type="text" id="nameSlurmJob" name="nameSlurmJob">
 				<br/>
-				<label > Name Export Dir(/hpc/team/name.f/pipelineOutput) </label>
+				<label > <b>Name Additionnal parameters </b></label>
+				<input type="text" id="additionalParams" name="additionalParams">
+				<br/>
+				<label > Name Export Dir <b>(/hpc/team/name.f/pipelineOutput) </b></label>
 				<input type="text" id="nameExportDir" name="nameExportDir">
 
 			</div>
