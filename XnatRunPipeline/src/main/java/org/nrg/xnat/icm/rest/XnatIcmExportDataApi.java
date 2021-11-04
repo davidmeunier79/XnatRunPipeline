@@ -47,7 +47,7 @@ import io.swagger.annotations.Api;
 
 @Api(description = "")
 @XapiRestController
-@RequestMapping({ "/icm-export-data" })
+@RequestMapping({ "/export-data" })
 public class XnatIcmExportDataApi
 {
     private static final Logger _logger;

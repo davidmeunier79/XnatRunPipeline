@@ -580,9 +580,6 @@ public class XnatRunPipelineApi
     }
 
 
-    
-
-
 
     /* la méthode qui permet de  recupere le contenu la liste des images singularity sur niolon */
     public 	static  String[] recupererListImgCluster(String resultConsole){
