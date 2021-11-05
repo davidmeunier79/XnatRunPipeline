@@ -89,7 +89,7 @@ public class XnatRunPipelineApi
 
     private static String fullPathScriptSlurm = "";
  	// Les paramètres du cluster à distance 
-    public  static String user = "rahamani.a";
+    public  static String user = "";
     private  static String passwordniolon = "";
     //private  static String host = "niolon.int.univ-amu.fr";
     private  static String host = "niolon02";
@@ -111,6 +111,7 @@ public class XnatRunPipelineApi
     private static String LOAD_IMG_SINGULARITY = "";
     private static String ADDITIONAL_PARAMS = "\n";
 
+    public static String REMOT_DIR = "";
 
     
     @ApiOperation(value = "Get list of piplines in cluster", notes = "Custom")
@@ -469,6 +470,8 @@ public class XnatRunPipelineApi
         allOrListSubject = subject_ids ;
         ID_PROJECT =  id_project;
 
+        REMOT_DIR = idCluster ;
+
 
 
         log("** Start  pipeline **\n");
@@ -564,7 +567,7 @@ public class XnatRunPipelineApi
         
        
         
-       /* try{
+        try{
 
            sendFileToCluster(passwordniolon,namFileGenerated);
            log("\nLe fichier à été envoyer avec succé");
@@ -581,7 +584,7 @@ public class XnatRunPipelineApi
 
         }catch (SftpException sftpe){
             
-        }*/ 
+        } 
         
         log("done !");
         
@@ -736,7 +739,7 @@ public class XnatRunPipelineApi
         
         log("Le fichier à envoyer est : " + fullPathScriptSlurm );
         /* Chemin où sera  transmit le fichier dans le cluster */
-        String remoteDir = "/home/rahamani.a"; 
+        String remoteDir = "/home/"+REMOT_DIR; 
         
         try {
             
@@ -780,7 +783,7 @@ public class XnatRunPipelineApi
             /* la méthod  put pour envoyer le fichier */
             sftpChannel.put(localFile, remoteDir);
 
-            sftpChannel.put("/var/lib/tomcat8/Bureau/xnat2bids_reconstruct.py", remoteDir);
+            //sftpChannel.put("/var/lib/tomcat8/Bureau/xnat2bids_reconstruct.py", remoteDir);
 
 
             
