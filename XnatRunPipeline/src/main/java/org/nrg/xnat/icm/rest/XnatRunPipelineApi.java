@@ -533,12 +533,13 @@ public class XnatRunPipelineApi
         datTimeNow = getDateTimeNow();
 
         sifOrSimg(selectPipeline);
+        
         if (!additionalParams.equals(null)){
             ADDITIONAL_PARAMS = additionalParams;
         }else {
             ADDITIONAL_PARAMS = "\n";
         }
-
+        
         SCRIPT_SBATCH_GLOBAL = SCRIPT_SBATCH_GLOBAL 
             + SCRIPT_SBATCH  
             + NUMBER_OF_JOBS_PER_NODES
@@ -550,7 +551,8 @@ public class XnatRunPipelineApi
             + "\n" + LOAD_MODULES 
             + "\n" + "" + commandeDownloadData(listOfSubjectWithCamasSeparated, id_project, nameExportDir, listOfSubjectWithSpaceSeparated)
             + "\n" + LOAD_IMG_SINGULARITY
-            + "\n" + whichCommandSingularity(selectPipeline, nameExportDir);
+            + "\n" + whichCommandSingularity(selectPipeline, nameExportDir)
+            + "  "  + additionalParams + "\n";
             
             log(SCRIPT_SBATCH_GLOBAL);
 
@@ -561,8 +563,8 @@ public class XnatRunPipelineApi
         log( "le fichier a envoyer est  " + namFileGenerated );
         
        
-        /*
-        try{
+        
+       /* try{
 
            sendFileToCluster(passwordniolon,namFileGenerated);
            log("\nLe fichier à été envoyer avec succé");
@@ -579,7 +581,7 @@ public class XnatRunPipelineApi
 
         }catch (SftpException sftpe){
             
-        }  */
+        }*/ 
         
         log("done !");
         
