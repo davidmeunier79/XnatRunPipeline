@@ -1071,7 +1071,7 @@ public class XnatRunPipelineApi
 
         commande += "python /opt/packages/macapype/workflows/segment_pnh.py "
                   + "-data /data/macapype/ -out /data/macapype/outputSingularity "
-                  + "-soft ANTS -params /opt/packages/macapype/workflows/params_segment_macaque_ants_based.json\n";
+                  + "-soft ANTS -params /opt/packages/macapype/workflows/params_segment_macaque_ants_based.json ";
     
     return commande;
     }
@@ -1102,10 +1102,9 @@ public class XnatRunPipelineApi
 
     public String getCommandeMriqc(String version , String workDir){
 
-        
-        workDir +=  "/" + ID_PROJECT + "BIDS";
+        String dirData = workDir + "/" + ID_PROJECT + "BIDS";
 
-        String commande = "\n" + "singularity run --cleanenv -B " + workDir + ":/data "
+        String commande = "\n" + "singularity run --cleanenv -B " + dirData + ":/data "
                         + "-B " + workDir + ":/out "
                         + "/hpc/shared/apps/x86_64/softs/singularity_images/" + version + " "
                         + "/data /out/" + "output" + ID_PROJECT + "_" + datTimeNow + " participant "
