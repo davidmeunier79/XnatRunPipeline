@@ -1114,7 +1114,6 @@ public class XnatRunPipelineApi
          
     }
 
-
     public ZipOutputStream exportSubjectFiles(final ZipOutputStream zos, final String id_project, final String fileName, final List<String> subjectsList, final List<String> listOfSubject) {
         final UserI xnatUser = XDAT.getUserDetails();
         try {
