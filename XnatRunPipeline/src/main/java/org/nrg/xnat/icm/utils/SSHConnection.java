@@ -26,10 +26,10 @@ public SSHConnection(){
 	
  	// Les paramètres a distance 
 	
-    public  static String user = "rahamani.a";
+    public  static String user = "";
     private  static String password = "";
-    //private  static String host = "niolon.int.univ-amu.fr";
-    private  static String host = "niolon02";
+    //private  static String host = "";
+    private  static String host = "";
 	
 	
     

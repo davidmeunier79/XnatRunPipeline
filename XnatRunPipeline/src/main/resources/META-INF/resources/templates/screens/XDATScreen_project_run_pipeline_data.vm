@@ -50,7 +50,7 @@ $page.setVlinkColor($ui.vlink)
 						<label > Mot de passe </label>
 						<input type="password" id="password" name="password">
 						<br><br>
-						<button class="btn1" id="btnGetPiplines" data="$content.getURI("/xapi/int-run-pipline/get-pipelines/$project")" > Get Piplines</button>
+						<button class="btn1" id="btnGetPiplines" data="$content.getURI("/xapi/int-run-pipline/get-pipelines/$project")" > Get Pipelines</button>
 					</div>
 				</div>	
 			<div style="display:inline; margin-left:400px; margin-top: -80px">	
@@ -104,13 +104,13 @@ $page.setVlinkColor($ui.vlink)
 				<label > <b> Name of Slurm Job (optional) </b></label>
 				<input type="text" id="nameSlurmJob" name="nameSlurmJob">
 				<br/>
-				<label > <b> Additionnal parameters </b></label>
+				<label > <b> Additional parameters </b></label>
 				<input type="text" id="additionalParams" name="additionalParams">
 				<br/>
 				<label > <b> Name Export Dir ( E.G :  /hpc/team/name.f/pipelineOutput) </b></label>
 				<input type="text" id="nameExportDir" name="nameExportDir">
 			</div>
-			<button class="btn1" id="btnStartPipline" data="$content.getURI("/xapi/int-run-pipline/start-pipeline/$project")" > Sart Calcul</button>
+			<button class="btn1" id="btnStartPipline" data="$content.getURI("/xapi/int-run-pipline/start-pipeline/$project")" > start computation </button>
 		</div>
 
 		
