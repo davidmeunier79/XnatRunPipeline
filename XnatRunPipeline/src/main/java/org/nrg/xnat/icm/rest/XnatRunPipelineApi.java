@@ -665,7 +665,7 @@ public class XnatRunPipelineApi
             
             channel = (ChannelExec) session.openChannel("exec");
             
-            channel.setCommand("ls /hpc/shared/apps/x86_64/softs/singularity_images");
+            channel.setCommand("ls /hpc/shared/apps/x86_64/softs/singularity_BIDSApps");
             //channel.setCommand("ls");
             
             while (channel.isConnected()) {
