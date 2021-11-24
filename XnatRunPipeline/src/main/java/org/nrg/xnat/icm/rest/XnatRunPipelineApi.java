@@ -673,7 +673,7 @@ public class XnatRunPipelineApi
             }
             
             //channel.setCommand("cd /hpc/crise/rahmani.a/script ");
-           // channel.setCommand("ls /hpc/shared/apps/x86_64/softs/singularity_images");
+           // channel.setCommand("ls /hpc/shared/apps/x86_64/softs/singularity_BIDSApps");
             
             ByteArrayOutputStream responseStream = new ByteArrayOutputStream();
             channel.setOutputStream(responseStream);
@@ -1070,7 +1070,7 @@ public class XnatRunPipelineApi
         inputDirBIDS +=  "/" + ID_PROJECT + "BIDS";
 
         String commande = "\n" + "singularity run -B " + inputDirBIDS + ":/data/macapype ";
-        commande += "/hpc/shared/apps/x86_64/softs/singularity_images/" + version + " ";
+        commande += "/hpc/shared/apps/x86_64/softs/singularity_BIDSApps/" + version + " ";
 
         commande += "python /opt/packages/macapype/workflows/segment_pnh.py "
                   + "-data /data/macapype/ -out /data/macapype/outputSingularity "
@@ -1084,7 +1084,7 @@ public class XnatRunPipelineApi
 
         String commande = "\n" + "singularity run --cleanenv -B " + inputDirBIDS + ":/work_dir "
                         + "-B /hpc/shared/apps/x86_64/softs/freesurfer/7.1.1:/license_path "
-                        + "/hpc/shared/apps/x86_64/softs/singularity_images/" + version + " "
+                        + "/hpc/shared/apps/x86_64/softs/singularity_BIDSApps/" + version + " "
                         + "--fs-license-file /license_path/.license "
                         + "/workdir" + "/" + ID_PROJECT + "BIDS" + " /workdir/derivatives/fmriprep "
                         + "participant -w /work_dir/temp_data_test/ "
@@ -1109,7 +1109,7 @@ public class XnatRunPipelineApi
 
         String commande = "\n" + "singularity run --cleanenv -B " + dirData + ":/data "
                         + "-B " + workDir + ":/out "
-                        + "/hpc/shared/apps/x86_64/softs/singularity_images/" + version + " "
+                        + "/hpc/shared/apps/x86_64/softs/singularity_BIDSApps/" + version + " "
                         + "/data /out/" + "output" + ID_PROJECT + "_" + datTimeNow + " participant "
                         + " group";
                   
