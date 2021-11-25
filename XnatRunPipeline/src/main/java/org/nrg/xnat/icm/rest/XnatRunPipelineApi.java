@@ -566,7 +566,7 @@ public class XnatRunPipelineApi
         log( "le fichier a envoyer est  " + namFileGenerated );
         
        
-        
+        /*
         try{
 
            sendFileToCluster(passwordniolon,namFileGenerated);
@@ -584,7 +584,7 @@ public class XnatRunPipelineApi
 
         }catch (SftpException sftpe){
             
-        } 
+        } */
         
         log("done !");
         
@@ -1110,12 +1110,30 @@ public class XnatRunPipelineApi
         String commande = "\n" + "singularity run --cleanenv -B " + dirData + ":/data "
                         + "-B " + workDir + ":/out "
                         + "/hpc/shared/apps/x86_64/softs/singularity_BIDSApps/" + version + " "
+                        + "--verbose-reports "
                         + "/data /out/" + "output" + ID_PROJECT + "_" + datTimeNow + " participant "
                         + " group";
                   
         return commande;
          
     }
+
+
+    /* BIDSApps bida_validator  */
+    public String getCommandeBidsValidator(String version , String dataset){
+
+        String dirData = dataset + "/" + ID_PROJECT + "BIDS";
+
+        String commande = "\n" + "singularity run --cleanenv -B " + dirData + ":/data "
+                        + "/hpc/shared/apps/x86_64/softs/singularity_BIDSApps/" + version + " "
+                        + "/data"
+                        + "\n";
+                  
+        return commande;
+         
+    }
+
+
 
     public ZipOutputStream exportSubjectFiles(final ZipOutputStream zos, final String id_project, final String fileName, final List<String> subjectsList, final List<String> listOfSubject) {
         final UserI xnatUser = XDAT.getUserDetails();
