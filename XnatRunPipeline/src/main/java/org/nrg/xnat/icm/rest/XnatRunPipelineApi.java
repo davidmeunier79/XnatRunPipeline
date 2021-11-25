@@ -1070,15 +1070,19 @@ public class XnatRunPipelineApi
     }
 
 
+    // version : sera la commande passée
     public String  getCommandeMacapype(String version, String inputDirBIDS){
         
-        inputDirBIDS +=  "/" + ID_PROJECT + "BIDS";
+        String dirData = inputDirBIDS + "/" + ID_PROJECT + "BIDS";
+        
 
-        String commande = "\n" + "singularity run -B " + inputDirBIDS + ":/data/macapype ";
+        String commande = "\n" + "singularity run -B " + dirData + ":/data/macapype "
+                        + " " + "-B " + inputDirBIDS + ":/out ";
         commande += "/hpc/shared/apps/x86_64/softs/singularity_BIDSApps/" + version + " ";
 
         commande += "python /opt/packages/macapype/workflows/segment_pnh.py "
-                  + "-data /data/macapype/ -out /data/macapype/outputSingularity "
+                  + "-data /data/macapype/ "
+                  + "-out /out/" + "output" + ID_PROJECT + "_" + datTimeNow + " "
                   + "-soft ANTS -params /opt/packages/macapype/workflows/params_segment_macaque_ants_based.json ";
     
     return commande;
