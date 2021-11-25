@@ -1059,6 +1059,11 @@ public class XnatRunPipelineApi
 
             return getCommandeMriqc(whichPipeline, inputDirBIDS);
         }
+
+        if(whichPipeline.contains("bids_validator")){
+            
+            return getCommandeBidsValidator(whichPipeline,inputDirBIDS);
+        }
         
         else return "";
 
