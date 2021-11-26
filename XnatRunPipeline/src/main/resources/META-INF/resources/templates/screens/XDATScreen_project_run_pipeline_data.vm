@@ -53,7 +53,7 @@ $page.setVlinkColor($ui.vlink)
 						<button class="btn1" id="btnGetPiplines" data="$content.getURI("/xapi/int-run-pipline/get-pipelines/$project")" > Get Pipelines</button>
 					</div>
 				</div>	
-			<div style="display:inline; margin-left:400px; margin-top: -80px">	
+			<div class="select_mate" style="display:inline; margin-left:400px; margin-top: -80px">	
 				<label class="access-label"> Pipelines exists on cluster </label>
 				<select  id="monselectPipeLine" >
 					<option value="">Please choose a pipeline</option>
