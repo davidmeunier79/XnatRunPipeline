@@ -1080,10 +1080,15 @@ public class XnatRunPipelineApi
                         + " " + "-B " + inputDirBIDS + ":/out ";
         commande += "/hpc/shared/apps/x86_64/softs/singularity_BIDSApps/" + version + " ";
 
-        commande += "python /opt/packages/macapype/workflows/segment_pnh.py "
+        commande += "segment_pnh "
                   + "-data /data/macapype/ "
                   + "-out /out/" + "output" + ID_PROJECT + "_" + datTimeNow + " "
-                  + "-soft ANTS -params /opt/packages/macapype/workflows/params_segment_macaque_ants_based.json ";
+                  + "-soft ANTS -species macaque ";
+  
+    /*     commande += "python /opt/packages/macapype/workflows/segment_pnh.py "
+                  + "-data /data/macapype/ "
+                  + "-out /out/" + "output" + ID_PROJECT + "_" + datTimeNow + " "
+                  + "-soft ANTS -params /opt/packages/macapype/workflows/params_segment_macaque_ants_based.json "; */
     
     return commande;
     }
