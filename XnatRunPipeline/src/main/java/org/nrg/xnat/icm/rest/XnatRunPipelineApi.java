@@ -1096,7 +1096,9 @@ public class XnatRunPipelineApi
 
     public String getCommandeFmriPrepSimg(String version , String inputDirBIDS){
 
-        String commande = "\n" + "singularity run --cleanenv -B " + inputDirBIDS + ":/work_dir "
+        String dirdata = inputDirBIDS + "/" + ID_PROJECT + "BIDS";
+
+        String commande = "\n" + "singularity run --cleanenv -B " + dirdata + ":/work_dir "
                         + "-B /hpc/shared/apps/x86_64/softs/freesurfer/7.1.1:/license_path "
                         + "/hpc/shared/apps/x86_64/softs/singularity_BIDSApps/" + version + " "
                         + "--fs-license-file /license_path/.license "
