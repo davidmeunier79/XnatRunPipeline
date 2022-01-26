@@ -180,7 +180,7 @@ $('#btnGetPiplines').on("click" , function(e) {
 
 				}
 				// Activer le bouton start computation
-				$('#btnStartPipline').disabled =true;
+				//$('#btnStartPipline').disabled =true;
 				alert("Tres bien envoyer")
 
 				

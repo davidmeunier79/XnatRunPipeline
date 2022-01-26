@@ -1,5 +1,7 @@
 # ICM - XNAT Export Data Plugin
 
+Use of java>=11 : `export JAVA_HOME=/usr/lib/jvm/java-11-openjdk-amd64`
+
 This project adds a plugin which
 1. Adds an "Export Data (ICM)" item to the menu of a XNAT project screen
 2. This item opens a custom webpage for exporting data

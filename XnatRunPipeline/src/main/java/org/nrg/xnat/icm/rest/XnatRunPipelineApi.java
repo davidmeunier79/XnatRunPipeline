@@ -216,7 +216,15 @@ public class XnatRunPipelineApi
         
         try {
             
-             doConnectionCluster(passwordniolon);
+            doConnectionCluster(passwordniolon);
+
+            for(int i= 0; i< listImages.length; i++){
+
+                _listPipelines.put(listImages[i],listImages[i]);
+
+                log("  "+listImages[i]+" :    "+listImages[i]);
+
+            }
 
         }catch (InterruptedException e) { 
             e.printStackTrace();
@@ -232,14 +240,7 @@ public class XnatRunPipelineApi
         
         
         
-        for(int i= 0; i< listImages.length; i++){
 
-        _listPipelines.put(listImages[i],listImages[i]);
-
-        log("  "+listImages[i]+" :    "+listImages[i]);
-
-
-        }
 
         /*
 
@@ -272,6 +273,7 @@ public class XnatRunPipelineApi
         out.print(obj);
 
         out.flush();
+        
         
 
         log( "\n la date de maintenant est : "+getDateTimeNow() + "    \n\n");
@@ -565,8 +567,10 @@ public class XnatRunPipelineApi
 
         log( "le fichier a envoyer est  " + namFileGenerated );
         
-       
-        /*
+
+        //To send file to the cluster
+
+        
         try{
 
            sendFileToCluster(passwordniolon,namFileGenerated);
@@ -584,11 +588,11 @@ public class XnatRunPipelineApi
 
         }catch (SftpException sftpe){
             
-        } */
+        } 
         
         log("done !");
         
-
+        
 
     }
 
@@ -747,7 +751,7 @@ public class XnatRunPipelineApi
         
             JSch jsch = new JSch();
 
-
+            //jsch.setKnownHosts("~/.ssh/known_hosts");
             Properties config = new Properties();
             
             config.put("kex", "diffie-hellman-group1-sha1,diffie-hellman-group14-sha1,diffie-hellman-group-exchange-sha1,diffie-hellman-group-exchange-sha256");
@@ -767,8 +771,9 @@ public class XnatRunPipelineApi
             session.setConfig(config);
 
             log("Establishing Connection...");
-        
-            session.connect();
+
+            //session.connect();
+            
         
             log("Connection established.");
 
@@ -776,7 +781,17 @@ public class XnatRunPipelineApi
             
             ChannelSftp sftpChannel = (ChannelSftp) session.openChannel("sftp");
             
-            sftpChannel.connect();
+            
+            try {
+
+                sftpChannel.connect();
+
+            } catch (Exception e) {
+                throw new JSchException("Unable to connect to SFTP server. " + e.toString());
+            }
+            
+            
+           // sftpChannel.connect();
             
             log("SFTP Channel created.");
             
