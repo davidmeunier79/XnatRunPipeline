@@ -1,5 +1,3 @@
-
-
 package org.nrg.xnat.icm.rest;
 import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
 import java.util.Arrays;
@@ -56,6 +54,14 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.ObjectInputStream.GetField;
 import java.io.PrintWriter;
+
+/* Les importations de SSHJ 
+
+import net.schmizz.sshj.SSHClient;
+import net.schmizz.sshj.xfer.FileSystemFile;
+
+*/
+
 
 @Api(description = "run pipeline on Cluster")
 @XapiRestController
@@ -745,6 +751,7 @@ public class XnatRunPipelineApi
         /* Chemin où sera  transmit le fichier dans le cluster */
         String remoteDir = "/home/"+REMOT_DIR; 
         
+                
         try {
             
             JSch.setLogger(new MyLogger());
@@ -763,7 +770,7 @@ public class XnatRunPipelineApi
 
             
             
-            session = jsch.getSession(user, "niolon.int.univ-amu.fr", port);
+            session = jsch.getSession(user, "pharo.int.univ-amu.fr", port);
         
             session.setPassword(password);
             
@@ -772,12 +779,12 @@ public class XnatRunPipelineApi
 
             log("Establishing Connection...");
 
-            //session.connect();
+            session.connect();
             
         
-            log("Connection established.");
+            log("Connection established...");
 
-            System.out.println("Crating SFTP Channel.");
+            System.out.println("Crating SFTP Channel...");
             
             ChannelSftp sftpChannel = (ChannelSftp) session.openChannel("sftp");
             
@@ -795,7 +802,7 @@ public class XnatRunPipelineApi
             
             log("SFTP Channel created.");
             
-            /* la méthod  put pour envoyer le fichier */
+            // la méthod  put pour envoyer le fichier 
             sftpChannel.put(localFile, remoteDir);
 
             //sftpChannel.put("/var/lib/tomcat8/Bureau/xnat2bids_reconstruct.py", remoteDir);
@@ -874,12 +881,38 @@ public class XnatRunPipelineApi
             }
            
         }
+         
 
 
+/*         final SSHClient sshClient = new SSHClient();
+        sshClient.loadKnownHosts();
+        sshClient.connect("pharo.int.univ-amu.fr");
+
+
+
+
+
+
+        try {
+            sshClient.authPassword(user, password);
+            //final Session session1 = sshClient.startSession();
+            try {
+
+                sshClient.authPublickey(System.getProperty(user));
+                //final String src = System.getProperty("user.home") + File.separator + "test_file";
+                sshClient.newSCPFileTransfer().upload(new FileSystemFile(localFile),remoteDir); 
+
+
+            } finally {
+                //session1.close();
+            }
+        } finally {
+            sshClient.disconnect();
+
+                
+    } */
 
     }
-
-
 
     public static String getDateTimeNow(){
 

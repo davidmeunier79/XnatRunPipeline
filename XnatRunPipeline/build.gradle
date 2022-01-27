@@ -175,7 +175,8 @@ dependencies {
 
     compile group: 'org.apache.clerezza.ext', name: 'org.json.simple', version: '0.4'
     compile group: 'org.apache.commons', name: 'commons-csv', version: '1.6'
-    compile group: 'com.jcraft', name: 'jsch', version: '0.1.55'
+    compile group: 'com.jcraft', name: 'jsch', version: '0.1.54'
+    //compile group: 'com.hierynomus', name: 'sshj', version: '0.32.0'
     
     compile "ecs:ecs"
     compile("stratum:stratum") {
