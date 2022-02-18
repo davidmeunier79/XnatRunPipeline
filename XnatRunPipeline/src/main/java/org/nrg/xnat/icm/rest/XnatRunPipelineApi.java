@@ -220,11 +220,25 @@ public class XnatRunPipelineApi
 
         
         
-        try {
-            
+        /*try {
+            /*
             doConnectionCluster(passwordniolon);
+            */
 
+            String dirName = "/hpc/shared/apps/x86_64/softs/singularity_BIDSApps";
+            
+            File fileName = new File(dirName);
+            
+            File[] fileList = fileName.listFiles();
+            
+            listImages = new String[fileList.length];
+
+
+            
             for(int i= 0; i< listImages.length; i++){
+
+                listImages[i] = fileList[i].getName();
+
 
                 _listPipelines.put(listImages[i],listImages[i]);
 
@@ -232,37 +246,37 @@ public class XnatRunPipelineApi
 
             }
 
-        }catch (InterruptedException e) { 
-            e.printStackTrace();
-                
-         }catch (JSchException  jshe){
+                /*         }catch (InterruptedException e) { 
+                e.printStackTrace();
+                    
+            }catch (JSchException  jshe){
 
 
-         }catch (IOException ioe){
+            }catch (IOException ioe){
 
 
-         }
-           
+            } */
+            
+            
         
         
-        
 
 
-        /*
+            /*
 
-        _listPipelines.put(cle1,valeur1);
-       
-        _listPipelines.put(cle2,valeur2);
+            _listPipelines.put(cle1,valeur1);
+        
+            _listPipelines.put(cle2,valeur2);
 
-        _listPipelines.put(cle3,valeur3);
-        
-        _listPipelines.put(cle4,valeur4);
-        
-        _listPipelines.put(cle5,valeur5);
-        
-        _listPipelines.put(cle6,valeur6);
-        
-        */
+            _listPipelines.put(cle3,valeur3);
+            
+            _listPipelines.put(cle4,valeur4);
+            
+            _listPipelines.put(cle5,valeur5);
+            
+            _listPipelines.put(cle6,valeur6);
+            
+            */
 
         response.setContentType("application/json");
         
@@ -761,6 +775,8 @@ public class XnatRunPipelineApi
             //jsch.setKnownHosts("~/.ssh/known_hosts");
             Properties config = new Properties();
             
+            //config.put("kex","curve25519-sha256, curve25519-sha256@libssh.org, diffie-hellman-group16-sha512, diffie-hellman-group18-sha512, diffie-hellman-group-exchange-sha256");
+
             config.put("kex", "diffie-hellman-group1-sha1,diffie-hellman-group14-sha1,diffie-hellman-group-exchange-sha1,diffie-hellman-group-exchange-sha256");
 
             //session.setConfig("cipher.s2c", "aes128-ctr");
@@ -770,7 +786,7 @@ public class XnatRunPipelineApi
 
             
             
-            session = jsch.getSession(user, "pharo.int.univ-amu.fr", port);
+            session = jsch.getSession(user, "niolon.int.univ-amu.fr", port);
         
             session.setPassword(password);
             
@@ -978,7 +994,7 @@ public class XnatRunPipelineApi
       //f.setExecutable(true);
       
       System.out.println(f.exists());
-      log("le fichier à été créer ! ");
+      log("le fichier a été créer ! ");
 
       if(!f.getParentFile().exists()) {
           f.getParentFile().mkdirs();
