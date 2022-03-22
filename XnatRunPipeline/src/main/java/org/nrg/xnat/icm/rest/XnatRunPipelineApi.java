@@ -117,7 +117,7 @@ public class XnatRunPipelineApi
     private static String LOAD_IMG_SINGULARITY = "";
     private static String ADDITIONAL_PARAMS = "\n";
 
-    public static String REMOT_DIR = "";
+    public static String ID_CLUSTER = "";
 
     
     @ApiOperation(value = "Get list of piplines in cluster", notes = "Custom")
@@ -492,7 +492,7 @@ public class XnatRunPipelineApi
         allOrListSubject = subject_ids ;
         ID_PROJECT =  id_project;
 
-        REMOT_DIR = idCluster ;
+        ID_CLUSTER = idCluster ;
 
 
 
@@ -684,6 +684,7 @@ public class XnatRunPipelineApi
             log("********************** \n ");
 
             log("Connection established");
+
             
             // Execution de la commande
             
@@ -763,10 +764,64 @@ public class XnatRunPipelineApi
         
         log("Le fichier à envoyer est : " + fullPathScriptSlurm );
         /* Chemin où sera  transmit le fichier dans le cluster */
-        String remoteDir = "/home/"+REMOT_DIR; 
+        String remoteDir = "/home/"+ID_CLUSTER; 
+        
+        try {
+                final String program = "sudo";
+                final String programName = "/opt/bin/xnat-rpd.sh" ;
+                final String inputDir = "-u";
+                final String option1 = ID_CLUSTER;
+                final String option2 = "-f";
+                final String option3 = localFile;
+                final List<String> cmd = new ArrayList<String>();
+                cmd.add(program);
+                cmd.add(programName);
+                cmd.add(inputDir);
+                cmd.add(option1);
+                cmd.add(option2);
+                cmd.add(option3);    
+                log(cmd.toString());
+
+                final ProcessBuilder pb = new ProcessBuilder(cmd);
+                final Process p = pb.start();
+                final InputStreamReader isr = new InputStreamReader(p.getInputStream());
+                final BufferedReader br = new BufferedReader(isr);
+                String ligne = "";
+                while ((ligne = br.readLine()) != null) {
+                    log(ligne);
+                }
+            }
+            catch (Exception e) {
+                log(e.toString());
+            }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
         
                 
-        try {
+/*         try {
             
             JSch.setLogger(new MyLogger());
         
@@ -894,7 +949,10 @@ public class XnatRunPipelineApi
             if (channel != null) {
                 channel.disconnect();
                 channelShell.disconnect();
-            }
+            } */
+
+
+
            
         }
          
@@ -928,7 +986,7 @@ public class XnatRunPipelineApi
                 
     } */
 
-    }
+    
 
     public static String getDateTimeNow(){
 
@@ -982,7 +1040,7 @@ public class XnatRunPipelineApi
     // Penser à passer le nom de projet en paramétre
     public static String generateFIleScripte(String codeSbatch, String pipeLineSelected, String userIdCluster) {
 
-      String    dirOutputpath = "/data/xnat/tmp/";
+      String    dirOutputpath = "/tmp/";
       String suiteName = userIdCluster + "_" + pipeLineSelected + "_" + datTimeNow + ".sh";
       
       /* On concerver le nom  pour récupérer le bon fichier */
