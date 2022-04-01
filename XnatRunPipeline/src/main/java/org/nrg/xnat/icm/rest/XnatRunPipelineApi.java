@@ -114,10 +114,16 @@ public class XnatRunPipelineApi
     private static String LOAD_MODULES = "\n\nmodule purge\n"
                                        + "module load all\n"
                                        + "\nmodule load anaconda/3\n";
+
+    private static String GET_USER_ENV = "\n#SBATCH --get-user-env=L\n";
     private static String LOAD_IMG_SINGULARITY = "";
     private static String ADDITIONAL_PARAMS = "\n";
 
     public static String ID_CLUSTER = "";
+
+    public static String URI_HOST_XNAT = "--host http://10.164.0.82:8080 ";
+
+    public static String CHANGE_WORKING_DIRECTORY = "#SBATCH --chdir=/tmp\n";
 
     
     @ApiOperation(value = "Get list of piplines in cluster", notes = "Custom")
@@ -569,8 +575,10 @@ public class XnatRunPipelineApi
             + SCRIPT_SBATCH  
             + NUMBER_OF_JOBS_PER_NODES
             + NUMBER_OF_NODES
-            + STANDARD_OUTPUT_FILE + "./" + selectPipeline + "_" + id_project + "_" + datTimeNow + ".out"
-            + "\n" + STANDARD_ERROR_FILE + "./" + selectPipeline + "_" + id_project + "_" + datTimeNow + ".err"
+            + CHANGE_WORKING_DIRECTORY
+            + GET_USER_ENV
+            + STANDARD_OUTPUT_FILE + "/home/"+ idCluster  + "/xnat-batch-scripts/"+ selectPipeline + "_" + id_project + "_" + datTimeNow + ".out"
+            + "\n" + STANDARD_ERROR_FILE + "/home/"+ idCluster  + "/xnat-batch-scripts/"+  selectPipeline + "_" + id_project + "_" + datTimeNow + ".err"
             + "\n" + NAME_OF_SLURM_JOB + " " + idCluster + "_" + selectPipeline
             + "\n" + getOtherParamatersSbatch(selectPipeline)
             + "\n" + LOAD_MODULES 
@@ -594,7 +602,7 @@ public class XnatRunPipelineApi
         try{
 
            sendFileToCluster(passwordniolon,namFileGenerated);
-           log("\nLe fichier à été envoyer avec succé");
+           log("\nLe fichier a été envoyer avec succé");
 
         }catch (InterruptedException e) { 
             
@@ -794,24 +802,6 @@ public class XnatRunPipelineApi
             catch (Exception e) {
                 log(e.toString());
             }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 
@@ -1104,7 +1094,7 @@ public class XnatRunPipelineApi
                 + "\n" + "filenameTxt=" + filenameTxt
                 + "\n" + "filenameCsv=" + filenameCsv
                 + "\n \n" + "mkdir -p " + dirIputdata
-                + "\n" + "Xnatdownload -p " + projectName + " -d " + dirIputdata + " --subj ";
+                + "\n" + "Xnatdownload "+ URI_HOST_XNAT + " -p " + projectName + " -d " + dirIputdata + " --subj ";
 
           if(!allOrListSubject.equals("all")){
 
@@ -1126,8 +1116,9 @@ public class XnatRunPipelineApi
                     + "\n" +  "   echo \"download_csv removed\""
                     + "\n" +  "fi"
                     + "\n" +  "\n" + "\n" + "\n"
-                    + "\n" +  "mkdir -p " + dirDataInBIDS + "\n"
-                    + "\n" +  "python xnat2bids_reconstruct.py " + dirIputdata + "/" + projectName + " " + dirDataInBIDS +  " " + lisSubjectWithSpaceSeparated +"\n";
+                    + "\n" +  "dirDataInBIDS=\"" + dirDataInBIDS + "\"\n"
+                    + "\n" +  "python /envau/work/nit/xnat-cluster/xnat2bids_reconstruct_afterDownload.py " 
+                    + dirIputdata + "/" + projectName + " " + "$dirDataInBIDS" +  " " + lisSubjectWithSpaceSeparated +"\n";
                     
             
           commande += "\nsource deactivate \n\n"; 
@@ -1224,7 +1215,7 @@ public class XnatRunPipelineApi
                         + "-B /hpc/shared/apps/x86_64/softs/freesurfer/7.1.1:/license_path "
                         + "/hpc/shared/apps/x86_64/softs/singularity_BIDSApps/" + version + " "
                         + "--fs-license-file /license_path/.license "
-                        + "/workdir" + "/" + ID_PROJECT + "BIDS" + " /workdir/derivatives/fmriprep "
+                        + "/work_dir" + " /work_dir/derivatives/fmriprep "
                         + "participant -w /work_dir/temp_data_test/ "
                         + ""
                         + "--cifti-output --low-mem --mem-mb 32000 --nthreads 64";
