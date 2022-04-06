@@ -50,11 +50,21 @@ import java.io.*;
 //import javax.ws.rs.WebApplicationException;
 import java.lang.*;
 import com.jcraft.jsch.*;
-import java.io.IOException;
 import java.io.InputStream;
 import java.io.ObjectInputStream.GetField;
 import java.io.PrintWriter;
+import java.io.FileReader;
 
+
+import java.nio.file.Files;
+import java.nio.file.Paths;
+import java.text.ParseException;
+import java.util.HashMap;
+import java.util.Map;
+
+import org.json.simple.*;
+
+import org.json.simple.parser.JSONParser;
 /* Les importations de SSHJ 
 
 import net.schmizz.sshj.SSHClient;
@@ -125,6 +135,15 @@ public class XnatRunPipelineApi
 
     public static String CHANGE_WORKING_DIRECTORY = "#SBATCH --chdir=/tmp\n";
 
+    // Path to config file xnat
+		
+	private static String config_file_xnat = "/tmp/xnat_config_file_V1.json"; 
+	
+
+
+    public static JSONObject jsonObject;
+    public static ArrayList<String> listKeysJsonFile = null;
+
     
     @ApiOperation(value = "Get list of piplines in cluster", notes = "Custom")
     @ApiResponses({ @ApiResponse(code = 200, message = "Connection success "), @ApiResponse(code = 401, message = "Must be authenticated to access the XNAT Rest Api"), @ApiResponse(code = 500, message = "Unexpected internal serval error") })
@@ -150,9 +169,22 @@ public class XnatRunPipelineApi
 
         log("la liste séléctionné est   !! : "+subject_ids);
 
+        /* Read config file and initialize  params */ 
+       
+       try {
+
+            readConfigFileJson();
+       
+       } catch (IOException ioe){
+
+       } catch (Exception e){
+
+
+       }
+
        
 
-       /* Recupérer la list  séléctionné des sujet*/
+       /* Recupérer la list  séléctionné des sujet */
 
         /*
        try {
@@ -231,9 +263,10 @@ public class XnatRunPipelineApi
             doConnectionCluster(passwordniolon);
             */
 
+            String linkImgeSingularity = (String) jsonObject.get("linkAllImgSingularity");
             String dirName = "/hpc/shared/apps/x86_64/softs/singularity_BIDSApps";
             
-            File fileName = new File(dirName);
+            File fileName = new File(linkImgeSingularity);
             
             File[] fileList = fileName.listFiles();
             
@@ -245,12 +278,12 @@ public class XnatRunPipelineApi
 
                 listImages[i] = fileList[i].getName();
 
-
                 _listPipelines.put(listImages[i],listImages[i]);
 
                 log("  "+listImages[i]+" :    "+listImages[i]);
 
             }
+
 
                 /*         }catch (InterruptedException e) { 
                 e.printStackTrace();
@@ -262,11 +295,6 @@ public class XnatRunPipelineApi
 
 
             } */
-            
-            
-        
-        
-
 
             /*
 
@@ -302,7 +330,7 @@ public class XnatRunPipelineApi
         
         
 
-        log( "\n la date de maintenant est : "+getDateTimeNow() + "    \n\n");
+        log( "\n La date de maintenant est : "+getDateTimeNow() + "    \n\n");
  
 
 
@@ -495,6 +523,7 @@ public class XnatRunPipelineApi
         String listOfSubjectWithSpaceSeparated = null;
         String listOfSubjectWithCamasSeparated = "";
         String SCRIPT_SBATCH_GLOBAL = "";
+        String pipeLineSelected = "";
         allOrListSubject = subject_ids ;
         ID_PROJECT =  id_project;
 
@@ -557,8 +586,9 @@ public class XnatRunPipelineApi
 
         log("Le pipeline Choisi est : " + selectPipeline + "");
 
+        pipeLineSelected = (String) ((JSONObject) getJsonObjectByKey(jsonObject,selectPipeline)).get("name");
 
-
+        log("Vous avez choisi le pipeline : " +pipeLineSelected + "\n");
         log("Le script généré est  : \n ");
 
         datTimeNow = getDateTimeNow();
@@ -567,7 +597,7 @@ public class XnatRunPipelineApi
         
         if (!additionalParams.equals(null)){
             ADDITIONAL_PARAMS = additionalParams;
-        }else {
+        } else {
             ADDITIONAL_PARAMS = "\n";
         }
         
@@ -593,12 +623,12 @@ public class XnatRunPipelineApi
 
         final String namFileGenerated = generateFIleScripte(SCRIPT_SBATCH_GLOBAL, selectPipeline, idCluster);
 
-        log( "le fichier a envoyer est  " + namFileGenerated );
+        log( "Le fichier a envoyer est  " + namFileGenerated );
         
 
-        //To send file to the cluster
+        // To send file to the cluster
 
-        
+        /*
         try{
 
            sendFileToCluster(passwordniolon,namFileGenerated);
@@ -617,12 +647,88 @@ public class XnatRunPipelineApi
         }catch (SftpException sftpe){
             
         } 
+        */
         
         log("done !");
         
         
 
     }
+
+
+
+
+    /* Cette fonction permet de récuperer les la liste des sessions corréspondant à un sujet */
+    @ApiOperation(value = "Get list of session in subject", notes = "Custom")
+    @ApiResponses({ @ApiResponse(code = 200, message = "Connection success "), @ApiResponse(code = 401, message = "Must be authenticated to access the XNAT Rest Api"), @ApiResponse(code = 500, message = "Unexpected internal serval error") })
+    @RequestMapping(value = { "/get-sessions/{id_project}" }, produces = { "application/json" }, method = { RequestMethod.POST })
+    @ResponseBody  
+    public void exportFiles(final HttpServletResponse response, @PathVariable final String id_project, @RequestParam("selectedSubject") final String selectedSubject)  throws IOException{
+        final UserI xnatUser = XDAT.getUserDetails();
+        ByteArrayOutputStream baos = null;
+        final List<String> subjectsList = new LinkedList<String>();
+        Map<String, String> listSessionOfSubject  = new HashMap<>();
+        String [] listAllsession = null; // mettre toute les sessions d'un projet 
+        
+        String dirName = "/data/xnat/archive/" + id_project + "/arc001";
+
+        log("Vous avez choisi  [ " + id_project + "] et sujet : [ " + selectedSubject + "]");
+        
+        File fileName = new File(dirName);
+        
+        File[] fileList = fileName.listFiles();
+        
+        listAllsession = new String[fileList.length];
+
+
+                    
+            for(int i= 0; i< listAllsession.length; i++){
+
+                listAllsession[i] = fileList[i].getName();
+                // tester si le nom commence par le préfix du sujet
+                if (listAllsession[i].startsWith(selectedSubject))
+                {
+                    listSessionOfSubject.put(listAllsession[i],listAllsession[i]);
+
+                    log("  "+listAllsession[i]+" :    "+listAllsession[i]);
+                }
+
+            }
+
+
+
+        // Préparer le listSessionOfSubject à envoyer en json
+
+        response.setContentType("application/json");
+        
+        response.setCharacterEncoding("UTF-8");
+        
+        JSONObject obj = new JSONObject();
+
+        obj.putAll(listSessionOfSubject);
+        
+        log("les sessions à envoyer sont : " +obj.toString());
+
+        PrintWriter out = response.getWriter();
+
+        out.print(obj);
+
+        out.flush();
+
+
+
+       
+
+
+
+
+
+
+
+    
+    }
+
+
 
 
 
@@ -1082,8 +1188,138 @@ public class XnatRunPipelineApi
     }
 
 
+    public static void readConfigFileJson() throws Exception, IOException {
+
+        listKeysJsonFile = new ArrayList<String>();
+		// Parse json file
+		JSONParser parser = new JSONParser();
+		
+		try {
+			
+	
+		 jsonObject =  (JSONObject) parser.parse(new FileReader(config_file_xnat));
+		 
+		 JSONObject aaa =  (JSONObject) getJsonObjectByKey(jsonObject, "qsiprep_0.14.3.sif");
+		 
+		 System.out.println("la taille de l'objet qsiprep_0.14.3.sif est :" + aaa.size());
+		 
+		 String key_outputDirectory = "outputDirectory";
+		
+		 System.out.println(jsonObject.get(key_outputDirectory));
+		
+		} catch (IOException e) {
+			
+            e.printStackTrace();
+            
+		}
+		
+		System.out.println("\n\n------------- Debut du programme ----------------\n");
+
+		
+		System.out.println(jsonObject);
+		
+		System.out.println("This file contain " + jsonObject.size() + " objects");
+		
+		System.out.println("List of  objects ");
+		
+		System.out.println(jsonObject.keySet());	
+		
+		String  pageInfo = jsonObject.get("pageInfo").toString();
+		 
+		System.out.println("\n" + "pageName : " + pageInfo);
+		 
+		JSONObject pageNameObjectJson = (JSONObject) jsonObject.get("pageInfo");
+		 
+		String pagePic = pageNameObjectJson.get("pagePic").toString();
+		 
+		System.out.println("\n" + "pagePic : " + pagePic);
+	
+		String [] arrayPost = null;
+				
+		// System.out.println(jsonObject.get("mriqc_0.14.2.sif"));
+		
+		JSONObject objectJsonOfPipeline = null;	
+		
+		for (Object key : jsonObject.keySet()) {
+			
+			System.out.println(key);
+			
+			listKeysJsonFile.add((String) key);
+			
+			try {
+				
+					objectJsonOfPipeline = (JSONObject) jsonObject.get(key);
+				
+					getInfoJsonObject1(objectJsonOfPipeline);
+					
+					System.out.println("\n\n\n\n");
+					
+								
+			} catch (Exception e) {
+				
+			}
+			
+		}
+		
+		
+		System.out.println( listKeysJsonFile);
+		
+		System.out.println("\n---------------------------------\n");
+
+
+    }
+
+
+	 /* Cette méthode permet de récupérer un Object JSON  par sa clé */
+	
+    public static Object getJsonObjectByKey(JSONObject jsonObject, Object key) {
+			
+			return jsonObject.get(key);
+			
+    }
+
+    /* 
+     * Pour chaque objet JSON dans le fichier de configue
+     * on récupére tout les  (key, value)     
+     */
+	
+	public Map< String, String> getInfoJsonObject(JSONObject jsonObject){
+
+		Map<String, String> jsonContent =  new HashMap<String, String>();
+				
+				for (Object key : jsonObject.keySet()) {
+				
+					jsonContent.put(key.toString(), jsonObject.get(key).toString());
+					
+				}
+			
+		return jsonContent;
+	}
+
+
+	public static void getInfoJsonObject1(JSONObject jsonObject){
+
+		Map<String, String> jsonContent =  new HashMap<String, String>();
+				
+				for (Object key : jsonObject.keySet()) {
+				
+					jsonContent.put(key.toString(), jsonObject.get(key).toString());
+					System.out.println("\"" + key.toString() + "\" : " + " \"" + jsonObject.get(key).toString() + "\"");
+					
+				}
+	}
+
+
+    public static String readFileAsString(String file)throws Exception {
+        return new String(Files.readAllBytes(Paths.get(file)));
+    
+    }
+
     public static String  commandeDownloadData(String subjectSelected, String projectName, String dirIputdata, String lisSubjectWithSpaceSeparated){
         
+        /* L'uri de XNAT */ 
+        URI_HOST_XNAT = (String) jsonObject.get("URI_HOST_XNAT");
+
         String filenameTxt = "\"" + dirIputdata + "/download_commandLine.txt" +"\"";
         
         String filenameCsv = "\"" + dirIputdata + "/download_report.csv" +"\"";
@@ -1212,11 +1448,12 @@ public class XnatRunPipelineApi
         String dirdata = inputDirBIDS + "/" + ID_PROJECT + "BIDS";
 
         String commande = "\n" + "singularity run --cleanenv -B " + dirdata + ":/work_dir "
+                        + "-B " + inputDirBIDS + ":/output "
                         + "-B /hpc/shared/apps/x86_64/softs/freesurfer/7.1.1:/license_path "
                         + "/hpc/shared/apps/x86_64/softs/singularity_BIDSApps/" + version + " "
                         + "--fs-license-file /license_path/.license "
-                        + "/work_dir" + " /work_dir/derivatives/fmriprep "
-                        + "participant -w /work_dir/temp_data_test/ "
+                        + "/work_dir" + " /output "
+                        + "participant -w /output/temp_data_test/ "
                         + ""
                         + "--cifti-output --low-mem --mem-mb 32000 --nthreads 64";
 

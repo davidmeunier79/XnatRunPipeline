@@ -1,0 +1,96 @@
+
+ {
+    "outputDirectory" : "/hpc/shared",
+    "linkAllImgSingularity" : "/hpc/shared/apps/x86_64/softs/singularity_BIDSApps",
+    "singulartyRun" : "singularity run -B /hpc:/hpc -B /envau:/envau ",
+    "URI_HOST_XNAT" : "--host http://10.164.0.82:8080 ",
+
+    "pageInfo": {
+          "pageName": "abc",
+          "pagePic": "http://example.com/content.jpg",
+          "additionalParameters" : "" ,
+          "basicParameters" : "" 
+     },
+
+     "macapype_v0.2.2.13.sif" : {
+          "name" : "macapype_v0.2.2.13.sif",
+          "linkDoc":"https://macatools.github.io/macapype/",
+          "singularityCleanEnv" : "",
+          "inputDataBids" : "",
+          "output" : "" ,
+          "additionalParameters" : "" ,
+          "basicParameters" : "" 
+     },
+
+    "fmriprep-20.0.4.sif" : {
+          "name" : "fmriprep-20.0.4.sif",
+          "linkDoc" : "https://fmriprep.org/en/stable/",
+          "singularityCleanEnv" : "--cleanenv ",
+          "inputDataBids" : "",
+          "output" : "" ,
+          "additionalParameters" : "-w /output/temp_data_test/ --cifti-output --low-mem --mem-mb 32000 --nthreads 64 " ,
+          "basicParameters" : "" 
+    },
+
+    "mriqc_0.16.1.sif" : {
+          "name" : "mriqc_0.16.1.sif",
+          "linkDoc":"https://mriqc.readthedocs.io/en/stable/index.html",
+          "singularityCleanEnv" : "--cleanenv ",
+          "inputDataBids" : "",
+          "output" : "" ,
+          "additionalParameters" : "--verbose-reports " ,
+          "basicParameters" : "" 
+    },
+
+    "mriqc_0.14.2.sif" : {
+         "name" : "mriqc_0.14.2.sif",
+         "linkDoc":"https://mriqc.readthedocs.io/en/stable/index.html",
+         "singularityCleanEnv" : "--cleanenv ",
+         "inputDataBids" : "",
+         "output" : "" ,
+         "additionalParameters" : "--verbose-reports " ,
+         "basicParameters" : "" 
+    },
+
+    "qsiprep_0.14.3.sif" : {
+          "name" :  "qsiprep_0.14.3.sif",
+          "linkDoc":"https://qsiprep.readthedocs.io/en/latest/",
+          "singularityCleanEnv" : "--cleanenv ",
+          "inputDataBids" : "",
+          "output" : "" ,
+          "additionalParameters" : "" ,
+          "basicParameters" : "" 
+    },
+
+    "macapype_v0.3.dev11.sif" : {
+          "name" : "macapype_v0.3.dev11.sif",
+          "linkDoc":"https://qsiprep.readthedocs.io/en/latest/",
+          "singularityCleanEnv" : "",
+          "inputDataBids" : "",
+          "output" : "" ,
+          "additionalParameters" : "" ,
+          "basicParameters" : "" 
+    },
+
+    "bids_validator_v1.8.1-dev.0.sif" : {
+         "name" : "bids_validator_v1.8.1-dev.0.sif",
+         "linkDoc":"https://github.com/bids-standard/bids-validator",
+         "singularityCleanEnv" : "",
+         "inputDataBids" : "",
+         "output" : "" ,
+         "additionalParameters" : "" ,
+         "basicParameters" : "" 
+    },
+
+    "macapype_test_local_build.sif" : {
+         "name" : "macapype_test_local_build.sif",
+         "linkDoc":"https://macatools.github.io/macapype/",
+         "singularityCleanEnv" : "",
+         "inputDataBids" : "",
+         "output" : "" ,
+         "additionalParameters" : "" ,
+         "basicParameters" : "" 
+         
+    }
+ }
+

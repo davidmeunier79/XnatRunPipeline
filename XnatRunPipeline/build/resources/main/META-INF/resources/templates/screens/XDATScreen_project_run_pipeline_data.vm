@@ -44,8 +44,8 @@ $page.setVlinkColor($ui.vlink)
 						<label >ID user niolon </label>
 						<input type="text" id="idNiolon" name="iDniolon" placeholder="$placeholderId" required="true">
 						<br/><br/>
-						<label > Mot de passe </label>
-						<input type="password" id="password" name="password" placeholder="$placeholderPwd" required="true">
+				<!--    <label > Mot de passe </label>
+						<input type="password" id="password" name="password" placeholder="$placeholderPwd" required="true"> -->
 						<br><br>
 						<button class="btn1" id="btnGetPiplines" data="$content.getURI("/xapi/int-run-pipline/get-pipelines/$project")" > Get Pipelines</button>
 					</div>
@@ -67,8 +67,9 @@ $page.setVlinkColor($ui.vlink)
 
 		<div class="container">
 			<div class="withColor containerTitle">Step 2 : Select $SUBJECT_DISPLAY_NAME(s)</div>
-			<div class="containerItem">
-				<div id="subject-select-div" class="radio-toggle">
+			<div class="containerItem" style="display: inline-block;">
+			
+				<div id="subject-select-div" class="radio-toggle" style="display: inline-block;">
 					<label class="access-label" title="All subjects in the project">	
 						<input type="radio" id="all_subjects" checked="checked" name="subject_choice" value="all"/>All
 					</label>
@@ -76,13 +77,20 @@ $page.setVlinkColor($ui.vlink)
 						<input type="radio" id="some_subjects" name="subject_choice" value="some"/>Subject(s)
 					</label>
 					<!-- http://localhost:8080/xnat/REST/projects/PASSEPORT/subjects/ -->
-							<select multiple size="5" id="subjects_list" name="subjects_list" disabled="disabled">
+							<select multiple size="6" id="subjects_list" name="subjects_list" disabled="disabled" style="width : 130px" >
 
 								
 							</select>
+
 					<input type="hidden" id="subject_ids" name="subject_ids" value=""/>
-				<br/> <br/>
+					<br/> <br/>
 				</div>
+				<div  style="float:right; margin-left: 25px; ">
+						<select multiple size="6" id="subsession_list" name="subsession_list" style="margin-right: 25px; width : 150px">
+
+						</select>	
+				</div>
+
 			</div>
 		</div>
 		<br/>
@@ -92,8 +100,26 @@ $page.setVlinkColor($ui.vlink)
 
 		</div>
 
+<!--
+		<div class="container"  id="divInfoPipeline" style="display=none;">
+			<div class="withColor containerTitle">Information about selected pipeline </div>
+			<label class="access-label" title="All subjects in the project"> </label>
+			
+			<div class="containerItem">
+				<label > <b>  </b></label>
+				<br>
+				<input type="text" id="id123" name="">
+				<br/><br/>
+				<input type="text" id="id456" name="" >
+				<br/><br/>
+			</div>
+			
+			<br/><br/>
+		</div>
+
+-->
 		<br/><br/><br/>
-			<div class="container">
+		<div class="container">
 			<div class="withColor containerTitle">Step 3 : Enter the parameters : </div>
 			<label class="access-label" title="All subjects in the project"> </label>
 			
@@ -140,56 +166,154 @@ $page.setVlinkColor($ui.vlink)
 
 $(function() {
 
-$('#btnGetPiplines').on("click" , function(e) {
+	$('#btnGetPiplines').on("click" , function(e) {
 
-	//get url
-	let _urlGetPiplines = document.getElementById("btnGetPiplines").getAttribute("data");
-		alert(_urlGetPiplines);
+		//get url
+		let _urlGetPiplines = document.getElementById("btnGetPiplines").getAttribute("data");
+			alert(_urlGetPiplines);
 
-		let idCluster = $('#idNiolon').val();
-		let password = $('#password').val();
+			let idCluster = $('#idNiolon').val();
+			//let password = $('#password').val();
+			let password = "*******";
+			let btnStartPipline = $('#btnStartPipline').disabled; 
 
-		let btnStartPipline = $('#btnStartPipline').disabled; 
+			//let subject_ids = $('#subject_ids').val();
+			//let subject_ids = "XNAT_INT_S00031";
+			let subject_ids = $('#subjects_list').val();
+			subject_ids = subject_ids.toString();
+				if (subject_ids == "" && $('#all_subjects').attr("checked", "checked")){
 
-		//let subject_ids = $('#subject_ids').val();
-		//let subject_ids = "XNAT_INT_S00031";
-		  let subject_ids = $('#subjects_list').val();
- 		  subject_ids = subject_ids.toString();
-			  if (subject_ids == "" && $('#all_subjects').attr("checked", "checked")){
+				subject_ids = "all";
+				}
+			console.log("  tu as choisis les sujet : "+subject_ids);
 
-		  	  subject_ids = "all";
-			  }
-		console.log("  tu as choisis les sujet : "+subject_ids);
+			let selectOptionsPipeline = "";
 
-		let selectOptionsPipeline = "";
+			$.ajax({
+				url: _urlGetPiplines,
+				data: {"idCluster":idCluster, "password":password, "subject_ids":subject_ids},
+				method:'POST',
+				success: function(data) {
+					if(data != null){
+					
+						var $select = $("#monselectPipeLine");                           // Locate HTML DOM element with ID "someselect".
+						$select.find("option").remove();                          // Find all child elements with tag name "option" and remove them (just to prevent duplicate options when button is pressed again).
+						$.each(data, function(key, value) {               // Iterate over the JSON object.
+							$("<option>").val(key).text(value).appendTo($select); // Create HTML <option> element, set its value with currently iterated key and its text content with currently iterated item and finally append it to the <select>.
 
+						});
+
+
+					}
+					// Activer le bouton start computation
+					//$('#btnStartPipline').disabled =true;
+					alert("Tres bien envoyer")
+
+					
+				}
+			});
+	})
+
+
+});
+
+/* Cette fonction permet d'initialiser les params par défaut pour toute pipeline */
+
+$(function (){
+
+	$('#monselectPipeLine').on('change', function() {
+
+
+
+		//alert( $(this).find(":selected").val());
+		/*
+		let id456 = $('#id456') ;
+
+		id456.html( $(this).find(":selected").val());
+
+		let d1 = document.getElementById("divInfoPipeline");
+
+		if(getComputedStyle(d1).display != "none"){
+   			d1.style.display = "none";
+  		} else {
+    		d1.style.display = "block";
+  		}
+		  */
+
+		 
+		$('#nameExportDir').val("/hpc/shared");
+		$('#nameSlurmJob').val($(this).find(":selected").val());
+
+	
+	});
+
+});
+
+// Cette fonction permet de récupérer les sessions qui corréspond à  un sujet 
+$(function (){
+
+	let _url = "/xapi/int-run-pipline/get-sessions/$project";
+	let selectedSubject = "";
+
+	$('#subjects_list').change(function() {
+
+	selectedSubject = $('option:selected', $(this)).text();
+
+	console.log(selectedSubject)
+
+	console.log(_url);
+
+	
 		$.ajax({
-			url: _urlGetPiplines,
-			data: {"idCluster":idCluster, "password":password, "subject_ids":subject_ids},
+			url: _url,
 			method:'POST',
+			data: {"selectedSubject":selectedSubject},
 			success: function(data) {
-				if(data != null){
 				
-					var $select = $("#monselectPipeLine");                           // Locate HTML DOM element with ID "someselect".
+				if(data != null){
+
+
+
+					const sortObject = obj => Object.keys(obj).sort().reduce((res, key) => (res[key] = obj[key], res), {});
+
+					data = sortObject(data);
+					//data = data.sort()
+					console.log(data)
+					var $select = $("#subsession_list");                           // Locate HTML DOM element with ID "someselect".
 					$select.find("option").remove();                          // Find all child elements with tag name "option" and remove them (just to prevent duplicate options when button is pressed again).
 					$.each(data, function(key, value) {               // Iterate over the JSON object.
 						$("<option>").val(key).text(value).appendTo($select); // Create HTML <option> element, set its value with currently iterated key and its text content with currently iterated item and finally append it to the <select>.
 
 					});
 
-
 				}
-				// Activer le bouton start computation
-				//$('#btnStartPipline').disabled =true;
-				alert("Tres bien envoyer")
-
+				
+					console.log("Tres bien envoyer")
+		
 				
 			}
 		});
-})
 
+			
+
+
+
+	});
+
+			/*
+			$(function() {
+			// choose target dropdown
+			var select = $('#subsession_list');
+			select.html(select.find('option').sort(function(x, y) {
+				// to change to descending order switch "<" for ">"
+				return $(x).text() > $(y).text() ? 1 : -1;
+			}));
+			*/
+		
 
 });
+
+
 
 
 
