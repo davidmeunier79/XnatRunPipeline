@@ -128,11 +128,11 @@ $page.setVlinkColor($ui.vlink)
 				<div id="teamListenames">
 				
 				<label>
-					<input type="checkbox" class="radio" value="1" name="fooby[1][]" />crise</label>
+					<input type="checkbox" class="radio" value="crise" name="fooby[team][]" />crise</label>
 				<label>
-					<input type="checkbox" class="radio" value="1" name="fooby[1][]" />banco</label>
+					<input type="checkbox" class="radio" value="banco" name="fooby[team][]" />banco</label>
 				<label>
-					<input type="checkbox" class="radio" value="1" name="fooby[1][]" />meca</label>
+					<input type="checkbox" class="radio" value="meca" name="fooby[team][]" />meca</label>
 				</div>
 
 				<br/>
@@ -329,8 +329,12 @@ $(function (){
 	let _url = "/xapi/int-run-pipline/get-team-names";
 	console.log(_url);
 
+
+
+
+
 	
-		$.ajax({
+	$.ajax({
 			url: _url,
 			method:'POST',
 			global: true,
@@ -345,24 +349,64 @@ $(function (){
 				$("#teamListenames").html("");
 
 				$.each(data, function(i) {
-    				$("#teamListenames").append("<label>   <input type='checkbox' class='radio' value=" + data[i] + " name='fooby["+data[i]+"][]'/> <b>"  + data[i] +
+    				$("#teamListenames").append("<label>   <input type='checkbox' class='radio' value=" + data[i] + " name='team'/> <b>"  + data[i] +
 												 " <b> </label>");
-  					});
-				}
-				
+  				});
+
+
+
+				$("input:checkbox").on('click', function() {
+					// in the handler, 'this' refers to the box clicked on
+					let $box = $(this);
+					if ($box.is(":checked")) {
+						// the name of the box is retrieved using the .attr() method
+						// as it is assumed and expected to be immutable
+						let group = "input:checkbox[name='" + $box.attr("name") + "']";
+						// the checked state of the group/box on the other hand will change
+						// and the current value is retrieved using .prop() method
+						$(group).prop("checked", false);
+						$box.prop("checked", true);
+					} else {
+						$box.prop("checked", false);
+					}
+					console.log($(this).attr("value"))
+
+				});
+
 
 			}
-		});
+				
 
-		
-
-
-		
-
+		}
+	});		
+	
 });
 
 
 
+$(function () {
+
+	//Celle la ne marche pas comme il faut!
+
+							/*
+							$("input:checkbox").click(function() {
+								if ($(this).is(":checked") === true) {
+									var group = "input:checkbox[name='" + $(this).attr("name") + "']";
+									$(group).attr("checked", false);
+									$(this).attr("checked", true);
+								} else {
+									$(this).is(":checked", false);
+								}
+								
+								console.log($(this).attr("value"))
+							});
+
+	*/
+
+
+
+
+});
 
 
 
