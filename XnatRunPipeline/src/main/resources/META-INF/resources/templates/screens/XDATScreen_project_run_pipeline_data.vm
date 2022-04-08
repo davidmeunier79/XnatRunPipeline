@@ -124,16 +124,27 @@ $page.setVlinkColor($ui.vlink)
 			<label class="access-label" title="All subjects in the project"> </label>
 			
 			<div class="containerItem">
-				<label > <b> Name of Slurm Job (optional) </b></label>
-				<br>
-				<input type="text" id="nameSlurmJob" name="nameSlurmJob">
+				<h3>Choose the name of your team</h3>
+				<div id="teamListenames">
+				
+				<label>
+					<input type="checkbox" class="radio" value="1" name="fooby[1][]" />crise</label>
+				<label>
+					<input type="checkbox" class="radio" value="1" name="fooby[1][]" />banco</label>
+				<label>
+					<input type="checkbox" class="radio" value="1" name="fooby[1][]" />meca</label>
+				</div>
+
+				<br/>
+				<label > <h3> Name of Slurm Job (optional) </h3></label>
+				<input type="text" id="nameSlurmJob" name="nameSlurmJob" >
 				<br/><br/>
-				<label > <b> Additional parameters </b></label>
-				<br>
+
+				<label > <h3> Additional parameters </h3></label>
 				<input type="text" id="additionalParams" name="additionalParams">
 				<br/><br/>
-				<label > <b> Name Export Dir ( E.G :  /hpc/team/name.f/pipelineOutput) </b></label>
-				<br>
+
+				<label > <h3> Name Export Dir ( E.G :  /hpc/team/name.f/pipelineOutput) </h3></label>
 				<input type="text" id="nameExportDir" name="nameExportDir" required>
 				<br/><br/>
 				<button class="btn1" id="btnStartPipline" data="$content.getURI("/xapi/int-run-pipline/start-pipeline/$project")" > start computation </button>
@@ -273,7 +284,7 @@ $(function (){
 				if(data != null){
 
 
-
+					// To sort data
 					const sortObject = obj => Object.keys(obj).sort().reduce((res, key) => (res[key] = obj[key], res), {});
 
 					data = sortObject(data);
@@ -288,7 +299,7 @@ $(function (){
 
 				}
 				
-					console.log("Tres bien envoyer")
+				console.log("Tres bien reçu")
 		
 				
 			}
@@ -304,6 +315,61 @@ $(function (){
 		
 
 });
+
+
+
+
+
+
+
+
+// Cette fonction permet de récupérer les noms d'équipes 
+$(function (){
+
+	let _url = "/xapi/int-run-pipline/get-team-names";
+	console.log(_url);
+
+	
+		$.ajax({
+			url: _url,
+			method:'POST',
+			global: true,
+			async: true,
+			success: function(data) {
+				
+				if(data != null){
+
+				console.log("Tres bien reçu les noms des équipes")
+				console.log(data)	
+
+				$("#teamListenames").html("");
+
+				$.each(data, function(i) {
+    				$("#teamListenames").append("<label>   <input type='checkbox' class='radio' value=" + data[i] + " name='fooby["+data[i]+"][]'/> <b>"  + data[i] +
+												 " <b> </label>");
+  					});
+				}
+				
+
+			}
+		});
+
+		
+
+
+		
+
+});
+
+
+
+
+
+
+
+
+
+
 
 
 
@@ -350,7 +416,7 @@ $('#btnStartPipline').on("click" , function(e) {
 					console.log("Aucune data reçu mais l'envoi est bon !! " )
 
 				}
-					console.log("pipeline choisi est : "+selectPipeline )
+					console.log("pipeline choisi est : " +selectPipeline )
 
 					console.log("Tres bien envoyer")
 

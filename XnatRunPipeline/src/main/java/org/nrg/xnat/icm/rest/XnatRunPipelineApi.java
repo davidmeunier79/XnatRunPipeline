@@ -137,7 +137,7 @@ public class XnatRunPipelineApi
 
     // Path to config file xnat
 		
-	private static String config_file_xnat = "/tmp/xnat_config_file_V1.json"; 
+	private static String config_file_xnat = "xnat_config_file_V1.json"; 
 	
 
 
@@ -170,7 +170,7 @@ public class XnatRunPipelineApi
         log("la liste séléctionné est   !! : "+subject_ids);
 
         /* Read config file and initialize  params */ 
-       
+       /*
        try {
 
             readConfigFileJson();
@@ -180,7 +180,7 @@ public class XnatRunPipelineApi
        } catch (Exception e){
 
 
-       }
+       }*/
 
        
 
@@ -686,7 +686,7 @@ public class XnatRunPipelineApi
 
                 listAllsession[i] = fileList[i].getName();
                 // tester si le nom commence par le préfix du sujet
-                if (listAllsession[i].startsWith(selectedSubject))
+                if (listAllsession[i].startsWith(selectedSubject + "_"))
                 {
                     listSessionOfSubject.put(listAllsession[i],listAllsession[i]);
 
@@ -694,8 +694,6 @@ public class XnatRunPipelineApi
                 }
 
             }
-
-
 
         // Préparer le listSessionOfSubject à envoyer en json
 
@@ -714,21 +712,51 @@ public class XnatRunPipelineApi
         out.print(obj);
 
         out.flush();
-
-
-
-       
-
-
-
-
-
-
-
     
     }
 
 
+    /* Cette fonction permet de récuperer les la liste des sessions corréspondant à un sujet */
+    @ApiOperation(value = "Get list of team names", notes = "Custom")
+    @ApiResponses({ @ApiResponse(code = 200, message = "Connection success "), @ApiResponse(code = 401, message = "Must be authenticated to access the XNAT Rest Api"), @ApiResponse(code = 500, message = "Unexpected internal serval error") })
+    @RequestMapping(value = { "/get-team-names" }, produces = { "application/json" }, method = { RequestMethod.POST })
+    @ResponseBody  
+    public void getTeamNames(final HttpServletResponse response)  throws IOException{
+    
+       /* Read config file and initialize  params */ 
+        try {
+
+            readConfigFileJson();
+       
+        } catch (IOException ioe){
+
+        } catch (Exception e){
+
+
+       }
+       
+       
+       
+       
+        JSONArray jsonArray = (JSONArray) jsonObject.get("teamNames");
+
+
+        response.setContentType("application/json");
+        
+        response.setCharacterEncoding("UTF-8");
+        
+
+        log("Les noms des équipes à envoyer sont : " +jsonArray.toString());
+
+        PrintWriter out = response.getWriter();
+
+        out.print(jsonArray);
+
+        out.flush();
+    
+
+
+    }
 
 
 
@@ -737,8 +765,7 @@ public class XnatRunPipelineApi
     	
     	listImages = resultConsole.split("\\r?\\n");
         System.out.println("\n la taille de tableau lines est  : "+listImages.length +"\n");
-         
-    
+            
     	return listImages;
     }
     

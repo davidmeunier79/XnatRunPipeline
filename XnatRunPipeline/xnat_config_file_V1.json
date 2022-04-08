@@ -4,6 +4,8 @@
     "linkAllImgSingularity" : "/hpc/shared/apps/x86_64/softs/singularity_BIDSApps",
     "singulartyRun" : "singularity run -B /hpc:/hpc -B /envau:/envau ",
     "URI_HOST_XNAT" : "--host http://10.164.0.82:8080 ",
+    "teamNames" : ["bagamore","brainets", "comco", "imapath", "invibe", "meca", "neopto",
+      "p3m", "scalp", "banco", "canop", "crise", "inphim", "irmf", "mircos", "nit", "sane"],
 
     "pageInfo": {
           "pageName": "abc",
