@@ -277,7 +277,7 @@ $(function (){
 
 });
 
-// Cette fonction permet de récupérer les sessions qui corréspond à  un sujet 
+// Cette fonction permet de récupérer les sessions qui corréspond à  un ou plusieur sujet(s) 
 $(function (){
 
 	let _url = "/xapi/int-run-pipline/get-sessions/$project";
@@ -293,19 +293,8 @@ $(function (){
 
 	//selectedSubject = $('option:selected', $(this)).text();
 
-	/*
- 	$('option:selected', $(this)).each(function() {
-
-		selectedSubject = selectedSubject + "," + $(this).text();
-	 });
-	*/
-
-
+	// retourne la liste des sujets  selectionnés  
 	selectedSubject = $('option:selected', $(this)).map(function(){ return this.text }).get().join(",");
-
-
-
-
 
 	console.log(selectedSubject)
 
@@ -354,16 +343,11 @@ $(function (){
 
 
 
-
-
 // Cette fonction permet de récupérer les noms d'équipes 
 $(function (){
 
 	let _url = "/xapi/int-run-pipline/get-team-names";
 	console.log(_url);
-
-
-
 
 
 	
@@ -421,90 +405,53 @@ $(function (){
 
 
 
-$(function () {
-
-	//Celle la ne marche pas comme il faut!
-
-							/*
-							$("input:checkbox").click(function() {
-								if ($(this).is(":checked") === true) {
-									var group = "input:checkbox[name='" + $(this).attr("name") + "']";
-									$(group).attr("checked", false);
-									$(this).attr("checked", true);
-								} else {
-									$(this).is(":checked", false);
-								}
-								
-								console.log($(this).attr("value"))
-							});
-
-	*/
-
-
-
-
-});
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+/* Cette fonction permet d'envoyer les paramètres choisies par l'utilisateur pour générer un le fichiers batsh*/
 $(function() {
 
-$('#btnStartPipline').on("click" , function(e) {
+	$('#btnStartPipline').on("click" , function(e) {
 
-	//get url
-	let _urlStarttPiplines = document.getElementById("btnStartPipline").getAttribute("data");
+		//get url
+		let _urlStarttPiplines = document.getElementById("btnStartPipline").getAttribute("data");
 		alert(_urlStarttPiplines);
 
-
+		let _sessions_ids = $('#subsession_list').val().toString();
+		
 		let selectPipeline = $('#monselectPipeLine').val();
 
 		let idCluster = $('#idNiolon').val();
 
 		//let subject_ids = $('#subject_ids').val();
+		let subject_ids = $('#subjects_list').val();
+		let nameExportDir = $('#nameExportDir').val();
+		let additionalParams = $('#additionalParams').val();
 		
-		  let subject_ids = $('#subjects_list').val();
-		  let nameExportDir = $('#nameExportDir').val();
-		  let additionalParams = $('#additionalParams').val();
+		subject_ids = subject_ids.toString();
 
- 		  subject_ids = subject_ids.toString();
-			  if (subject_ids == "" && $('#all_subjects').attr("checked", "checked")){
+			if (subject_ids == "" && $('#all_subjects').attr("checked", "checked")){
 
-		  	  subject_ids = "all";
-			  }
+				subject_ids = "all";
+			}
 
 
 		$.ajax({
 			url: _urlStarttPiplines,
-			data: {"idCluster":idCluster, "selectPipeline":selectPipeline, "subject_ids":subject_ids,"nameExportDir":nameExportDir, "additionalParams":additionalParams},
+			data: {"idCluster":idCluster, "selectPipeline":selectPipeline, "subject_ids":subject_ids,"nameExportDir":nameExportDir,"additionalParams":additionalParams, "sessions_ids":_sessions_ids},
 			method:'POST',
 			success: function(data) {
 				
 				if(data != null){
-				
+					
 					console.log("Aucune data reçu mais l'envoi est bon !! " )
 
 				}
-					console.log("pipeline choisi est : " +selectPipeline )
+				console.log("pipeline choisi est : " +selectPipeline )
 
-					console.log("Tres bien envoyer")
+				console.log("Tres bien envoyer")
 
-				
+					
 			}
 		});
-})
+	})
 
 
 });

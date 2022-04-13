@@ -516,7 +516,7 @@ public class XnatRunPipelineApi
     @RequestMapping(value = { "/start-pipeline/{id_project}" }, produces = { "application/json" }, method = { RequestMethod.POST })
     @ResponseBody
     public void startPipelineInCluster(final HttpServletResponse response, @PathVariable final String id_project, @RequestParam("selectPipeline") final String selectPipeline,  @RequestParam("idCluster") final String idCluster, @RequestParam("subject_ids") final String subject_ids, @RequestParam("nameExportDir") final String nameExportDir, 
-                 @RequestParam("additionalParams") final String additionalParams)  throws IOException{
+                 @RequestParam("additionalParams") final String additionalParams,@RequestParam("sessions_ids") final String sessions_ids)  throws IOException{
 
         final UserI xnatUser = XDAT.getUserDetails();
         final List<String> subjectsList = new LinkedList<String>();
@@ -616,7 +616,7 @@ public class XnatRunPipelineApi
             + "\n" + NAME_OF_SLURM_JOB + " " + idCluster + "_" + selectPipeline
             + "\n" + getOtherParamatersSbatch(selectPipeline)
             + "\n" + LOAD_MODULES 
-            + "\n" + "" + commandeDownloadData(listOfSubjectWithCamasSeparated, id_project, inputAndOutputDirectory, listOfSubjectWithSpaceSeparated)
+            + "\n" + "" + commandeDownloadData(listOfSubjectWithCamasSeparated, id_project, inputAndOutputDirectory, listOfSubjectWithSpaceSeparated, sessions_ids)
             + "\n" + LOAD_IMG_SINGULARITY
             + "\n" + whichCommandSingularity(selectPipeline, inputAndOutputDirectory)
             + "  "  + additionalParams + "\n";
@@ -687,10 +687,9 @@ public class XnatRunPipelineApi
         
         listAllsession = new String[fileList.length];
 
+
         for (String subject : arrayOfselectedSubject) {
-            
-        
-                    
+                                    
             for(int i= 0; i< listAllsession.length; i++){
 
                 listAllsession[i] = fileList[i].getName();
@@ -1348,7 +1347,7 @@ public class XnatRunPipelineApi
     
     }
 
-    public static String  commandeDownloadData(String subjectSelected, String projectName, String dirIputdata, String lisSubjectWithSpaceSeparated){
+    public static String  commandeDownloadData(String subjectSelected, String projectName, String dirIputdata, String lisSubjectWithSpaceSeparated, String sessions_ids){
         
         /* L'uri de XNAT */ 
         URI_HOST_XNAT = (String) jsonObject.get("URI_HOST_XNAT");
@@ -1363,12 +1362,16 @@ public class XnatRunPipelineApi
                 + "\n" + "filenameTxt=" + filenameTxt
                 + "\n" + "filenameCsv=" + filenameCsv
                 + "\n \n" + "mkdir -p " + dirIputdata
-                + "\n" + "Xnatdownload "+ URI_HOST_XNAT + " -p " + projectName + " -d " + dirIputdata + " --subj ";
+                + "\n" + "Xnatdownload "+ URI_HOST_XNAT + " -p " + projectName + " -d " + dirIputdata;
 
-          if(!allOrListSubject.equals("all")){
+          if(!allOrListSubject.equals("all") && (sessions_ids == null)){
 
-            commande += subjectSelected + "  -s all --rs all \n";
+            commande +=   " --subj " + subjectSelected + "  -s all --rs all \n";
 
+          }else if(!allOrListSubject.equals("all") && !(sessions_ids == null)){
+
+            commande += " --sess " + sessions_ids + " -s all --rs all";
+            
           }else {
               
             commande += " all -s all --rs all \n";
@@ -1386,7 +1389,7 @@ public class XnatRunPipelineApi
                     + "\n" +  "fi"
                     + "\n" +  "\n" + "\n" + "\n"
                     + "\n" +  "dirDataInBIDS=\"" + dirDataInBIDS + "\"\n"
-                    + "\n" +  "python /envau/work/nit/xnat-cluster/xnat2bids_reconstruct_afterDownload.py " 
+                    + "\n" +  "python /envau/work/nit/xnat-cluster/xnat2bids/xnat2bids_reconstruct_afterDownload.py " 
                     + dirIputdata + "/" + projectName + " " + "$dirDataInBIDS" +  " " + lisSubjectWithSpaceSeparated +"\n";
                     
             
