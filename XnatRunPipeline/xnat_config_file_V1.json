@@ -1,5 +1,5 @@
 
- {
+{
     "outputDirectory" : "/hpc/shared",
     "linkAllImgSingularity" : "/hpc/shared/apps/x86_64/softs/singularity_BIDSApps",
     "singulartyRun" : "singularity run -B /hpc:/hpc -B /envau:/envau ",
@@ -94,5 +94,5 @@
          "basicParameters" : "" 
          
     }
- }
+}
 

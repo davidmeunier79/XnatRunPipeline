@@ -524,12 +524,13 @@ public class XnatRunPipelineApi
         String listOfSubjectWithCamasSeparated = "";
         String SCRIPT_SBATCH_GLOBAL = "";
         String pipeLineSelected = "";
+        String inputAndOutputDirectory = "";
         allOrListSubject = subject_ids ;
         ID_PROJECT =  id_project;
 
         ID_CLUSTER = idCluster ;
 
-
+        
 
         log("** Start  pipeline **\n");
         
@@ -537,7 +538,7 @@ public class XnatRunPipelineApi
 
         log(" vous avez selectionné le pojet ou sujets :  : [" + subject_ids + "]");
 
-        log("le export path param   est : " +nameExportDir );
+        log("le export path param   est : " + nameExportDir );
 
         
             
@@ -600,6 +601,9 @@ public class XnatRunPipelineApi
         } else {
             ADDITIONAL_PARAMS = "\n";
         }
+
+        inputAndOutputDirectory = nameExportDir + "/data-xnat/" + idCluster + selectPipeline + "_" + id_project + "_" + datTimeNow;
+
         
         SCRIPT_SBATCH_GLOBAL = SCRIPT_SBATCH_GLOBAL 
             + SCRIPT_SBATCH  
@@ -612,14 +616,14 @@ public class XnatRunPipelineApi
             + "\n" + NAME_OF_SLURM_JOB + " " + idCluster + "_" + selectPipeline
             + "\n" + getOtherParamatersSbatch(selectPipeline)
             + "\n" + LOAD_MODULES 
-            + "\n" + "" + commandeDownloadData(listOfSubjectWithCamasSeparated, id_project, nameExportDir, listOfSubjectWithSpaceSeparated)
+            + "\n" + "" + commandeDownloadData(listOfSubjectWithCamasSeparated, id_project, inputAndOutputDirectory, listOfSubjectWithSpaceSeparated)
             + "\n" + LOAD_IMG_SINGULARITY
-            + "\n" + whichCommandSingularity(selectPipeline, nameExportDir)
+            + "\n" + whichCommandSingularity(selectPipeline, inputAndOutputDirectory)
             + "  "  + additionalParams + "\n";
             
             log(SCRIPT_SBATCH_GLOBAL);
 
-        
+                
 
         final String namFileGenerated = generateFIleScripte(SCRIPT_SBATCH_GLOBAL, selectPipeline, idCluster);
 
@@ -669,10 +673,13 @@ public class XnatRunPipelineApi
         final List<String> subjectsList = new LinkedList<String>();
         Map<String, String> listSessionOfSubject  = new HashMap<>();
         String [] listAllsession = null; // mettre toute les sessions d'un projet 
+
+        String[] arrayOfselectedSubject = selectedSubject.split(",");
+
         
         String dirName = "/data/xnat/archive/" + id_project + "/arc001";
 
-        log("Vous avez choisi  [ " + id_project + "] et sujet : [ " + selectedSubject + "]");
+        log("Vous avez choisi  [ " + id_project + " ] et sujet(s) : [ " + selectedSubject + " ]");
         
         File fileName = new File(dirName);
         
@@ -680,13 +687,15 @@ public class XnatRunPipelineApi
         
         listAllsession = new String[fileList.length];
 
-
+        for (String subject : arrayOfselectedSubject) {
+            
+        
                     
             for(int i= 0; i< listAllsession.length; i++){
 
                 listAllsession[i] = fileList[i].getName();
                 // tester si le nom commence par le préfix du sujet
-                if (listAllsession[i].startsWith(selectedSubject + "_"))
+                if (listAllsession[i].startsWith(subject + "_"))
                 {
                     listSessionOfSubject.put(listAllsession[i],listAllsession[i]);
 
@@ -694,6 +703,8 @@ public class XnatRunPipelineApi
                 }
 
             }
+        }
+        
 
         // Préparer le listSessionOfSubject à envoyer en json
 
@@ -732,14 +743,9 @@ public class XnatRunPipelineApi
 
         } catch (Exception e){
 
-
        }
        
-       
-       
-       
         JSONArray jsonArray = (JSONArray) jsonObject.get("teamNames");
-
 
         response.setContentType("application/json");
         
@@ -1175,7 +1181,7 @@ public class XnatRunPipelineApi
       //f.setExecutable(true);
       
       System.out.println(f.exists());
-      log("le fichier a été créer ! ");
+      log("Le fichier a été créer ! ");
 
       if(!f.getParentFile().exists()) {
           f.getParentFile().mkdirs();
