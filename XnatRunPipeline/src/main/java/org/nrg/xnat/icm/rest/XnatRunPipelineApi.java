@@ -262,7 +262,7 @@ public class XnatRunPipelineApi
             /*
             doConnectionCluster(passwordniolon);
             */
-
+/*
             String linkImgeSingularity = (String) jsonObject.get("linkAllImgSingularity");
             String dirName = "/hpc/shared/apps/x86_64/softs/singularity_BIDSApps";
             
@@ -272,8 +272,6 @@ public class XnatRunPipelineApi
             
             listImages = new String[fileList.length];
 
-
-            
             for(int i= 0; i< listImages.length; i++){
 
                 listImages[i] = fileList[i].getName();
@@ -284,8 +282,54 @@ public class XnatRunPipelineApi
 
             }
 
+            response.setContentType("application/json");
+        
+            response.setCharacterEncoding("UTF-8");
+            
+            JSONObject obj = new JSONObject();
+    
+            obj.putAll(_listPipelines);
+            
+            log(obj.toString());
+    
+            PrintWriter out = response.getWriter();
+    
+            out.print(obj);
+    
+            out.flush();
+*/
 
-                /*         }catch (InterruptedException e) { 
+
+            JSONArray jsonArray = (JSONArray) jsonObject.get("listPipelines");
+
+            listImages = new String[jsonArray.size()];
+
+            for (Object team : jsonArray) {
+                
+                _listPipelines.put(team.toString(), team.toString());
+
+                log("  " + team.toString() + " :  " + team.toString());
+            }
+
+            response.setContentType("application/json");
+        
+            response.setCharacterEncoding("UTF-8");
+            
+            JSONObject obj = new JSONObject();
+    
+            obj.putAll(_listPipelines);
+            
+            log(obj.toString());
+    
+            PrintWriter out = response.getWriter();
+    
+            out.print(obj);
+    
+            out.flush();
+
+
+            /*        
+            }catch (InterruptedException e) { 
                 e.printStackTrace();
                     
             }catch (JSchException  jshe){
@@ -312,21 +356,6 @@ public class XnatRunPipelineApi
             
             */
 
-        response.setContentType("application/json");
-        
-        response.setCharacterEncoding("UTF-8");
-        
-        JSONObject obj = new JSONObject();
-
-        obj.putAll(_listPipelines);
-        
-        log(obj.toString());
-
-        PrintWriter out = response.getWriter();
-
-        out.print(obj);
-
-        out.flush();
         
         
 
@@ -632,7 +661,7 @@ public class XnatRunPipelineApi
 
         // To send file to the cluster
 
-        /*
+        
         try{
 
            sendFileToCluster(passwordniolon,namFileGenerated);
@@ -651,7 +680,7 @@ public class XnatRunPipelineApi
         }catch (SftpException sftpe){
             
         } 
-        */
+        
         
         log("done !");
         
@@ -742,7 +771,7 @@ public class XnatRunPipelineApi
 
         } catch (Exception e){
 
-       }
+        }
        
         JSONArray jsonArray = (JSONArray) jsonObject.get("teamNames");
 
@@ -1364,11 +1393,11 @@ public class XnatRunPipelineApi
                 + "\n \n" + "mkdir -p " + dirIputdata
                 + "\n" + "Xnatdownload "+ URI_HOST_XNAT + " -p " + projectName + " -d " + dirIputdata;
 
-          if(!allOrListSubject.equals("all") && (sessions_ids == null)){
+          if(!allOrListSubject.equals("all") && (sessions_ids.equals(""))){
 
             commande +=   " --subj " + subjectSelected + "  -s all --rs all \n";
 
-          }else if(!allOrListSubject.equals("all") && !(sessions_ids == null)){
+          } else if(!allOrListSubject.equals("all") && !(sessions_ids.equals(""))){
 
             commande += " --sess " + sessions_ids + " -s all --rs all";
             
@@ -1390,7 +1419,9 @@ public class XnatRunPipelineApi
                     + "\n" +  "\n" + "\n" + "\n"
                     + "\n" +  "dirDataInBIDS=\"" + dirDataInBIDS + "\"\n"
                     + "\n" +  "python /envau/work/nit/xnat-cluster/xnat2bids/xnat2bids_reconstruct_afterDownload.py " 
-                    + dirIputdata + "/" + projectName + " " + "$dirDataInBIDS" +  " " + lisSubjectWithSpaceSeparated +"\n";
+                    + dirIputdata + "/" + projectName + " " + "$dirDataInBIDS" 
+                    + "\n";
+                    //+  " " + lisSubjectWithSpaceSeparated +"\n";
                     
             
           commande += "\nsource deactivate \n\n"; 

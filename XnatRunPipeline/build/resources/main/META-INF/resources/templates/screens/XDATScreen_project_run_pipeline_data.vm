@@ -319,7 +319,7 @@ $(function (){
 					var $select = $("#subsession_list");                           // Locate HTML DOM element with ID "someselect".
 					$select.find("option").remove();                          // Find all child elements with tag name "option" and remove them (just to prevent duplicate options when button is pressed again).
 					$.each(data, function(key, value) {               // Iterate over the JSON object.
-						$("<option>").val(key).text(value).appendTo($select); // Create HTML <option> element, set its value with currently iterated key and its text content with currently iterated item and finally append it to the <select>.
+						$("<option selected>").val(key).text(value).appendTo($select); // Create HTML <option> element, set its value with currently iterated key and its text content with currently iterated item and finally append it to the <select>.
 
 					});
 
@@ -331,10 +331,7 @@ $(function (){
 		});
 
 
-	});
-
-
-		
+	});		
 
 });
 
