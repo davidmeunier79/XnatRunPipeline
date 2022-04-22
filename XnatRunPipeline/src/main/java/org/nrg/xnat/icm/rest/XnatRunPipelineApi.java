@@ -262,42 +262,8 @@ public class XnatRunPipelineApi
             /*
             doConnectionCluster(passwordniolon);
             */
-/*
+
             String linkImgeSingularity = (String) jsonObject.get("linkAllImgSingularity");
-            String dirName = "/hpc/shared/apps/x86_64/softs/singularity_BIDSApps";
-            
-            File fileName = new File(linkImgeSingularity);
-            
-            File[] fileList = fileName.listFiles();
-            
-            listImages = new String[fileList.length];
-
-            for(int i= 0; i< listImages.length; i++){
-
-                listImages[i] = fileList[i].getName();
-
-                _listPipelines.put(listImages[i],listImages[i]);
-
-                log("  "+listImages[i]+" :    "+listImages[i]);
-
-            }
-
-            response.setContentType("application/json");
-        
-            response.setCharacterEncoding("UTF-8");
-            
-            JSONObject obj = new JSONObject();
-    
-            obj.putAll(_listPipelines);
-            
-            log(obj.toString());
-    
-            PrintWriter out = response.getWriter();
-    
-            out.print(obj);
-    
-            out.flush();
-*/
 
 
             JSONArray jsonArray = (JSONArray) jsonObject.get("listPipelines");
@@ -340,23 +306,6 @@ public class XnatRunPipelineApi
 
             } */
 
-            /*
-
-            _listPipelines.put(cle1,valeur1);
-        
-            _listPipelines.put(cle2,valeur2);
-
-            _listPipelines.put(cle3,valeur3);
-            
-            _listPipelines.put(cle4,valeur4);
-            
-            _listPipelines.put(cle5,valeur5);
-            
-            _listPipelines.put(cle6,valeur6);
-            
-            */
-
-        
         
 
         log( "\n La date de maintenant est : "+getDateTimeNow() + "    \n\n");
@@ -680,12 +629,9 @@ public class XnatRunPipelineApi
         }catch (SftpException sftpe){
             
         } 
-        
-        
+                
         log("done !");
         
-        
-
     }
 
 
@@ -709,6 +655,9 @@ public class XnatRunPipelineApi
         String dirName = "/data/xnat/archive/" + id_project + "/arc001";
 
         log("Vous avez choisi  [ " + id_project + " ] et sujet(s) : [ " + selectedSubject + " ]");
+
+        
+        
         
         File fileName = new File(dirName);
         
@@ -727,7 +676,7 @@ public class XnatRunPipelineApi
                 {
                     listSessionOfSubject.put(listAllsession[i],listAllsession[i]);
 
-                    log("  "+listAllsession[i]+" :    "+listAllsession[i]);
+                    log(" " + listAllsession[i] + " : " + listAllsession[i]);
                 }
 
             }
@@ -761,6 +710,11 @@ public class XnatRunPipelineApi
     @RequestMapping(value = { "/get-team-names" }, produces = { "application/json" }, method = { RequestMethod.POST })
     @ResponseBody  
     public void getTeamNames(final HttpServletResponse response)  throws IOException{
+
+        final UserI xnatUser = XDAT.getUserDetails();
+        final String userName = xnatUser.getUsername().replace("_", ".");
+        String ligne = "";
+        System.out.println(" Votre id xnat est : " + userName);
     
        /* Read config file and initialize  params */ 
         try {
@@ -774,6 +728,76 @@ public class XnatRunPipelineApi
         }
        
         JSONArray jsonArray = (JSONArray) jsonObject.get("teamNames");
+     
+        
+
+
+        try {
+
+            final String program = "groups";
+            //final String programName = userName ;
+/*             final String option0 = "|";
+            final String option1 = "cut";
+            final String option2 = "-d";
+            final String option3 = ":";
+            final String option4 = "-f2"; */
+            final List<String> cmd = new ArrayList<String>();
+            cmd.add(program);
+            cmd.add(userName);
+ /*            cmd.add(option0);
+            cmd.add(option1);
+            cmd.add(option2);
+            cmd.add(option3);
+            cmd.add(option4);  */   
+            log(cmd.toString());
+
+            final ProcessBuilder pb = new ProcessBuilder(cmd);
+            final Process p = pb.start();
+            final InputStreamReader isr = new InputStreamReader(p.getInputStream());
+            final BufferedReader br = new BufferedReader(isr);
+            ligne = br.readLine();
+            
+            /* String ligne = "";
+            while ((ligne = br.readLine()) != null) {
+                log(ligne);
+            } */
+            System.out.println("les groupes de " + userName + " sont  : " + ligne);
+        }
+        catch (Exception e) {
+            log(e.toString());
+        }
+
+        String []  tabTeamUser = ligne.split(" ");
+        String [] array = new String[jsonArray.size()] ;
+        int i=0;
+        for (Object ele : jsonArray){
+            array[i] = ele.toString();
+            i++;
+        }
+
+        HashSet<String> set = new HashSet<>(); 
+     
+        set.addAll(Arrays.asList(tabTeamUser));
+         
+        set.retainAll(Arrays.asList(array));
+         
+        System.out.println(set);
+         
+        //convert to array
+        String[] intersection = {};
+        intersection = set.toArray(intersection);
+         
+        System.out.println(Arrays.toString(intersection));
+
+
+
+
+
+
+
+
+
+
 
         response.setContentType("application/json");
         
@@ -787,11 +811,8 @@ public class XnatRunPipelineApi
         out.print(jsonArray);
 
         out.flush();
-    
-
 
     }
-
 
 
     /* la méthode qui permet de  recupere le contenu la liste des images singularity sur niolon */
@@ -944,14 +965,14 @@ public class XnatRunPipelineApi
         try {
                 final String program = "sudo";
                 final String programName = "/opt/bin/xnat-rpd.sh" ;
-                final String inputDir = "-u";
+                final String option0 = "-u";
                 final String option1 = ID_CLUSTER;
                 final String option2 = "-f";
                 final String option3 = localFile;
                 final List<String> cmd = new ArrayList<String>();
                 cmd.add(program);
                 cmd.add(programName);
-                cmd.add(inputDir);
+                cmd.add(option0);
                 cmd.add(option1);
                 cmd.add(option2);
                 cmd.add(option3);    
