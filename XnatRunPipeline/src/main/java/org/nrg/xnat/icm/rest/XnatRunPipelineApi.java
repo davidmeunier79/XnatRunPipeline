@@ -789,14 +789,16 @@ public class XnatRunPipelineApi
          
         System.out.println(Arrays.toString(intersection));
 
+        final Map<String, String> listTeam  = new HashMap<>();
+        // Stockage des teams dans une HashMap
+        for (String el : intersection) {
+            listTeam.put(el, el);
+        }
 
 
+        JSONObject js = new JSONObject();
 
-
-
-
-
-
+        js.putAll(listTeam);
 
 
         response.setContentType("application/json");
@@ -808,7 +810,7 @@ public class XnatRunPipelineApi
 
         PrintWriter out = response.getWriter();
 
-        out.print(jsonArray);
+        out.print( js);
 
         out.flush();
 
