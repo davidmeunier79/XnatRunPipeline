@@ -141,7 +141,7 @@
       "bids_validator_v1.8.1-dev.0.sif" : {
             "name" : "bids_validator_v1.8.1-dev.0.sif",
             "linkDoc":"https://github.com/bids-standard/bids-validator",
-            "singularityCleanEnv" : "",
+            "singularityCleanEnv" : "--cleanenv ",
             "inputDataBids" : "data ",
             "output" : "" ,
             "path_licence" : "",

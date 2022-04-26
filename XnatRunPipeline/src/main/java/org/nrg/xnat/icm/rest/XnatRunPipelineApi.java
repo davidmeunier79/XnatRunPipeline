@@ -682,7 +682,9 @@ public class XnatRunPipelineApi
 
 
         /* Préparation de la commande */
-        commande  = commande  + " "  + singulartyRun 
+        if(!selectPipeline.contains("bids_validator")){
+
+        commande  = commande + singulartyRun 
                     + singularityCleanEnv 
                     + " " + "-B " + dirData + ":/" +  inputDataBids
                     + " " + "-B " + inputAndOutputDirectory + ":/" + output
@@ -696,24 +698,21 @@ public class XnatRunPipelineApi
                     + " " + work_dir_params 
                     + " " + commande_after 
                     + " " + basicParameters;
+        } else {
 
+            commande  = commande + singulartyRun 
+                    + singularityCleanEnv 
+                    + " " + "-B " + dirData + ":/" +  inputDataBids
+                    + " " + linkImgeSingularity + "/" + name
+                    + " " + data_key + " " + "/" +  inputDataBids;
+        }    
 
                     /*if(!selectPipeline.contains("bids_validator")){
 
                         commande = commande + "";
 
                     }*/
-                    
-
-
         
-
-
-
-
-        
-
-
         return commande;
     }
 
