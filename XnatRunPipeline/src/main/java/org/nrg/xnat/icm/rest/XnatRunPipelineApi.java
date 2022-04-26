@@ -565,6 +565,23 @@ public class XnatRunPipelineApi
 
         log("Le pipeline Choisi est : " + selectPipeline + "");
 
+        /*- Tester si le fichier de config n'est pas encore lu -*/
+        if(jsonObject.equals(null)){
+
+            /* Lire le fichier et initialisation des params */ 
+            try {
+
+                readConfigFileJson();
+        
+            } catch (IOException ioe){
+                ioe.printStackTrace();
+
+            } catch (Exception e){
+                e.printStackTrace();
+
+            }
+        }
+
         pipeLineSelected = (String) ((JSONObject) getJsonObjectByKey(jsonObject,selectPipeline)).get("name");
 
         log("Vous avez choisi le pipeline : " +pipeLineSelected + "\n");
@@ -589,8 +606,8 @@ public class XnatRunPipelineApi
             + NUMBER_OF_NODES
             + CHANGE_WORKING_DIRECTORY
             + GET_USER_ENV
-            + STANDARD_OUTPUT_FILE + "/home/"+ idCluster  + "/xnat-batch-scripts/"+ selectPipeline + "_" + id_project + "_" + datTimeNow + ".out"
-            + "\n" + STANDARD_ERROR_FILE + "/home/"+ idCluster  + "/xnat-batch-scripts/"+  selectPipeline + "_" + id_project + "_" + datTimeNow + ".err"
+            + STANDARD_OUTPUT_FILE + "/home/"+ idCluster  + "/" /* "/xnat-batch-scripts/" */ + selectPipeline + "_" + id_project + "_" + datTimeNow + ".out"
+            + "\n" + STANDARD_ERROR_FILE + "/home/"+ idCluster  + "/" /* "/xnat-batch-scripts/" */ +  selectPipeline + "_" + id_project + "_" + datTimeNow + ".err"
             + "\n" + NAME_OF_SLURM_JOB + " " + idCluster + "_" + selectPipeline
             + "\n" + getOtherParamatersSbatch(selectPipeline)
             + "\n" + LOAD_MODULES 
@@ -599,21 +616,21 @@ public class XnatRunPipelineApi
             + "\n" + whichCommandSingularity(selectPipeline, inputAndOutputDirectory)
             + "  "  + additionalParams + "\n";
             
-            log(SCRIPT_SBATCH_GLOBAL);
-
-                
+            log(SCRIPT_SBATCH_GLOBAL);        
 
         final String namFileGenerated = generateFIleScripte(SCRIPT_SBATCH_GLOBAL, selectPipeline, idCluster);
 
-        log( "Le fichier a envoyer est  " + namFileGenerated );
+        log( "Le fichier à envoyer est  " + namFileGenerated );
         
 
+        log("\nLa commade généer avec la nouvele fonction est : ");
+        log(prepareCommandSingularity(selectPipeline,inputAndOutputDirectory,id_project));
         // To send file to the cluster
 
-        
+        /*
         try{
 
-           sendFileToCluster(passwordniolon,namFileGenerated);
+           sendFileToCluster(passwordniolon,namFileGenerated, idCluster);
            log("\nLe fichier a été envoyer avec succé");
 
         }catch (InterruptedException e) { 
@@ -622,17 +639,85 @@ public class XnatRunPipelineApi
                 
         }catch (JSchException  jshe){
 
+            jshe.printStackTrace();
 
         }catch (IOException ioe){
 
+            ioe.printStackTrace();
 
         }catch (SftpException sftpe){
-            
-        } 
+            sftpe.printStackTrace();
+        } */
                 
         log("done !");
+
+
+
         
     }
+
+
+    public String prepareCommandSingularity(String selectPipeline, String inputAndOutputDirectory, String id_project){
+
+        /* Le répértoire où sont les données en BIDS */
+        String dirData = inputAndOutputDirectory + "/" + id_project + "BIDS";
+
+        String singulartyRun = (String) jsonObject.get("singulartyRun");
+        String linkImgeSingularity = (String) jsonObject.get("linkAllImgSingularity");
+        String name =  (String) ((JSONObject) getJsonObjectByKey(jsonObject,selectPipeline)).get("name");
+        String singularityCleanEnv = (String) ((JSONObject) getJsonObjectByKey(jsonObject,selectPipeline)).get("singularityCleanEnv");
+        String inputDataBids = (String) ((JSONObject) getJsonObjectByKey(jsonObject,selectPipeline)).get("inputDataBids");
+        String output = (String) ((JSONObject) getJsonObjectByKey(jsonObject,selectPipeline)).get("output");
+        String path_licence =  (String) ((JSONObject) getJsonObjectByKey(jsonObject,selectPipeline)).get("path_licence");
+        String licence_Params = (String) ((JSONObject) getJsonObjectByKey(jsonObject,selectPipeline)).get("licence_Params");
+        String output_key = (String) ((JSONObject) getJsonObjectByKey(jsonObject,selectPipeline)).get("output_key");
+        String data_key = (String) ((JSONObject) getJsonObjectByKey(jsonObject,selectPipeline)).get("data_key");
+        String commande_befor = (String) ((JSONObject) getJsonObjectByKey(jsonObject,selectPipeline)).get("commande_befor");
+        String commande_after = (String) ((JSONObject) getJsonObjectByKey(jsonObject,selectPipeline)).get("commande_after");
+        String commande_participant = (String) ((JSONObject) getJsonObjectByKey(jsonObject,selectPipeline)).get("commande_participant");
+        String work_dir_params = (String) ((JSONObject) getJsonObjectByKey(jsonObject,selectPipeline)).get("work_dir_params");
+        String basicParameters = (String) ((JSONObject) getJsonObjectByKey(jsonObject,selectPipeline)).get("basicParameters");
+
+        String commande = "";
+
+
+        /* Préparation de la commande */
+        commande  = commande  + " "  + singulartyRun 
+                    + singularityCleanEnv 
+                    + " " + "-B " + dirData + ":/" +  inputDataBids
+                    + " " + "-B " + inputAndOutputDirectory + ":/" + output
+                    + " " + path_licence
+                    + " " + linkImgeSingularity + "/" + name
+                    + " " + licence_Params
+                    + " " + commande_befor
+                    + " " + data_key + " " + "/" +  inputDataBids
+                    + " " + output_key + " " + "/" + output 
+                    + " " + commande_participant
+                    + " " + work_dir_params 
+                    + " " + commande_after 
+                    + " " + basicParameters;
+
+
+                    /*if(!selectPipeline.contains("bids_validator")){
+
+                        commande = commande + "";
+
+                    }*/
+                    
+
+
+        
+
+
+
+
+        
+
+
+        return commande;
+    }
+
+
 
 
 
@@ -744,7 +829,7 @@ public class XnatRunPipelineApi
             final List<String> cmd = new ArrayList<String>();
             cmd.add(program);
             cmd.add(userName);
- /*            cmd.add(option0);
+ /*         cmd.add(option0);
             cmd.add(option1);
             cmd.add(option2);
             cmd.add(option3);
@@ -794,7 +879,6 @@ public class XnatRunPipelineApi
         for (String el : intersection) {
             listTeam.put(el, el);
         }
-
 
         JSONObject js = new JSONObject();
 
@@ -955,20 +1039,20 @@ public class XnatRunPipelineApi
     }
 
     /* Cette fonction à pour but d'envoyer le fichier généré au cluster de calcul */
-    public  void sendFileToCluster(String password, String nameFileGenerated) throws InterruptedException, JSchException, IOException, SftpException {
+    public  void sendFileToCluster(String password, String nameFileGenerated, String idCluster) throws InterruptedException, JSchException, IOException, SftpException {
 
         /* Chemin vers le local file */
         String localFile = fullPathScriptSlurm;
         
         log("Le fichier à envoyer est : " + fullPathScriptSlurm );
         /* Chemin où sera  transmit le fichier dans le cluster */
-        String remoteDir = "/home/"+ID_CLUSTER; 
+        String remoteDir = "/home/"+idCluster; 
         
         try {
                 final String program = "sudo";
                 final String programName = "/opt/bin/xnat-rpd.sh" ;
                 final String option0 = "-u";
-                final String option1 = ID_CLUSTER;
+                final String option1 = idCluster;
                 final String option2 = "-f";
                 final String option3 = localFile;
                 final List<String> cmd = new ArrayList<String>();
@@ -1271,7 +1355,7 @@ public class XnatRunPipelineApi
         return suiteName;
     }
 
-
+    /* Cette fonction permet de lire le contenu du fichier de conf   json sur xnat */
     public static void readConfigFileJson() throws Exception, IOException {
 
         listKeysJsonFile = new ArrayList<String>();
@@ -1294,7 +1378,8 @@ public class XnatRunPipelineApi
 		} catch (IOException e) {
 			
             e.printStackTrace();
-            
+            System.out.println(e.getMessage());
+
 		}
 		
 		System.out.println("\n\n------------- Debut du programme ----------------\n");
