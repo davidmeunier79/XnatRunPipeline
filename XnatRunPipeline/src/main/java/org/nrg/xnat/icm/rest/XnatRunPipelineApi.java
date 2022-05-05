@@ -1,6 +1,6 @@
 package org.nrg.xnat.icm.rest;
 import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
-import java.util.Arrays;
+
 import org.slf4j.LoggerFactory;
 import org.nrg.xnat.icm.plugin.XnatIntRunPipelinePlugin;
 import java.util.zip.ZipEntry;
@@ -9,18 +9,18 @@ import java.io.FileOutputStream;
 import java.io.Reader;
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
-import java.util.Collection;
+
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RequestMethod;
 import io.swagger.annotations.ApiResponse;
 import io.swagger.annotations.ApiResponses;
 import io.swagger.annotations.ApiOperation;
-import java.util.Iterator;
+
 import org.nrg.xft.security.UserI;
 import java.io.IOException;
 import org.apache.commons.io.FileUtils;
 import org.nrg.xdat.om.XnatSubjectdata;
-import java.util.ArrayList;
+
 import java.io.OutputStream;
 import java.util.zip.ZipOutputStream;
 import org.nrg.xdat.om.base.BaseXnatProjectdata;
@@ -29,16 +29,14 @@ import java.io.File;
 import java.io.ByteArrayOutputStream;
 import org.nrg.xnat.icm.utils.XnatToBidsUtils;
 import org.nrg.xnat.icm.rest.*;
-import java.util.Calendar;
 import org.nrg.xft.XFTTable;
 import org.nrg.xft.search.CriteriaCollection;
 import org.nrg.xft.search.QueryOrganizer;
-import java.util.LinkedList;
 import org.nrg.xdat.XDAT;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.PathVariable;
 import javax.servlet.http.HttpServletResponse;
-import java.util.List;
+
 import org.slf4j.Logger;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.nrg.framework.annotations.XapiRestController;
@@ -59,8 +57,6 @@ import java.io.FileReader;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.text.ParseException;
-import java.util.HashMap;
-import java.util.Map;
 
 import org.json.simple.*;
 
@@ -597,7 +593,7 @@ public class XnatRunPipelineApi
             ADDITIONAL_PARAMS = "\n";
         }
 
-        inputAndOutputDirectory = nameExportDir + "/data-xnat/" + idCluster + selectPipeline + "_" + id_project + "_" + datTimeNow;
+        inputAndOutputDirectory = nameExportDir + "/data-xnat/" + idCluster + "_" +  selectPipeline + "_" + id_project + "_" + datTimeNow;
 
         
         SCRIPT_SBATCH_GLOBAL = SCRIPT_SBATCH_GLOBAL 
@@ -651,12 +647,11 @@ public class XnatRunPipelineApi
                 
         log("done !");
 
-
-
         
     }
 
 
+    /* Return la commande singularity selon le pipeline choisi */
     public String prepareCommandSingularity(String selectPipeline, String inputAndOutputDirectory, String id_project){
 
         /* Le répértoire où sont les données en BIDS */
@@ -788,7 +783,7 @@ public class XnatRunPipelineApi
     }
 
 
-    /* Cette fonction permet de récuperer les la liste des sessions corréspondant à un sujet */
+    /* Cette fonction permet de récuperer les la liste de noms des groupes corréspondante à un utilisateur */
     @ApiOperation(value = "Get list of team names", notes = "Custom")
     @ApiResponses({ @ApiResponse(code = 200, message = "Connection success "), @ApiResponse(code = 401, message = "Must be authenticated to access the XNAT Rest Api"), @ApiResponse(code = 500, message = "Unexpected internal serval error") })
     @RequestMapping(value = { "/get-team-names" }, produces = { "application/json" }, method = { RequestMethod.POST })
@@ -1274,7 +1269,8 @@ public class XnatRunPipelineApi
         if (now.get(12) < 10) {
             dateTime += "0";
         }
-        dateTime = dateTime + now.get(12) + "";
+        final Date d = new Date();
+        dateTime = dateTime + now.get(12) + "" + "_" + d.getSeconds();
 
         return  dateTime; 
 
