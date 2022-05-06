@@ -629,7 +629,7 @@ public class XnatRunPipelineApi
         log(prepareCommandSingularity(selectPipeline,inputAndOutputDirectory,id_project));
         // To send file to the cluster
 
-       /* 
+       
         try{
 
            ligneRetunrCommandeStartPipeline = sendFileToCluster(passwordniolon,namFileGenerated, idCluster);
@@ -651,7 +651,7 @@ public class XnatRunPipelineApi
 
         }catch (SftpException sftpe){
             sftpe.printStackTrace();
-        } */
+        } 
                 
         log("done !");
 
