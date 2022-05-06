@@ -1,6 +1,8 @@
 
 {
       "outputDirectory" : "/hpc/shared",
+      "xnat_batch_scripts" : "xnat-batch-scripts",
+      "data_xnat" : "data_xnat",
       "linkAllImgSingularity" : "/hpc/shared/apps/x86_64/softs/singularity_BIDSApps",
       "singulartyRun_version_initiale" : "singularity run -B /hpc:/hpc -B /envau:/envau ",
       "singulartyRun" : "singularity run ",

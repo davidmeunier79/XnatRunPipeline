@@ -350,11 +350,11 @@ $page.setVlinkColor($ui.vlink)
       </div>
       <div class="modal-body">
 	  	<h2 id="nameModale"></h2>
-        <p id="idOfJob"></p>
+        <p id="idJob"></p>
 		<br><br>
-        <p id="nameBashFile"> <h3> Votre fichier bash a pour nom :  </h3></p>
+		<P id="workindDirectory"></p>
 		<br><br>
-		<P id="workDirPath"> <h3> Le path de  votre fichier bash est :</h3></p>
+        <p id="pathWithnNameScriptSbatch"></p>
       </div>
       <div class="modal-footer">
         <h3>Votre job est encours d'execution</h3>
@@ -678,6 +678,9 @@ $(function() {
 				console.log(data.workindDirectory)
 
 				
+				$('#idJob').html(" <h3> Success :  <span style=\"color:blue\">"  +  data.idJob + " </span></h3>");
+				$('#workindDirectory').html(" <h3> Path to export directory is  :  <span style=\"color:blue\">"  +  data.workindDirectory + " </span></h3>");
+				$('#pathWithnNameScriptSbatch').html(" <h3> The full path and name of the generated file is :  <span style=\"color:blue\">"  +  data.pathWithnNameScriptSbatch + " </span></h3>");
 
 
 				setTimeout(function(){

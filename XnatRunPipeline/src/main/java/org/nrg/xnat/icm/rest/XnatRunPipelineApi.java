@@ -581,6 +581,10 @@ public class XnatRunPipelineApi
         }
 
         pipeLineSelected = (String) ((JSONObject) getJsonObjectByKey(jsonObject,selectPipeline)).get("name");
+        String xnat_batch_scripts = (String) jsonObject.get("xnat_batch_scripts");
+        String data_xnat = (String) jsonObject.get("data_xnat");
+
+
 
         log("Vous avez choisi le pipeline : " +pipeLineSelected + "\n");
         log("Le script généré est  : \n ");
@@ -595,7 +599,7 @@ public class XnatRunPipelineApi
             ADDITIONAL_PARAMS = "\n";
         }
 
-        inputAndOutputDirectory = nameExportDir + "/data-xnat/" + idCluster + "_" +  selectPipeline + "_" + id_project + "_" + datTimeNow;
+        inputAndOutputDirectory = nameExportDir + "/" + data_xnat + "/" + idCluster + "_" +  selectPipeline + "_" + id_project + "_" + datTimeNow;
 
         
         SCRIPT_SBATCH_GLOBAL = SCRIPT_SBATCH_GLOBAL 
@@ -604,8 +608,8 @@ public class XnatRunPipelineApi
             + NUMBER_OF_NODES
             + CHANGE_WORKING_DIRECTORY
             + GET_USER_ENV
-            + STANDARD_OUTPUT_FILE + "/home/"+ idCluster  + "/" /* "/xnat-batch-scripts/" */ + selectPipeline + "_" + id_project + "_" + datTimeNow + ".out"
-            + "\n" + STANDARD_ERROR_FILE + "/home/"+ idCluster  + "/" /* "/xnat-batch-scripts/" */ +  selectPipeline + "_" + id_project + "_" + datTimeNow + ".err"
+            + STANDARD_OUTPUT_FILE + "/home/"+ idCluster  + "/" /* "/xnat_batch_scripts/" */ + selectPipeline + "_" + id_project + "_" + datTimeNow + ".out"
+            + "\n" + STANDARD_ERROR_FILE + "/home/"+ idCluster  + "/" /* "/xnat_batch_scripts/" */ +  selectPipeline + "_" + id_project + "_" + datTimeNow + ".err"
             + "\n" + NAME_OF_SLURM_JOB + " " + idCluster + "_" + selectPipeline
             + "\n" + getOtherParamatersSbatch(selectPipeline)
             + "\n" + LOAD_MODULES 
@@ -625,7 +629,7 @@ public class XnatRunPipelineApi
         log(prepareCommandSingularity(selectPipeline,inputAndOutputDirectory,id_project));
         // To send file to the cluster
 
-        
+       /* 
         try{
 
            ligneRetunrCommandeStartPipeline = sendFileToCluster(passwordniolon,namFileGenerated, idCluster);
@@ -647,7 +651,7 @@ public class XnatRunPipelineApi
 
         }catch (SftpException sftpe){
             sftpe.printStackTrace();
-        } 
+        } */
                 
         log("done !");
 
@@ -663,9 +667,12 @@ public class XnatRunPipelineApi
         response.setCharacterEncoding("UTF-8");
         
         JSONObject obj = new JSONObject();
+        
+        String pathWithnNameScriptSbatch = "/home/" + idCluster + "/" + xnat_batch_scripts + "/" + namFileGenerated;
 
         obj.put("idJob",ligneRetunrCommandeStartPipeline);
         obj.put("workindDirectory", inputAndOutputDirectory);
+        obj.put("pathWithnNameScriptSbatch", pathWithnNameScriptSbatch);
 
         
         log("les sessions à envoyer sont : " +obj.toString());
