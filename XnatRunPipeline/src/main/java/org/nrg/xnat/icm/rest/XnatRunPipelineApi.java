@@ -499,10 +499,12 @@ public class XnatRunPipelineApi
         String SCRIPT_SBATCH_GLOBAL = "";
         String pipeLineSelected = "";
         String inputAndOutputDirectory = "";
+        String ligneRetunrCommandeStartPipeline="";
         allOrListSubject = subject_ids ;
         ID_PROJECT =  id_project;
 
         ID_CLUSTER = idCluster ;
+
 
         
 
@@ -623,13 +625,15 @@ public class XnatRunPipelineApi
         log(prepareCommandSingularity(selectPipeline,inputAndOutputDirectory,id_project));
         // To send file to the cluster
 
-        /*
+        
         try{
 
-           sendFileToCluster(passwordniolon,namFileGenerated, idCluster);
+           ligneRetunrCommandeStartPipeline = sendFileToCluster(passwordniolon,namFileGenerated, idCluster);
+           
            log("\nLe fichier a été envoyer avec succé");
 
-        }catch (InterruptedException e) { 
+           System.out.println(" Voici le contenu de la ligne " + ligneRetunrCommandeStartPipeline);
+        } catch (InterruptedException e) { 
             
             e.printStackTrace();
                 
@@ -643,9 +647,35 @@ public class XnatRunPipelineApi
 
         }catch (SftpException sftpe){
             sftpe.printStackTrace();
-        } */
+        } 
                 
         log("done !");
+
+
+
+
+
+        // Prepapre les données à envoyer: 
+
+
+        response.setContentType("application/json");
+        
+        response.setCharacterEncoding("UTF-8");
+        
+        JSONObject obj = new JSONObject();
+
+        obj.put("idJob",ligneRetunrCommandeStartPipeline);
+        obj.put("workindDirectory", inputAndOutputDirectory);
+
+        
+        log("les sessions à envoyer sont : " +obj.toString());
+
+        PrintWriter out = response.getWriter();
+
+        out.print(obj);
+
+        out.flush();
+
 
         
     }
@@ -709,6 +739,12 @@ public class XnatRunPipelineApi
                     }*/
         
         return commande;
+
+
+
+
+
+
     }
 
 
@@ -1033,7 +1069,7 @@ public class XnatRunPipelineApi
     }
 
     /* Cette fonction à pour but d'envoyer le fichier généré au cluster de calcul */
-    public  void sendFileToCluster(String password, String nameFileGenerated, String idCluster) throws InterruptedException, JSchException, IOException, SftpException {
+    public  String sendFileToCluster(String password, String nameFileGenerated, String idCluster) throws InterruptedException, JSchException, IOException, SftpException {
 
         /* Chemin vers le local file */
         String localFile = fullPathScriptSlurm;
@@ -1042,6 +1078,8 @@ public class XnatRunPipelineApi
         /* Chemin où sera  transmit le fichier dans le cluster */
         String remoteDir = "/home/"+idCluster; 
         
+        String ligne = "";
+
         try {
                 final String program = "sudo";
                 final String programName = "/opt/bin/xnat-rpd.sh" ;
@@ -1062,15 +1100,20 @@ public class XnatRunPipelineApi
                 final Process p = pb.start();
                 final InputStreamReader isr = new InputStreamReader(p.getInputStream());
                 final BufferedReader br = new BufferedReader(isr);
-                String ligne = "";
-                while ((ligne = br.readLine()) != null) {
+               
+                ligne = br.readLine();
+
+               /* while ((ligne = br.readLine()) != null) {
                     log(ligne);
-                }
+                }*/
+
+                
             }
             catch (Exception e) {
                 log(e.toString());
             }
 
+      
 
 
 
@@ -1210,6 +1253,7 @@ public class XnatRunPipelineApi
             } */
 
 
+            return ligne;
 
            
         }

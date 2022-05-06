@@ -190,7 +190,7 @@ $page.setVlinkColor($ui.vlink)
 					<option value="">Please choose a pipeline</option>
 				</select>	
 			</div>
-			<br/><br/>
+			<br/><br/><br/><br/>
 			</div>
 			<br>
 			<!--"display: inline; margin: auto;width: 50%; padding: 10px;"-->
@@ -673,9 +673,13 @@ $(function() {
 				
 				//idOfJob.innerHTML = " <h3> L'id de votre job est : </h3> " 
 				//$('#idOfJob').html("<h3> L'id de votre job est : </h3>")
+
+				console.log(data.idJob)
+				console.log(data.workindDirectory)
+
 				
-				
-				
+
+
 				setTimeout(function(){
 					openModalContinue()
 				}, 3000);
