@@ -166,15 +166,17 @@ $page.setVlinkColor($ui.vlink)
   position: absolute;
   left: 50%;
   top: 50%;
-  z-index: 1;
   width: 120px;
   height: 120px;
+  z-index: 1;
   margin: -76px 0 0 -76px;
   border: 16px solid #f3f3f3;
   border-radius: 50%;
   border-top: 16px solid #3498db;
   -webkit-animation: spin 2s linear infinite;
   animation: spin 2s linear infinite;
+  background-color: rgba(0, 0, 0, 0.5);
+
 }
 
 @-webkit-keyframes spin {
@@ -287,8 +289,13 @@ $page.setVlinkColor($ui.vlink)
 			
 			<div class="containerItem">
 			
-				<h3 id="monColor" title="Make sure you choose the right name for your team" >Choose the name of your team   ?</h3>
-				
+				<h3 id="monColor"  >Choose the name of your team 
+					<span class="tip_icon" style="margin-right:3px;">
+				 		<span class="tip shadowed" style="top:20px;z-index:10000;white-space:normal;left:0x;width:300px;background-color:#ffc;">
+				 			Make sure you choose the right name for your team
+				 		</span>
+				 	</span>
+				</h3>
 				<div id="teamListenames">
 				
 				<label>
@@ -300,15 +307,38 @@ $page.setVlinkColor($ui.vlink)
 				</div>
 
 				<br/>
-				<label > <h3> Name of Slurm Job (optional) </h3></label>
+				<label > <h3> Name of Slurm Job (optional) 
+					<span class="tip_icon" style="margin-right:3px;">
+				 		<span class="tip shadowed" style="top:20px;z-index:10000;white-space:normal;left:0x;width:300px;background-color:#ffc;">
+				 			You can assign a name to your job to track it under this name on the cluster
+				 		</span>
+				 	</span>
+				</h3>
+				
+				</label>
 				<input class="inputStep3" type="text" id="nameSlurmJob" name="nameSlurmJob" >
 				<br/><br/>
 
-				<label > <h3> Additional parameters </h3></label>
+				<label > <h3> Additional parameters 
+
+							<span class="tip_icon" style="margin-right:3px;">
+				 				<span class="tip shadowed" style="top:20px;z-index:10000;white-space:normal;left:0x;width:300px;background-color:#ffc;">
+				 					If you have other parameters that you consider interesting for the Singularity command , add them here.  Separate by spaces !
+								</span>
+							</span>
+						
+						 </h3></label>
 				<input class="inputStep3" type="text" id="additionalParams" name="additionalParams" >
 				<br/><br/>
 
-				<label > <h3> Name Export Dir ( E.G :  /hpc/team/name.f/pipelineOutput) </h3></label>
+				<label > <h3> Name Export Dir ( E.G :  /hpc/team/name.f/pipelineOutput)
+							<span class="tip_icon" style="margin-right:3px;">
+				 				<span class="tip shadowed" style="top:20px;z-index:10000;white-space:normal;left:0x;width:300px;background-color:#ffc;">
+				 					This field is not editable, it allows you to make sure that you have chosen the right working directory 
+								</span>
+							</span>
+						</h3>
+				</label>
 				<input class="inputStep3" type="text" id="nameExportDir" name="nameExportDir" disabled required>
 				<br/><br/>
 				<button class="btn1" id="btnStartPipline" data="$content.getURI("/xapi/int-run-pipline/start-pipeline/$project")" > start computation </button>
@@ -746,13 +776,13 @@ const loader = document.querySelector('#loader');
 
 
 //const modalBtn = document.querySelector('#modal-btn');
-//const closeBtn = document.querySelector('.close');
+const closeBtn = document.querySelector('.close');
 
 
 
 // Events
 //modalBtn.addEventListener('click', openModal);
-//closeBtn.addEventListener('click', closeModal);
+closeBtn.addEventListener('click', closeModalContinue);
 window.addEventListener('click', outsideClick);
 
 
@@ -769,6 +799,8 @@ function openModal() {
 function closeModal() {
   modal.style.display = 'none';
 }
+
+
 
 // Close If Outside Click
 function outsideClick(e) {

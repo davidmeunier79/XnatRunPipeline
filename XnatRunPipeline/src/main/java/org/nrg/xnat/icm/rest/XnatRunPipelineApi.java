@@ -489,10 +489,11 @@ public class XnatRunPipelineApi
     @ApiResponses({ @ApiResponse(code = 200, message = "Connection success "), @ApiResponse(code = 401, message = "Must be authenticated to access the XNAT Rest Api"), @ApiResponse(code = 500, message = "Unexpected internal serval error") })
     @RequestMapping(value = { "/start-pipeline/{id_project}" }, produces = { "application/json" }, method = { RequestMethod.POST })
     @ResponseBody
-    public void startPipelineInCluster(final HttpServletResponse response, @PathVariable final String id_project, @RequestParam("selectPipeline") final String selectPipeline,  @RequestParam("idCluster") final String idCluster, @RequestParam("subject_ids") final String subject_ids, @RequestParam("nameExportDir") final String nameExportDir, 
+    public void startPipelineInCluster(final HttpServletResponse response, @PathVariable final String id_project, @RequestParam("selectPipeline") final String selectPipeline,  @RequestParam("idCluster") final String  userName, @RequestParam("subject_ids") final String subject_ids, @RequestParam("nameExportDir") final String nameExportDir, 
                  @RequestParam("additionalParams") final String additionalParams,@RequestParam("sessions_ids") final String sessions_ids)  throws IOException{
 
         final UserI xnatUser = XDAT.getUserDetails();
+        final String idCluster = xnatUser.getUsername().replace("_", ".");
         final List<String> subjectsList = new LinkedList<String>();
         String listOfSubjectWithSpaceSeparated = null;
         String listOfSubjectWithCamasSeparated = "";
@@ -504,6 +505,7 @@ public class XnatRunPipelineApi
         ID_PROJECT =  id_project;
 
         ID_CLUSTER = idCluster ;
+
 
 
         
@@ -615,7 +617,8 @@ public class XnatRunPipelineApi
             + "\n" + LOAD_MODULES 
             + "\n" + "" + commandeDownloadData(listOfSubjectWithCamasSeparated, id_project, inputAndOutputDirectory, listOfSubjectWithSpaceSeparated, sessions_ids)
             + "\n" + LOAD_IMG_SINGULARITY
-            + "\n" + whichCommandSingularity(selectPipeline, inputAndOutputDirectory)
+            /*+ "\n" + whichCommandSingularity(selectPipeline, inputAndOutputDirectory)*/
+            + "\n" + prepareCommandSingularity(selectPipeline,inputAndOutputDirectory,id_project)
             + "  "  + additionalParams + "\n";
             
             log(SCRIPT_SBATCH_GLOBAL);        
@@ -627,8 +630,8 @@ public class XnatRunPipelineApi
 
         log("\nLa commade généer avec la nouvele fonction est : ");
         log(prepareCommandSingularity(selectPipeline,inputAndOutputDirectory,id_project));
+        
         // To send file to the cluster
-
        
         try{
 
