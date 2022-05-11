@@ -423,7 +423,6 @@ $page.setVlinkColor($ui.vlink)
     </div>
   </div>
 
-
   <div id="loader"></div>
 
 
@@ -451,6 +450,7 @@ $page.setVlinkColor($ui.vlink)
 
 
 let nameSelectedTeam = "";
+let namfileTogenerateByBrowser = "";
 
 $(function() {
 
@@ -748,7 +748,7 @@ $(function() {
 				console.log(data.idJob)
 				console.log(data.workindDirectory)
 
-				
+				namfileTogenerateByBrowser = data.pathWithnNameScriptSbatch; 
 				$('#idJob').html(" <h3> Success :  <span style=\"color:blue\">"  +  data.idJob + " </span></h3>");
 				$('#workindDirectory').html(" <h3> Path to export directory is  :  <span style=\"color:blue\">"  +  data.workindDirectory + " </span></h3>");
 				$('#pathWithnNameScriptSbatch').html(" <h3> The full path and name of the generated file is :  <span style=\"color:blue\">"  +  data.pathWithnNameScriptSbatch + " </span></h3>");
@@ -848,9 +848,12 @@ document.getElementById("btnSave").addEventListener("click", function(){
 	let text = document.getElementById('idJob').textContent 
 		    + "\n" + document.getElementById('workindDirectory').textContent 
 			+ "\n" + document.getElementById('pathWithnNameScriptSbatch').textContent; 
-	let nomfile = document.getElementById('workindDirectory').textContent + '.txt';
 	
+	
+	let nomfile = document.getElementById('workindDirectory').textContent + '.txt';
+		nomfile = nomfile.substring(nomfile.lastIndexOf("/") +1);
 
+	//var prompta = prompt('Please enter file name to save', 'text par défaut ');	
     
     
     download(nomfile, text);

@@ -586,6 +586,8 @@ public class XnatRunPipelineApi
         String xnat_batch_scripts = (String) jsonObject.get("xnat_batch_scripts");
         String data_xnat = (String) jsonObject.get("data_xnat");
 
+        String exportDirectory = nameExportDir + "/" + data_xnat ;
+
 
 
         log("Vous avez choisi le pipeline : " +pipeLineSelected + "\n");
@@ -615,6 +617,12 @@ public class XnatRunPipelineApi
             + "\n" + NAME_OF_SLURM_JOB + " " + idCluster + "_" + selectPipeline
             + "\n" + getOtherParamatersSbatch(selectPipeline)
             + "\n" + LOAD_MODULES 
+            + "\n" +  "if [ ! -d \"" + exportDirectory +"\"  ]; then"
+            + "\n" +  "   mkdir -p " + exportDirectory 
+            + "\n" +  "   echo \"Creating of directory \"" + exportDirectory
+            + "\n" +  "   chmod -R +777 " + exportDirectory 
+            + "\n" +  "fi"
+            + "\n" +  "\n" + "\n" + "\n"
             + "\n" + "" + commandeDownloadData(listOfSubjectWithCamasSeparated, id_project, inputAndOutputDirectory, listOfSubjectWithSpaceSeparated, sessions_ids)
             + "\n" + LOAD_IMG_SINGULARITY
             /*+ "\n" + whichCommandSingularity(selectPipeline, inputAndOutputDirectory)*/
@@ -852,7 +860,7 @@ public class XnatRunPipelineApi
 
         }
        
-        JSONArray jsonArray = (JSONArray) jsonObject.get("teamNames");
+        JSONArray teamNames = (JSONArray) jsonObject.get("teamNames");
      
         
 
@@ -893,9 +901,9 @@ public class XnatRunPipelineApi
         }
 
         String []  tabTeamUser = ligne.split(" ");
-        String [] array = new String[jsonArray.size()] ;
+        String [] array = new String[teamNames.size()] ;
         int i=0;
-        for (Object ele : jsonArray){
+        for (Object ele : teamNames){
             array[i] = ele.toString();
             i++;
         }
@@ -930,7 +938,7 @@ public class XnatRunPipelineApi
         response.setCharacterEncoding("UTF-8");
         
 
-        log("Les noms des équipes à envoyer sont : " +jsonArray.toString());
+        log("Les noms des équipes à envoyer sont : " +teamNames.toString());
 
         PrintWriter out = response.getWriter();
 
