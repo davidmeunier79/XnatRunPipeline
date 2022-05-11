@@ -283,7 +283,7 @@ $page.setVlinkColor($ui.vlink)
 
 -->
 		<br/><br/><br/>
-		<div class="container">
+		<div class="container" id="div_step3" style="display:none;">
 			<div class="withColor containerTitle">Step 3 : Enter the parameters : </div>
 			<label class="access-label" title="All subjects in the project"> </label>
 			
@@ -358,8 +358,10 @@ $page.setVlinkColor($ui.vlink)
 	
 	</form>
 
+<!--
 
 <div id="a"></div>
+-->
 <!-- 
 <div id="loader" class="loader loader-default" data-text="Loading ... This may take a while between 20 to 30 min. Thanks" data-blink>
 	<div id='forframe'></div>
@@ -412,7 +414,11 @@ $page.setVlinkColor($ui.vlink)
         <p id="pathWithnNameScriptSbatch"></p>
       </div>
       <div class="modal-footer">
-        <h3>Votre job est encours d'execution</h3>
+        <h3 style="text-color:white;">Votre job est encours d'execution</h3>
+			<div class="options">
+			  <button id="btnSave" class="btn"> <strong> Save  </strong></button>
+              <button id="btnOkFinale" class="btn">  <strong> Ok </strong></button>
+           	</div>
       </div>
     </div>
   </div>
@@ -478,6 +484,7 @@ $(function() {
 				success: function(data) {
 					if(data != null){
 					
+						$("#div_step3").show();
 						var $select = $("#monselectPipeLine");                           // Locate HTML DOM element with ID "someselect".
 						$select.find("option").remove();                          // Find all child elements with tag name "option" and remove them (just to prevent duplicate options when button is pressed again).
 						$.each(data, function(key, value) {               // Iterate over the JSON object.
@@ -685,6 +692,9 @@ $(function() {
 
 
 		openModal();
+
+		/* pour récupérer le contenu du tag <p>    dans  le modal */
+		console.log(document.getElementById('nameTeamSelected').textContent);
 		
 	})
 
@@ -750,18 +760,105 @@ $(function() {
 					openModalContinue()		
 				}, 3000);
 
-				
+
+				$("#div_step3").hide();
 
 				
 				
 
 					
 			}
+
 		});
 	})
 
 
 });
+
+
+
+
+$('#btnOkFinale').on("click" , function(e) {
+
+		/* pour récupérer le contenu du tag <p>    dans  le modal */
+	let text = document.getElementById('idJob').textContent 
+		    + "\n" + document.getElementById('workindDirectory').textContent 
+			+ "\n" + document.getElementById('pathWithnNameScriptSbatch').textContent; 
+	let nomfile = document.getElementById('workindDirectory').textContent;
+		
+  if ('Blob' in window) {
+    var fileName = prompt('Please enter file name to save', nomfile+'.txt');
+    if (fileName) {
+      var textFileAsBlob = new Blob([text], { type: 'text/plain' });
+
+      if ('msSaveOrOpenBlob' in navigator) {
+        navigator.msSaveOrOpenBlob(textFileAsBlob, fileName);
+      } else {
+        var downloadLink = document.createElement('a');
+        downloadLink.download = fileName;
+        downloadLink.innerHTML = 'Download File';
+
+        if ('webkitURL' in window) {
+          // Chrome allows the link to be clicked without actually adding it to the DOM.
+          downloadLink.href = window.webkitURL.createObjectURL(textFileAsBlob);
+        } else {
+          // Firefox requires the link to be added to the DOM before it can be clicked.
+          downloadLink.href = window.URL.createObjectURL(textFileAsBlob);
+          downloadLink.click(function(){
+            document.body.removeChild(event.target);
+          });
+
+          downloadLink.style.display = 'none';
+          document.body.appendChild(downloadLink);
+        }
+        downloadLink.click();
+      }
+    }
+  } else {
+    alert('Your browser does not support the HTML5 Blob.');
+  }
+});
+
+
+
+
+
+
+
+function download(filename, text) {
+    var element = document.createElement('a');
+    element.setAttribute('href', 'data:text/plain;charset=utf-8,' + encodeURIComponent(text));
+    element.setAttribute('download', filename);
+
+    element.style.display = 'none';
+    document.body.appendChild(element);
+
+    element.click();
+
+    document.body.removeChild(element);
+}
+
+
+// Start file download.
+document.getElementById("btnSave").addEventListener("click", function(){
+    // Generate download of hello.txt file with some content
+   
+
+   		/* pour récupérer le contenu du tag <p>    dans  le modal */
+	let text = document.getElementById('idJob').textContent 
+		    + "\n" + document.getElementById('workindDirectory').textContent 
+			+ "\n" + document.getElementById('pathWithnNameScriptSbatch').textContent; 
+	let nomfile = document.getElementById('workindDirectory').textContent + '.txt';
+	
+
+    
+    
+    download(nomfile, text);
+
+	closeModalContinue();
+}, false);
+
+
 
 
 
@@ -822,7 +919,6 @@ function openLoader() {
 
 window.addEventListener('click', outsideClickContinue);
 
-
 bntModify.addEventListener('click', closeModalContinue)
 
 // Open
@@ -837,6 +933,7 @@ function openModalContinue() {
 // Close
 function closeModalContinue() {
   modalContinue.style.display = 'none';
+  
 }
 
 // Close If Outside Click
@@ -845,6 +942,9 @@ function outsideClickContinue(e) {
     modalContinue.style.display = 'none';
   }
 }
+
+
+
 
 
 
