@@ -501,6 +501,9 @@ public class XnatRunPipelineApi
         String pipeLineSelected = "";
         String inputAndOutputDirectory = "";
         String ligneRetunrCommandeStartPipeline="";
+        String pathErrorLogOut = "";
+        String pathErrorLogErr = "";
+
         allOrListSubject = subject_ids ;
         ID_PROJECT =  id_project;
 
@@ -604,7 +607,8 @@ public class XnatRunPipelineApi
         }
 
         inputAndOutputDirectory = nameExportDir + "/" + data_xnat + "/" + idCluster + "_" +  selectPipeline + "_" + id_project + "_" + datTimeNow;
-
+        pathErrorLogOut = "/home/"+ idCluster  + "/" /* "/xnat_batch_scripts/" */ + selectPipeline + "_" + id_project + "_" + datTimeNow + ".out";
+        pathErrorLogErr = "/home/"+ idCluster  + "/" /* "/xnat_batch_scripts/" */ +  selectPipeline + "_" + id_project + "_" + datTimeNow + ".err";
         
         SCRIPT_SBATCH_GLOBAL = SCRIPT_SBATCH_GLOBAL 
             + SCRIPT_SBATCH  
@@ -612,14 +616,14 @@ public class XnatRunPipelineApi
             + NUMBER_OF_NODES
             + CHANGE_WORKING_DIRECTORY
             + GET_USER_ENV
-            + STANDARD_OUTPUT_FILE + "/home/"+ idCluster  + "/" /* "/xnat_batch_scripts/" */ + selectPipeline + "_" + id_project + "_" + datTimeNow + ".out"
-            + "\n" + STANDARD_ERROR_FILE + "/home/"+ idCluster  + "/" /* "/xnat_batch_scripts/" */ +  selectPipeline + "_" + id_project + "_" + datTimeNow + ".err"
+            + STANDARD_OUTPUT_FILE + pathErrorLogOut
+            + "\n" + STANDARD_ERROR_FILE + pathErrorLogErr
             + "\n" + NAME_OF_SLURM_JOB + " " + idCluster + "_" + selectPipeline
             + "\n" + getOtherParamatersSbatch(selectPipeline)
             + "\n" + LOAD_MODULES 
             + "\n" +  "if [ ! -d \"" + exportDirectory +"\"  ]; then"
             + "\n" +  "   mkdir -p " + exportDirectory 
-            + "\n" +  "   echo \"Creating of directory \"" + exportDirectory
+            + "\n" +  "   echo \"Creating of directory " + exportDirectory + " \""
             + "\n" +  "   chmod -R +777 " + exportDirectory 
             + "\n" +  "fi"
             + "\n" +  "\n" + "\n" + "\n"
@@ -681,9 +685,16 @@ public class XnatRunPipelineApi
         
         String pathWithnNameScriptSbatch = "/home/" + idCluster + "/" + xnat_batch_scripts + "/" + namFileGenerated;
 
+
         obj.put("idJob",ligneRetunrCommandeStartPipeline);
         obj.put("workindDirectory", inputAndOutputDirectory);
         obj.put("pathWithnNameScriptSbatch", pathWithnNameScriptSbatch);
+        obj.put("pathErrorLogOut", pathErrorLogOut);
+        obj.put("pathErrorLogErr", pathErrorLogErr);
+
+
+
+
 
         
         log("les sessions à envoyer sont : " +obj.toString());

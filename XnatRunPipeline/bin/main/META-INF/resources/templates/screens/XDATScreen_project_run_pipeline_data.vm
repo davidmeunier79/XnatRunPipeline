@@ -412,6 +412,10 @@ $page.setVlinkColor($ui.vlink)
 		<P id="workindDirectory"></p>
 		<br><br>
         <p id="pathWithnNameScriptSbatch"></p>
+		<br><br>
+        <p id="pathErrorLogOut"></p>
+		<br><br>
+        <p id="pathErrorLogErr"></p>
       </div>
       <div class="modal-footer">
         <h3 style="text-color:white;">Votre job est encours d'execution</h3>
@@ -749,11 +753,18 @@ $(function() {
 				console.log(data.workindDirectory)
 
 				namfileTogenerateByBrowser = data.pathWithnNameScriptSbatch; 
+
 				$('#idJob').html(" <h3> Success :  <span style=\"color:blue\">"  +  data.idJob + " </span></h3>");
+				
 				$('#workindDirectory').html(" <h3> Path to export directory is  :  <span style=\"color:blue\">"  +  data.workindDirectory + " </span></h3>");
+				
 				$('#pathWithnNameScriptSbatch').html(" <h3> The full path and name of the generated file is :  <span style=\"color:blue\">"  +  data.pathWithnNameScriptSbatch + " </span></h3>");
 
+				$('#pathErrorLogOut').html(" <h3> The full path of Output log :  <span style=\"color:blue\">"  +  data.pathErrorLogOut + " </span></h3>");
+				
+				$('#pathErrorLogErr').html(" <h3> The full path of Error log :  <span style=\"color:blue\">"  +  data.pathErrorLogErr + " </span></h3>");
 
+					
 				openLoader()
 
 				setTimeout(function(){
@@ -847,8 +858,9 @@ document.getElementById("btnSave").addEventListener("click", function(){
    		/* pour récupérer le contenu du tag <p>    dans  le modal */
 	let text = document.getElementById('idJob').textContent 
 		    + "\n" + document.getElementById('workindDirectory').textContent 
-			+ "\n" + document.getElementById('pathWithnNameScriptSbatch').textContent; 
-	
+			+ "\n" + document.getElementById('pathWithnNameScriptSbatch').textContent 
+			+ "\n" + document.getElementById('pathErrorLogOut').textContent
+			+ "\n" + document.getElementById('pathErrorLogErr').textContent;
 	
 	let nomfile = document.getElementById('workindDirectory').textContent + '.txt';
 		nomfile = nomfile.substring(nomfile.lastIndexOf("/") +1);
