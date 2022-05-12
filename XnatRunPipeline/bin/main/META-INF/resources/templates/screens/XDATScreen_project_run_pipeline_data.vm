@@ -189,6 +189,59 @@ $page.setVlinkColor($ui.vlink)
   100% { transform: rotate(360deg); }
 }
 
+@import url('//maxcdn.bootstrapcdn.com/font-awesome/4.2.0/css/font-awesome.min.css');
+
+.bandeau-message {
+  position: relative;
+  padding: 20px;
+  margin: 20px 0;
+  margin-bottom: 1rem;
+  border-radius: 3px 3px 3px 3px;
+  border: 1px solid transparent;
+    border-top-color: transparent;
+    border-top-style: solid;
+    border-top-width: 10px;
+    border-right-color: transparent;
+    border-right-style: solid;
+    border-right-width: 10px;
+    border-bottom-color: transparent;
+    border-bottom-style: solid;
+    border-bottom-width: 10px;
+    border-left-color: transparent;
+    border-left-style: solid;
+    border-left-width: 10px;
+    border-image-outset: 0;
+    border-image-repeat: stretch;
+    border-image-slice: 100%;
+    border-image-source: none;
+    border-image-width: 1;
+}
+
+.alert-success {
+  color: #155724;
+  padding: 20px;
+  border-radius : 3px 3px 3px 3px;
+  background-color: #d4edda;
+  border-color: #c3e6cb;
+    border-top-color: rgb(195, 230, 203);
+    border-right-color: rgb(195, 230, 203);
+    border-bottom-color: rgb(195, 230, 203);
+    border-left-color: rgb(195, 230, 203);
+}
+
+
+.error-msg {
+  margin: 11px 0;
+  padding: 10px;
+  border-radius: 5px 5px 5px 5px;
+}
+
+.error-msg {
+  display:none;
+  color: #D8000C;
+  background-color: #FFBABA;
+  width: 340px;
+}
 
 
 </style>
@@ -207,10 +260,14 @@ $page.setVlinkColor($ui.vlink)
 					<div class="containerItem">
 						<label >ID user niolon </label>
 						<input type="text" id="idNiolon" name="iDniolon" placeholder="$placeholderId" required="true">
-						<br/><br/>
+						<br/><br>
 				<!--    <label > Mot de passe </label>
 						<input type="password" id="password" name="password" placeholder="$placeholderPwd" required="true"> -->
-						<br><br>
+
+								<div class="error-msg" id="div-error-msg">
+									<i class="fa fa-times-circle"></i>
+									This id is not valide.
+								</div>	
 						<button class="btn1" id="btnGetPiplines" data="$content.getURI("/xapi/int-run-pipline/get-pipelines/$project")" > Get Pipelines</button>
 					</div>
 				</div>	
@@ -221,6 +278,15 @@ $page.setVlinkColor($ui.vlink)
 				</select>	
 			</div>
 			<br/><br/><br/><br/>
+
+
+
+					<div class="bandeau-message"> 
+						<div class="alert-success" role="alert" tabindex="0"> 
+							Etape terminee le 8 mai 2022 a 23:19:01 
+						</div>
+					</div>
+
 			</div>
 			<br>
 			<!--"display: inline; margin: auto;width: 50%; padding: 10px;"-->
@@ -462,7 +528,7 @@ $(function() {
 
 		//get url
 		let _urlGetPiplines = document.getElementById("btnGetPiplines").getAttribute("data");
-			alert(_urlGetPiplines);
+			//alert(_urlGetPiplines);
 
 			let idCluster = $('#idNiolon').val();
 			//let password = $('#password').val();
@@ -487,7 +553,8 @@ $(function() {
 				method:'POST',
 				success: function(data) {
 					if(data != null){
-					
+
+						$("#div-error-msg").show();
 						$("#div_step3").show();
 						var $select = $("#monselectPipeLine");                           // Locate HTML DOM element with ID "someselect".
 						$select.find("option").remove();                          // Find all child elements with tag name "option" and remove them (just to prevent duplicate options when button is pressed again).
@@ -500,7 +567,7 @@ $(function() {
 					}
 					// Activer le bouton start computation
 					//$('#btnStartPipline').disabled =true;
-					alert("Tres bien envoyer")
+					//alert("Tres bien envoyer")
 
 					
 				}
