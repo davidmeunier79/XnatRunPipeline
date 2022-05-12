@@ -34,6 +34,7 @@ import org.nrg.xft.search.CriteriaCollection;
 import org.nrg.xft.search.QueryOrganizer;
 import org.nrg.xdat.XDAT;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.security.core.userdetails.cache.NullUserCache;
 import org.springframework.web.bind.annotation.PathVariable;
 import javax.servlet.http.HttpServletResponse;
 
@@ -249,45 +250,48 @@ public class XnatRunPipelineApi
 
         //final SSHConnection sshConncetion = new SSHConnection();
 
-
-        Map<String, String> _listPipelines  = new HashMap<>();
-
-        
-        
-        /*try {
-            /*
-            doConnectionCluster(passwordniolon);
-            */
-
-            String linkImgeSingularity = (String) jsonObject.get("linkAllImgSingularity");
+            if (checkIfIdUserExist(idCluster)) {
 
 
-            JSONArray jsonArray = (JSONArray) jsonObject.get("listPipelines");
 
-            listImages = new String[jsonArray.size()];
+              Map<String, String> _listPipelines  = new HashMap<>();
 
-            for (Object team : jsonArray) {
+            /*try {
+                /*
+                doConnectionCluster(passwordniolon);
+                */
+    
+                String linkImgeSingularity = (String) jsonObject.get("linkAllImgSingularity");
+    
+    
+                JSONArray jsonArray = (JSONArray) jsonObject.get("listPipelines");
+    
+                listImages = new String[jsonArray.size()];
+    
+                for (Object team : jsonArray) {
+                    
+                    _listPipelines.put(team.toString(), team.toString());
+    
+                    log("  " + team.toString() + " :  " + team.toString());
+                }   
+
+                response.setContentType("application/json");
+            
+                response.setCharacterEncoding("UTF-8");
                 
-                _listPipelines.put(team.toString(), team.toString());
-
-                log("  " + team.toString() + " :  " + team.toString());
-            }
-
-            response.setContentType("application/json");
+                JSONObject obj = new JSONObject();
         
-            response.setCharacterEncoding("UTF-8");
-            
-            JSONObject obj = new JSONObject();
-    
-            obj.putAll(_listPipelines);
-            
-            log(obj.toString());
-    
-            PrintWriter out = response.getWriter();
-    
-            out.print(obj);
-    
-            out.flush();
+                obj.putAll(_listPipelines);
+                
+                log(obj.toString());
+        
+                PrintWriter out = response.getWriter();
+        
+                out.print(obj);
+        
+                out.flush();
+                
+            }
 
 
             /*        
@@ -304,7 +308,7 @@ public class XnatRunPipelineApi
 
         
 
-        log( "\n La date de maintenant est : "+getDateTimeNow() + "    \n\n");
+        log( "\n La date de création de ce fichier est : "+getDateTimeNow() + "    \n\n");
  
 
 
@@ -880,19 +884,9 @@ public class XnatRunPipelineApi
 
             final String program = "groups";
             //final String programName = userName ;
-/*             final String option0 = "|";
-            final String option1 = "cut";
-            final String option2 = "-d";
-            final String option3 = ":";
-            final String option4 = "-f2"; */
             final List<String> cmd = new ArrayList<String>();
             cmd.add(program);
-            cmd.add(userName);
- /*         cmd.add(option0);
-            cmd.add(option1);
-            cmd.add(option2);
-            cmd.add(option3);
-            cmd.add(option4);  */   
+            cmd.add(userName); 
             log(cmd.toString());
 
             final ProcessBuilder pb = new ProcessBuilder(cmd);
@@ -901,10 +895,6 @@ public class XnatRunPipelineApi
             final BufferedReader br = new BufferedReader(isr);
             ligne = br.readLine();
             
-            /* String ligne = "";
-            while ((ligne = br.readLine()) != null) {
-                log(ligne);
-            } */
             System.out.println("les groupes de " + userName + " sont  : " + ligne);
         }
         catch (Exception e) {
@@ -959,6 +949,34 @@ public class XnatRunPipelineApi
 
     }
 
+    /* Cette méthode permet de checker si l'id user fourni par l'utilisateur est bien correcte.  */
+    public boolean checkIfIdUserExist(String idUser){
+
+        String ligne = "";
+        
+        try {
+
+            final String program = "groups";
+            //final String programName = userName ;
+            final List<String> cmd = new ArrayList<String>();
+            cmd.add(program);
+            cmd.add(idUser); 
+            log(cmd.toString());
+
+            final ProcessBuilder pb = new ProcessBuilder(cmd);
+            final Process p = pb.start();
+            final InputStreamReader isr = new InputStreamReader(p.getInputStream());
+            final BufferedReader br = new BufferedReader(isr);
+            ligne = br.readLine();
+            
+            System.out.println(ligne);
+        }
+        catch (Exception e) {
+            log(e.toString());
+        }
+
+        return !(ligne.contains("no such user"));
+    }
 
     /* la méthode qui permet de  recupere le contenu la liste des images singularity sur niolon */
     public 	static  String[] recupererListImgCluster(String resultConsole){
@@ -1895,6 +1913,7 @@ public class XnatRunPipelineApi
   }
 
 }
+
 
 
 
