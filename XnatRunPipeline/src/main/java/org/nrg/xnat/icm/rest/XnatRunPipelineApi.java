@@ -34,6 +34,7 @@ import org.nrg.xft.search.CriteriaCollection;
 import org.nrg.xft.search.QueryOrganizer;
 import org.nrg.xdat.XDAT;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.security.core.userdetails.cache.NullUserCache;
 import org.springframework.web.bind.annotation.PathVariable;
 import javax.servlet.http.HttpServletResponse;
 
@@ -245,44 +246,51 @@ public class XnatRunPipelineApi
         String cle6 = "cle6";
         String valeur6 = "mriqc_0.16.1.simg";
         
+        response.setContentType("application/json");
+            
+        response.setCharacterEncoding("UTF-8");
+        
+        JSONObject obj = new JSONObject();
             
 
         //final SSHConnection sshConncetion = new SSHConnection();
 
+            if (checkIfIdUserExist(idCluster)) {
 
-        Map<String, String> _listPipelines  = new HashMap<>();
 
+
+                Map<String, String> _listPipelines  = new HashMap<>();
+
+                /*try {
+                /*
+                doConnectionCluster(passwordniolon);
+                */
+    
+                String linkImgeSingularity = (String) jsonObject.get("linkAllImgSingularity");
+    
+    
+                JSONArray jsonArray = (JSONArray) jsonObject.get("listPipelines");
+    
+                listImages = new String[jsonArray.size()];
+    
+                for (Object pipeline : jsonArray) {
+                    
+                    _listPipelines.put(pipeline.toString(), pipeline.toString());
+    
+                    log("  " + pipeline.toString() + " :  " + pipeline.toString());
+                }   
         
-        
-        /*try {
-            /*
-            doConnectionCluster(passwordniolon);
-            */
-
-            String linkImgeSingularity = (String) jsonObject.get("linkAllImgSingularity");
-
-
-            JSONArray jsonArray = (JSONArray) jsonObject.get("listPipelines");
-
-            listImages = new String[jsonArray.size()];
-
-            for (Object team : jsonArray) {
+                obj.putAll(_listPipelines);
                 
-                _listPipelines.put(team.toString(), team.toString());
+                
+            } else {
 
-                log("  " + team.toString() + " :  " + team.toString());
+                obj.put("null","null");
+
             }
 
-            response.setContentType("application/json");
+            log(" l'objet de la liste des pipelines a envoyer est "+ obj.toString());
         
-            response.setCharacterEncoding("UTF-8");
-            
-            JSONObject obj = new JSONObject();
-    
-            obj.putAll(_listPipelines);
-            
-            log(obj.toString());
-    
             PrintWriter out = response.getWriter();
     
             out.print(obj);
@@ -304,7 +312,7 @@ public class XnatRunPipelineApi
 
         
 
-        log( "\n La date de maintenant est : "+getDateTimeNow() + "    \n\n");
+        log( "\n La date de création de ce fichier est : "+getDateTimeNow() + "    \n\n");
  
 
 
@@ -501,6 +509,9 @@ public class XnatRunPipelineApi
         String pipeLineSelected = "";
         String inputAndOutputDirectory = "";
         String ligneRetunrCommandeStartPipeline="";
+        String pathErrorLogOut = "";
+        String pathErrorLogErr = "";
+
         allOrListSubject = subject_ids ;
         ID_PROJECT =  id_project;
 
@@ -586,6 +597,8 @@ public class XnatRunPipelineApi
         String xnat_batch_scripts = (String) jsonObject.get("xnat_batch_scripts");
         String data_xnat = (String) jsonObject.get("data_xnat");
 
+        String exportDirectory = nameExportDir + "/" + data_xnat ;
+
 
 
         log("Vous avez choisi le pipeline : " +pipeLineSelected + "\n");
@@ -602,7 +615,8 @@ public class XnatRunPipelineApi
         }
 
         inputAndOutputDirectory = nameExportDir + "/" + data_xnat + "/" + idCluster + "_" +  selectPipeline + "_" + id_project + "_" + datTimeNow;
-
+        pathErrorLogOut = "/home/"+ idCluster  + "/" /* "/xnat_batch_scripts/" */ + selectPipeline + "_" + id_project + "_" + datTimeNow + ".out";
+        pathErrorLogErr = "/home/"+ idCluster  + "/" /* "/xnat_batch_scripts/" */ +  selectPipeline + "_" + id_project + "_" + datTimeNow + ".err";
         
         SCRIPT_SBATCH_GLOBAL = SCRIPT_SBATCH_GLOBAL 
             + SCRIPT_SBATCH  
@@ -610,11 +624,17 @@ public class XnatRunPipelineApi
             + NUMBER_OF_NODES
             + CHANGE_WORKING_DIRECTORY
             + GET_USER_ENV
-            + STANDARD_OUTPUT_FILE + "/home/"+ idCluster  + "/" /* "/xnat_batch_scripts/" */ + selectPipeline + "_" + id_project + "_" + datTimeNow + ".out"
-            + "\n" + STANDARD_ERROR_FILE + "/home/"+ idCluster  + "/" /* "/xnat_batch_scripts/" */ +  selectPipeline + "_" + id_project + "_" + datTimeNow + ".err"
+            + STANDARD_OUTPUT_FILE + pathErrorLogOut
+            + "\n" + STANDARD_ERROR_FILE + pathErrorLogErr
             + "\n" + NAME_OF_SLURM_JOB + " " + idCluster + "_" + selectPipeline
             + "\n" + getOtherParamatersSbatch(selectPipeline)
             + "\n" + LOAD_MODULES 
+            + "\n" +  "if [ ! -d \"" + exportDirectory +"\"  ]; then"
+            + "\n" +  "   mkdir -p " + exportDirectory 
+            + "\n" +  "   echo \"Creating of directory " + exportDirectory + " \""
+            + "\n" +  "   chmod -R +777 " + exportDirectory 
+            + "\n" +  "fi"
+            + "\n" +  "\n" + "\n" + "\n"
             + "\n" + "" + commandeDownloadData(listOfSubjectWithCamasSeparated, id_project, inputAndOutputDirectory, listOfSubjectWithSpaceSeparated, sessions_ids)
             + "\n" + LOAD_IMG_SINGULARITY
             /*+ "\n" + whichCommandSingularity(selectPipeline, inputAndOutputDirectory)*/
@@ -655,7 +675,7 @@ public class XnatRunPipelineApi
         }catch (SftpException sftpe){
             sftpe.printStackTrace();
         } 
-           */     
+          */     
         log("done !");
 
 
@@ -673,9 +693,16 @@ public class XnatRunPipelineApi
         
         String pathWithnNameScriptSbatch = "/home/" + idCluster + "/" + xnat_batch_scripts + "/" + namFileGenerated;
 
+
         obj.put("idJob",ligneRetunrCommandeStartPipeline);
         obj.put("workindDirectory", inputAndOutputDirectory);
         obj.put("pathWithnNameScriptSbatch", pathWithnNameScriptSbatch);
+        obj.put("pathErrorLogOut", pathErrorLogOut);
+        obj.put("pathErrorLogErr", pathErrorLogErr);
+
+
+
+
 
         
         log("les sessions à envoyer sont : " +obj.toString());
@@ -852,7 +879,7 @@ public class XnatRunPipelineApi
 
         }
        
-        JSONArray jsonArray = (JSONArray) jsonObject.get("teamNames");
+        JSONArray teamNames = (JSONArray) jsonObject.get("teamNames");
      
         
 
@@ -861,19 +888,9 @@ public class XnatRunPipelineApi
 
             final String program = "groups";
             //final String programName = userName ;
-/*             final String option0 = "|";
-            final String option1 = "cut";
-            final String option2 = "-d";
-            final String option3 = ":";
-            final String option4 = "-f2"; */
             final List<String> cmd = new ArrayList<String>();
             cmd.add(program);
-            cmd.add(userName);
- /*         cmd.add(option0);
-            cmd.add(option1);
-            cmd.add(option2);
-            cmd.add(option3);
-            cmd.add(option4);  */   
+            cmd.add(userName); 
             log(cmd.toString());
 
             final ProcessBuilder pb = new ProcessBuilder(cmd);
@@ -882,10 +899,6 @@ public class XnatRunPipelineApi
             final BufferedReader br = new BufferedReader(isr);
             ligne = br.readLine();
             
-            /* String ligne = "";
-            while ((ligne = br.readLine()) != null) {
-                log(ligne);
-            } */
             System.out.println("les groupes de " + userName + " sont  : " + ligne);
         }
         catch (Exception e) {
@@ -893,9 +906,9 @@ public class XnatRunPipelineApi
         }
 
         String []  tabTeamUser = ligne.split(" ");
-        String [] array = new String[jsonArray.size()] ;
+        String [] array = new String[teamNames.size()] ;
         int i=0;
-        for (Object ele : jsonArray){
+        for (Object ele : teamNames){
             array[i] = ele.toString();
             i++;
         }
@@ -930,7 +943,7 @@ public class XnatRunPipelineApi
         response.setCharacterEncoding("UTF-8");
         
 
-        log("Les noms des équipes à envoyer sont : " +jsonArray.toString());
+        log("Les noms des équipes à envoyer sont : " +teamNames.toString());
 
         PrintWriter out = response.getWriter();
 
@@ -940,6 +953,39 @@ public class XnatRunPipelineApi
 
     }
 
+    /* Cette méthode permet de checker si l'id user fourni par l'utilisateur est bien correcte.  */
+    public boolean checkIfIdUserExist(String idUser){
+
+        String ligne = "";
+        
+        try {
+
+            final String program = "groups";
+            //final String programName = userName ;
+            final List<String> cmd = new ArrayList<String>();
+            cmd.add(program);
+            cmd.add(idUser); 
+            log(cmd.toString());
+
+            final ProcessBuilder pb = new ProcessBuilder(cmd);
+            final Process p = pb.start();
+            final InputStreamReader isr = new InputStreamReader(p.getInputStream());
+            final BufferedReader br = new BufferedReader(isr);
+            ligne = br.readLine();
+            
+            System.out.println("le res de groups " + idUser + " est : "+ ligne);
+        }
+        catch (Exception e) {
+            log(e.toString());
+        }
+
+        if(ligne != null){
+            return true;
+        }
+            //return !(ligne.contains("no such user")); 
+        else return false; 
+        
+    }
 
     /* la méthode qui permet de  recupere le contenu la liste des images singularity sur niolon */
     public 	static  String[] recupererListImgCluster(String resultConsole){
@@ -1876,6 +1922,7 @@ public class XnatRunPipelineApi
   }
 
 }
+
 
 
 

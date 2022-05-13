@@ -189,6 +189,71 @@ $page.setVlinkColor($ui.vlink)
   100% { transform: rotate(360deg); }
 }
 
+@import url('//maxcdn.bootstrapcdn.com/font-awesome/4.2.0/css/font-awesome.min.css');
+
+.bandeau-message {
+  position: relative;
+  padding: 20px;
+  margin: 20px 0;
+  margin-bottom: 1rem;
+  border-radius: 3px 3px 3px 3px;
+  border: 1px solid transparent;
+    border-top-color: transparent;
+    border-top-style: solid;
+    border-top-width: 10px;
+    border-right-color: transparent;
+    border-right-style: solid;
+    border-right-width: 10px;
+    border-bottom-color: transparent;
+    border-bottom-style: solid;
+    border-bottom-width: 10px;
+    border-left-color: transparent;
+    border-left-style: solid;
+    border-left-width: 10px;
+    border-image-outset: 0;
+    border-image-repeat: stretch;
+    border-image-slice: 100%;
+    border-image-source: none;
+    border-image-width: 1;
+}
+
+.alert-success {
+  color: #155724;
+  padding: 20px;
+  border-radius : 3px 3px 3px 3px;
+  background-color: #d4edda;
+  border-color: #c3e6cb;
+    border-top-color: rgb(195, 230, 203);
+    border-right-color: rgb(195, 230, 203);
+    border-bottom-color: rgb(195, 230, 203);
+    border-left-color: rgb(195, 230, 203);
+}
+
+.error-msg,
+.info-msg {
+  margin: 11px 0;
+  padding: 10px;
+  border-radius: 5px 5px 5px 5px;
+}
+
+.error-msg {
+  display:none;
+  color: #D8000C;
+  background-color: #FFBABA;
+  width: 340px;
+}
+
+.info-msg{
+
+
+  margin-left : 20px;
+  
+   margin-right : 400px;
+  color: #059;
+  background-color: #BEF;
+}
+
+
 
 
 </style>
@@ -201,26 +266,45 @@ $page.setVlinkColor($ui.vlink)
 
 		
 			<div class="container"> 
-				<div class="withColor containerTitle">Step 1 : Enter Your ID and PASSWORD CLUSTER  </div>
-				<br/>
-				<div style="display:inline; ">
-					<div class="containerItem">
-						<label >ID user niolon </label>
-						<input type="text" id="idNiolon" name="iDniolon" placeholder="$placeholderId" required="true">
-						<br/><br/>
-				<!--    <label > Mot de passe </label>
-						<input type="password" id="password" name="password" placeholder="$placeholderPwd" required="true"> -->
-						<br><br>
-						<button class="btn1" id="btnGetPiplines" data="$content.getURI("/xapi/int-run-pipline/get-pipelines/$project")" > Get Pipelines</button>
-					</div>
+				<div class="withColor containerTitle">Step 1 : ENTER YOUR  ID TO GET PIPELINES EXISTS ON CLUSTER  </div>
+					<br/>
+					<div style="display:inline; ">
+						<div class="containerItem">	 			
+							<label > <strong> ID user niolon : </strong> </label>
+							<input type="text" id="idNiolon" name="iDniolon" placeholder="$placeholderId" required="true" >
+							<br/><br/>
+							<!--    <label > Mot de passe </label>
+							<input type="password" id="password" name="password" placeholder="$placeholderPwd" required="true"> -->	
+							<div class="error-msg" id="div-error-msg">
+								<i class="fa fa-times-circle"></i>
+								This id is not valide.
+							</div>
+							<button class="btn1" id="btnGetPiplines" data="$content.getURI("/xapi/int-run-pipline/get-pipelines/$project")" > Get Pipelines</button>
+						</div>
+
 				</div>	
-			<div style="display:inline; margin-left:400px; margin-top: -80px">	
-				<label class="access-label"> <strong>Pipelines exists on cluster </strong></label>
+
+			<div style="display:inline; margin-left:20px; margin-top: -80px">	
+				<label class="access-label"> <strong>Pipelines exists on cluster : </strong></label>
 				<select  id="monselectPipeLine" >
 					<option value="">Please choose a pipeline</option>
 				</select>	
 			</div>
-			<br/><br/><br/><br/>
+			<br/><br/>
+
+				<!--
+					<div class="bandeau-message"> 
+						<div class="alert-success" role="alert" tabindex="0"> 
+							Etape terminee le 8 mai 2022 a 23:19:01 
+						</div>
+					</div>
+				-->	
+				<div class="info-msg"  id="div-info-msg" style="display:none;">
+					  <i class="fa fa-info-circle" id="link-pipeline" > </i>
+  					   
+
+				</div>
+
 			</div>
 			<br>
 			<!--"display: inline; margin: auto;width: 50%; padding: 10px;"-->
@@ -412,6 +496,10 @@ $page.setVlinkColor($ui.vlink)
 		<P id="workindDirectory"></p>
 		<br><br>
         <p id="pathWithnNameScriptSbatch"></p>
+		<br><br>
+        <p id="pathErrorLogOut"></p>
+		<br><br>
+        <p id="pathErrorLogErr"></p>
       </div>
       <div class="modal-footer">
         <h3 style="text-color:white;">Votre job est encours d'execution</h3>
@@ -422,7 +510,6 @@ $page.setVlinkColor($ui.vlink)
       </div>
     </div>
   </div>
-
 
   <div id="loader"></div>
 
@@ -451,6 +538,7 @@ $page.setVlinkColor($ui.vlink)
 
 
 let nameSelectedTeam = "";
+let namfileTogenerateByBrowser = "";
 
 $(function() {
 
@@ -458,7 +546,7 @@ $(function() {
 
 		//get url
 		let _urlGetPiplines = document.getElementById("btnGetPiplines").getAttribute("data");
-			alert(_urlGetPiplines);
+			//alert(_urlGetPiplines);
 
 			let idCluster = $('#idNiolon').val();
 			//let password = $('#password').val();
@@ -482,8 +570,13 @@ $(function() {
 				data: {"idCluster":idCluster, "password":password, "subject_ids":subject_ids},
 				method:'POST',
 				success: function(data) {
-					if(data != null){
-					
+					if(data != null && data.null != "null"){
+						
+						console.log("Vous avez  reçu" + data.toString())
+					// To sort data
+						const sortObject = obj => Object.keys(obj).sort().reduce((res, key) => (res[key] = obj[key], res), {});
+						data = sortObject(data);
+						$("#div-error-msg").hide();
 						$("#div_step3").show();
 						var $select = $("#monselectPipeLine");                           // Locate HTML DOM element with ID "someselect".
 						$select.find("option").remove();                          // Find all child elements with tag name "option" and remove them (just to prevent duplicate options when button is pressed again).
@@ -491,12 +584,35 @@ $(function() {
 							$("<option>").val(key).text(value).appendTo($select); // Create HTML <option> element, set its value with currently iterated key and its text content with currently iterated item and finally append it to the <select>.
 
 						});
+						
+						$('#link-pipeline').html("  For more information about   <span style=\"color:blue\">"  +   $('#monselectPipeLine').val() 
+									+ "  </span> click  <a href=\"http://www.google.com\" target=\"_blank\">  <span style=\"color:blue\"> here </span> </a></h3>");
+
+						$('#div-info-msg').show();
+
+					}
+					
+					else {
+
+						console.log("aucune donnée reçu" + data);
+						$("#div_step3").hide();
+						$("#div-info-msg").hide();
+						$("#div-error-msg").show();
+
+						// Supprimer toutes les options si déja la liste était initialisée
+						$('#monselectPipeLine')
+							.empty()
+							.append('<option selected="selected" value="">Please choose a pipeline</option>');
 
 
 					}
+
+					
+
+
 					// Activer le bouton start computation
 					//$('#btnStartPipline').disabled =true;
-					alert("Tres bien envoyer")
+					//alert("Tres bien envoyer")
 
 					
 				}
@@ -532,6 +648,13 @@ $(function (){
 		 
 		//$('#nameExportDir').val("/hpc/" +nameSelectedTeam);
 		$('#nameSlurmJob').val($(this).find(":selected").val());
+
+		$('#link-pipeline').html("  For more information about   <span style=\"color:blue\">"  +   $('#monselectPipeLine').val() 
+					+ "  </span> click  <a href=\"http://www.google.com\" target=\"_blank\">  <span style=\"color:blue\"> here </span> </a></h3>");
+
+
+
+
 
 	
 	});
@@ -748,12 +871,19 @@ $(function() {
 				console.log(data.idJob)
 				console.log(data.workindDirectory)
 
-				
+				namfileTogenerateByBrowser = data.pathWithnNameScriptSbatch; 
+
 				$('#idJob').html(" <h3> Success :  <span style=\"color:blue\">"  +  data.idJob + " </span></h3>");
+				
 				$('#workindDirectory').html(" <h3> Path to export directory is  :  <span style=\"color:blue\">"  +  data.workindDirectory + " </span></h3>");
+				
 				$('#pathWithnNameScriptSbatch').html(" <h3> The full path and name of the generated file is :  <span style=\"color:blue\">"  +  data.pathWithnNameScriptSbatch + " </span></h3>");
 
+				$('#pathErrorLogOut').html(" <h3> The full path of Output log :  <span style=\"color:blue\">"  +  data.pathErrorLogOut + " </span></h3>");
+				
+				$('#pathErrorLogErr').html(" <h3> The full path of Error log :  <span style=\"color:blue\">"  +  data.pathErrorLogErr + " </span></h3>");
 
+					
 				openLoader()
 
 				setTimeout(function(){
@@ -847,10 +977,14 @@ document.getElementById("btnSave").addEventListener("click", function(){
    		/* pour récupérer le contenu du tag <p>    dans  le modal */
 	let text = document.getElementById('idJob').textContent 
 		    + "\n" + document.getElementById('workindDirectory').textContent 
-			+ "\n" + document.getElementById('pathWithnNameScriptSbatch').textContent; 
-	let nomfile = document.getElementById('workindDirectory').textContent + '.txt';
+			+ "\n" + document.getElementById('pathWithnNameScriptSbatch').textContent 
+			+ "\n" + document.getElementById('pathErrorLogOut').textContent
+			+ "\n" + document.getElementById('pathErrorLogErr').textContent;
 	
+	let nomfile = document.getElementById('workindDirectory').textContent + '.txt';
+		nomfile = nomfile.substring(nomfile.lastIndexOf("/") +1);
 
+	//var prompta = prompt('Please enter file name to save', 'text par défaut ');	
     
     
     download(nomfile, text);
