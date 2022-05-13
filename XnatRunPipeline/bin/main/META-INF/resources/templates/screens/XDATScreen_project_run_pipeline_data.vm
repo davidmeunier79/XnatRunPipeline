@@ -244,6 +244,8 @@ $page.setVlinkColor($ui.vlink)
 }
 
 .info-msg{
+
+
   margin-left : 20px;
   
    margin-right : 400px;
@@ -297,9 +299,9 @@ $page.setVlinkColor($ui.vlink)
 						</div>
 					</div>
 				-->	
-				<div class="info-msg">
-					  <i class="fa fa-info-circle"></i>
-  					   This is an info message.
+				<div class="info-msg"  id="div-info-msg" style="display:none;">
+					  <i class="fa fa-info-circle" id="link-pipeline" > </i>
+  					   
 
 				</div>
 
@@ -568,8 +570,12 @@ $(function() {
 				data: {"idCluster":idCluster, "password":password, "subject_ids":subject_ids},
 				method:'POST',
 				success: function(data) {
-					if(data != null){
-
+					if(data != null && data.null != "null"){
+						
+						console.log("Vous avez  reçu" + data.toString())
+					// To sort data
+						const sortObject = obj => Object.keys(obj).sort().reduce((res, key) => (res[key] = obj[key], res), {});
+						data = sortObject(data);
 						$("#div-error-msg").hide();
 						$("#div_step3").show();
 						var $select = $("#monselectPipeLine");                           // Locate HTML DOM element with ID "someselect".
@@ -578,14 +584,30 @@ $(function() {
 							$("<option>").val(key).text(value).appendTo($select); // Create HTML <option> element, set its value with currently iterated key and its text content with currently iterated item and finally append it to the <select>.
 
 						});
+						
+						$('#link-pipeline').html("  For more information about   <span style=\"color:blue\">"  +   $('#monselectPipeLine').val() 
+									+ "  </span> click  <a href=\"http://www.google.com\" target=\"_blank\">  <span style=\"color:blue\"> here </span> </a></h3>");
 
-
+						$('#div-info-msg').show();
 
 					}
-
+					
 					else {
-					$("#div-error-msg").show();
+
+						console.log("aucune donnée reçu" + data);
+						$("#div_step3").hide();
+						$("#div-info-msg").hide();
+						$("#div-error-msg").show();
+
+						// Supprimer toutes les options si déja la liste était initialisée
+						$('#monselectPipeLine')
+							.empty()
+							.append('<option selected="selected" value="">Please choose a pipeline</option>');
+
+
 					}
+
+					
 
 
 					// Activer le bouton start computation
@@ -626,6 +648,13 @@ $(function (){
 		 
 		//$('#nameExportDir').val("/hpc/" +nameSelectedTeam);
 		$('#nameSlurmJob').val($(this).find(":selected").val());
+
+		$('#link-pipeline').html("  For more information about   <span style=\"color:blue\">"  +   $('#monselectPipeLine').val() 
+					+ "  </span> click  <a href=\"http://www.google.com\" target=\"_blank\">  <span style=\"color:blue\"> here </span> </a></h3>");
+
+
+
+
 
 	
 	});

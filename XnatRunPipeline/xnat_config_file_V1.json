@@ -9,7 +9,7 @@
       "URI_HOST_XNAT" : "--host http://10.164.0.82:8080 ",
       "teamNames" : ["bagamore","brainets", "comco", "imapath", "invibe", "meca", "neopto",
             "p3m", "scalp", "banco", "canop", "crise", "inphim", "irmf", "mircos", "nit", "sane"],
-      "listPipelines" : ["macapype_v0.2.2.13.sif", "macapype_v0.3.dev11.sif", "macapype_test_local_build.sif", "fmriprep-20.0.4.sif", 
+      "listPipelines" : ["macapype_v0.2.2.13.sif", "macapype_v0.3.0.1.sif", "macapype_v0.3.0.2.sif",  "fmriprep-20.0.4.sif", 
             "mriqc_0.16.1.sif",  "mriqc_0.14.2.sif", "qsiprep_0.14.3.sif", "bids_validator_v1.8.1-dev.0.sif"],
 
 
@@ -37,8 +37,8 @@
             "basicParameters" : "" 
       },
 
-      "macapype_v0.3.dev11.sif" : {
-            "name" : "macapype_v0.3.dev11.sif",
+      "macapype_v0.3.0.1.sif" : {
+            "name" : "macapype_v0.3.0.1.sif",
             "linkDoc":"https://qsiprep.readthedocs.io/en/latest/",
             "singularityCleanEnv" : "",
             "inputDataBids" : "data/macapype ",
@@ -54,9 +54,9 @@
             "basicParameters" : "" 
       },
 
-      "macapype_test_local_build.sif" : {
-            "name" : "macapype_test_local_build.sif",
-            "linkDoc":"https://macatools.github.io/macapype/",
+      "macapype_v0.3.0.2.sif" : {
+            "name" : "macapype_v0.3.0.2.sif",
+            "linkDoc":"https://qsiprep.readthedocs.io/en/latest/",
             "singularityCleanEnv" : "",
             "inputDataBids" : "data/macapype ",
             "output" : "out " ,
@@ -69,7 +69,6 @@
             "commande_participant" : "",
             "work_dir_params" : "" ,
             "basicParameters" : "" 
-         
       },
 
       "fmriprep-20.0.4.sif" : {

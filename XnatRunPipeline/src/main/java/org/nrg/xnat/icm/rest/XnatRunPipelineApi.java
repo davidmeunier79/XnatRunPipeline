@@ -246,6 +246,11 @@ public class XnatRunPipelineApi
         String cle6 = "cle6";
         String valeur6 = "mriqc_0.16.1.simg";
         
+        response.setContentType("application/json");
+            
+        response.setCharacterEncoding("UTF-8");
+        
+        JSONObject obj = new JSONObject();
             
 
         //final SSHConnection sshConncetion = new SSHConnection();
@@ -254,9 +259,9 @@ public class XnatRunPipelineApi
 
 
 
-              Map<String, String> _listPipelines  = new HashMap<>();
+                Map<String, String> _listPipelines  = new HashMap<>();
 
-            /*try {
+                /*try {
                 /*
                 doConnectionCluster(passwordniolon);
                 */
@@ -268,30 +273,29 @@ public class XnatRunPipelineApi
     
                 listImages = new String[jsonArray.size()];
     
-                for (Object team : jsonArray) {
+                for (Object pipeline : jsonArray) {
                     
-                    _listPipelines.put(team.toString(), team.toString());
+                    _listPipelines.put(pipeline.toString(), pipeline.toString());
     
-                    log("  " + team.toString() + " :  " + team.toString());
+                    log("  " + pipeline.toString() + " :  " + pipeline.toString());
                 }   
-
-                response.setContentType("application/json");
-            
-                response.setCharacterEncoding("UTF-8");
-                
-                JSONObject obj = new JSONObject();
         
                 obj.putAll(_listPipelines);
                 
-                log(obj.toString());
-        
-                PrintWriter out = response.getWriter();
-        
-                out.print(obj);
-        
-                out.flush();
                 
+            } else {
+
+                obj.put("null","null");
+
             }
+
+            log(" l'objet de la liste des pipelines a envoyer est "+ obj.toString());
+        
+            PrintWriter out = response.getWriter();
+    
+            out.print(obj);
+    
+            out.flush();
 
 
             /*        
@@ -671,7 +675,7 @@ public class XnatRunPipelineApi
         }catch (SftpException sftpe){
             sftpe.printStackTrace();
         } 
-           */     
+          */     
         log("done !");
 
 
@@ -969,13 +973,18 @@ public class XnatRunPipelineApi
             final BufferedReader br = new BufferedReader(isr);
             ligne = br.readLine();
             
-            System.out.println(ligne);
+            System.out.println("le res de groups " + idUser + " est : "+ ligne);
         }
         catch (Exception e) {
             log(e.toString());
         }
 
-        return !(ligne.contains("no such user"));
+        if(ligne != null){
+            return true;
+        }
+            //return !(ligne.contains("no such user")); 
+        else return false; 
+        
     }
 
     /* la méthode qui permet de  recupere le contenu la liste des images singularity sur niolon */
