@@ -622,21 +622,6 @@ $(function (){
 
 
 
-		//alert( $(this).find(":selected").val());
-		/*
-		let id456 = $('#id456') ;
-
-		id456.html( $(this).find(":selected").val());
-
-		let d1 = document.getElementById("divInfoPipeline");
-
-		if(getComputedStyle(d1).display != "none"){
-   			d1.style.display = "none";
-  		} else {
-    		d1.style.display = "block";
-  		}
-		  */
-
 		 
 		//$('#nameExportDir').val("/hpc/" +nameSelectedTeam);
 		$('#nameSlurmJob').val($(this).find(":selected").val());
