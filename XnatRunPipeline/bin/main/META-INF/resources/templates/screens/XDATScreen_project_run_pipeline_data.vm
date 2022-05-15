@@ -442,16 +442,6 @@ $page.setVlinkColor($ui.vlink)
 	
 	</form>
 
-
-
-
-<!-- 
-<div id="loader" class="loader loader-default" data-text="Loading ... This may take a while between 20 to 30 min. Thanks" data-blink>
-	<div id='forframe'></div>
-</div>
--->
-
-
 <!--<button id="modal-btn" class="button">Click Here</button> -->
 
   <div id="my-modal" class="modal">
