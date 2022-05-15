@@ -272,20 +272,23 @@ public class XnatRunPipelineApi
                 JSONArray jsonArray = (JSONArray) jsonObject.get("listPipelines");
     
                 listImages = new String[jsonArray.size()];
-    
+                
+                /*
                 for (Object pipeline : jsonArray) {
                     
                     _listPipelines.put(pipeline.toString(), pipeline.toString());
     
                     log("  " + pipeline.toString() + " :  " + pipeline.toString());
-                }   
-        
-                obj.putAll(_listPipelines);
+                }*/   
+                
+                obj.put("pipelines", jsonArray);
+
+                //obj.putAll(_listPipelines);
                 
                 
             } else {
 
-                obj.put("null","null");
+                obj.put("pipelines","null");
 
             }
 

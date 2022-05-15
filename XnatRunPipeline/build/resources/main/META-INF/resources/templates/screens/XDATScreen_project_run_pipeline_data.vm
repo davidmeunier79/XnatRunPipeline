@@ -262,7 +262,7 @@ $page.setVlinkColor($ui.vlink)
 <h2>INT : RUN Pipeline for $PROJECT_DISPLAY_NAME [$project] </h2>
 	
 		<!-- action="$content.getURI("/xapi/icm-export-data/export-files/$project")" -->
-	<form id="export-project-data-form" class="noHide" action="$content.getURI("/xapi/icm-export-data/export-files/$project")" method="POST" >
+	<form id="export-project-data-form" class="noHide" action='$content.getURI("/xapi/icm-export-data/export-files/$project")' method="POST" >
 
 		
 			<div class="container"> 
@@ -272,14 +272,14 @@ $page.setVlinkColor($ui.vlink)
 						<div class="containerItem">	 			
 							<label > <strong> ID user niolon : </strong> </label>
 							<input type="text" id="idNiolon" name="iDniolon" placeholder="$placeholderId" required="true" >
-							<br/><br/>
 							<!--    <label > Mot de passe </label>
 							<input type="password" id="password" name="password" placeholder="$placeholderPwd" required="true"> -->	
+							<button class="btn1" id="btnGetPiplines" data='$content.getURI("/xapi/int-run-pipline/get-pipelines/$project")' > Get Pipelines</button>
+							<br/><br/>
 							<div class="error-msg" id="div-error-msg">
 								<i class="fa fa-times-circle"></i>
 								This id is not valide.
 							</div>
-							<button class="btn1" id="btnGetPiplines" data="$content.getURI("/xapi/int-run-pipline/get-pipelines/$project")" > Get Pipelines</button>
 						</div>
 
 				</div>	
@@ -570,12 +570,15 @@ $(function() {
 				data: {"idCluster":idCluster, "password":password, "subject_ids":subject_ids},
 				method:'POST',
 				success: function(data) {
-					if(data != null && data.null != "null"){
+					if(data.pipelines !="null"){
 						
 						console.log("Vous avez  reçu" + data.toString())
 					// To sort data
+						
+						
+						
 						const sortObject = obj => Object.keys(obj).sort().reduce((res, key) => (res[key] = obj[key], res), {});
-						data = sortObject(data);
+						data = sortObject(data.pipelines);
 						$("#div-error-msg").hide();
 						$("#div_step3").show();
 						var $select = $("#monselectPipeLine");                           // Locate HTML DOM element with ID "someselect".
@@ -585,7 +588,7 @@ $(function() {
 
 						});
 						
-						$('#link-pipeline').html("  For more information about   <span style=\"color:blue\">"  +   $('#monselectPipeLine').val() 
+						$('#link-pipeline').html("  For more information about   <span style=\"color:blue\">"  +   $('#monselectPipeLine option:selected').text() 
 									+ "  </span> click  <a href=\"http://www.google.com\" target=\"_blank\">  <span style=\"color:blue\"> here </span> </a></h3>");
 
 						$('#div-info-msg').show();
@@ -594,7 +597,7 @@ $(function() {
 					
 					else {
 
-						console.log("aucune donnée reçu" + data);
+						//console.log("aucune donnée reçu" + data);
 						$("#div_step3").hide();
 						$("#div-info-msg").hide();
 						$("#div-error-msg").show();
