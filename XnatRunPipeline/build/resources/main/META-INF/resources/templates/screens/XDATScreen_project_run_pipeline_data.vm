@@ -442,10 +442,9 @@ $page.setVlinkColor($ui.vlink)
 	
 	</form>
 
-<!--
 
-<div id="a"></div>
--->
+
+
 <!-- 
 <div id="loader" class="loader loader-default" data-text="Loading ... This may take a while between 20 to 30 min. Thanks" data-blink>
 	<div id='forframe'></div>
@@ -1047,8 +1046,10 @@ function outsideClick(e) {
 
 // Open
 function openLoader() {
-
+   
+  loader.style.opacity = 
   loader.style.display = 'block';
+
 	
 }
 
