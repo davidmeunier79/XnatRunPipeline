@@ -273,12 +273,12 @@ public class XnatRunPipelineApi
 
 
 
-    /* Cette fonction permet de récuperer les le lien de la doc qui correspond à un pipeline */
+    /* Cette fonction permet de récuperer les les infos(lien de la doc, commande befor, after , participant, ...,  qui correspond à un pipeline */
     @ApiOperation(value = "Get link of pipeline", notes = "Custom")
     @ApiResponses({ @ApiResponse(code = 200, message = "Connection success "), @ApiResponse(code = 401, message = "Must be authenticated to access the XNAT Rest Api"), @ApiResponse(code = 500, message = "Unexpected internal serval error") })
-    @RequestMapping(value = { "/get-link-pipeline" }, produces = { "application/json" }, method = { RequestMethod.POST })
+    @RequestMapping(value = { "/get-infos-pipeline" }, produces = { "application/json" }, method = { RequestMethod.POST })
     @ResponseBody  
-    public void getLinkOfPipeline(final HttpServletResponse response, @RequestParam("pipelineSelected") final String pipelineSelected)  throws IOException{
+    public void getInfoAboutPipelineSelected(final HttpServletResponse response, @RequestParam("pipelineSelected") final String pipelineSelected)  throws IOException{
 
 
         if(jsonObject.equals(null)){
@@ -298,6 +298,9 @@ public class XnatRunPipelineApi
         }
 
         String linkDoc = (String) ((JSONObject) getJsonObjectByKey(jsonObject,pipelineSelected)).get("linkDoc");
+        String commande_befor = (String) ((JSONObject) getJsonObjectByKey(jsonObject,pipelineSelected)).get("commande_befor");
+        String commande_after = (String) ((JSONObject) getJsonObjectByKey(jsonObject,pipelineSelected)).get("commande_after");
+        String commande_participant = (String) ((JSONObject) getJsonObjectByKey(jsonObject,pipelineSelected)).get("commande_participant");
         // Préparer le listSessionOfSubject à envoyer en json
 
         response.setContentType("application/json");
@@ -307,7 +310,11 @@ public class XnatRunPipelineApi
         JSONObject obj = new JSONObject();
 
         obj.put("linkDoc",linkDoc);
-        
+        obj.put("commande_befor", commande_befor);
+        obj.put("commande_after", commande_after);
+        obj.put("commande_participant", commande_participant);
+
+    
         log("lien a envoyer est  : " +obj.toString());
 
         PrintWriter out = response.getWriter();
@@ -331,7 +338,9 @@ public class XnatRunPipelineApi
     @RequestMapping(value = { "/start-pipeline/{id_project}" }, produces = { "application/json" }, method = { RequestMethod.POST })
     @ResponseBody
     public void startPipelineInCluster(final HttpServletResponse response, @PathVariable final String id_project, @RequestParam("selectPipeline") final String selectPipeline,  @RequestParam("idCluster") final String  userName, @RequestParam("subject_ids") final String subject_ids, @RequestParam("nameExportDir") final String nameExportDir, 
-                 @RequestParam("additionalParams") final String additionalParams,@RequestParam("sessions_ids") final String sessions_ids)  throws IOException{
+                 @RequestParam("additionalParams") final String additionalParams, @RequestParam("sessions_ids") final String sessions_ids, 
+                    @RequestParam("radioValue")  final String radioValue, @RequestParam("commande_befor")  final String commande_befor, @RequestParam("commande_after")  final String commande_after,
+                    @RequestParam("commande_participant")  final String commande_participant)  throws IOException{
 
         final UserI xnatUser = XDAT.getUserDetails();
         final String idCluster = xnatUser.getUsername().replace("_", ".");
@@ -471,8 +480,9 @@ public class XnatRunPipelineApi
             + "\n" + "" + commandeDownloadData(listOfSubjectWithCamasSeparated, id_project, inputAndOutputDirectory, listOfSubjectWithSpaceSeparated, sessions_ids)
             + "\n" + LOAD_IMG_SINGULARITY
             /*+ "\n" + whichCommandSingularity(selectPipeline, inputAndOutputDirectory)*/
-            + "\n" + prepareCommandSingularity(selectPipeline,inputAndOutputDirectory,id_project)
-            + "  "  + additionalParams + "\n";
+            + "\n" + prepareCommandSingularity(selectPipeline,inputAndOutputDirectory,id_project, commande_befor, commande_after, commande_participant)
+            + "  " + additionalParams + "\n"
+            + "\n" + deleteOrNotDataAfterConversionToBIDS(radioValue,inputAndOutputDirectory + "/" + id_project);
             
             log(SCRIPT_SBATCH_GLOBAL);        
 
@@ -482,10 +492,10 @@ public class XnatRunPipelineApi
         
 
         log("\nLa commade généer avec la nouvele fonction est : ");
-        log(prepareCommandSingularity(selectPipeline,inputAndOutputDirectory,id_project));
+        log(prepareCommandSingularity(selectPipeline,inputAndOutputDirectory,id_project, commande_befor, commande_after, commande_participant));
         
         // To send file to the cluster
-       /*
+       
         try{
 
            ligneRetunrCommandeStartPipeline = sendFileToCluster(passwordniolon,namFileGenerated, idCluster);
@@ -508,7 +518,7 @@ public class XnatRunPipelineApi
         }catch (SftpException sftpe){
             sftpe.printStackTrace();
         } 
-          */     
+             
         log("done !");
 
 
@@ -552,7 +562,8 @@ public class XnatRunPipelineApi
 
 
     /* Return la commande singularity selon le pipeline choisi */
-    public String prepareCommandSingularity(String selectPipeline, String inputAndOutputDirectory, String id_project){
+    public String prepareCommandSingularity(String selectPipeline, String inputAndOutputDirectory, String id_project, String commande_befor, 
+        String commande_after, String commande_participant){
 
         /* Le répértoire où sont les données en BIDS */
         String dirData = inputAndOutputDirectory + "/" + id_project + "BIDS";
@@ -567,9 +578,9 @@ public class XnatRunPipelineApi
         String licence_Params = (String) ((JSONObject) getJsonObjectByKey(jsonObject,selectPipeline)).get("licence_Params");
         String output_key = (String) ((JSONObject) getJsonObjectByKey(jsonObject,selectPipeline)).get("output_key");
         String data_key = (String) ((JSONObject) getJsonObjectByKey(jsonObject,selectPipeline)).get("data_key");
-        String commande_befor = (String) ((JSONObject) getJsonObjectByKey(jsonObject,selectPipeline)).get("commande_befor");
-        String commande_after = (String) ((JSONObject) getJsonObjectByKey(jsonObject,selectPipeline)).get("commande_after");
-        String commande_participant = (String) ((JSONObject) getJsonObjectByKey(jsonObject,selectPipeline)).get("commande_participant");
+        //String commande_befor = (String) ((JSONObject) getJsonObjectByKey(jsonObject,selectPipeline)).get("commande_befor");
+        //String commande_after = (String) ((JSONObject) getJsonObjectByKey(jsonObject,selectPipeline)).get("commande_after");
+        //String commande_participant = (String) ((JSONObject) getJsonObjectByKey(jsonObject,selectPipeline)).get("commande_participant");
         String work_dir_params = (String) ((JSONObject) getJsonObjectByKey(jsonObject,selectPipeline)).get("work_dir_params");
         String basicParameters = (String) ((JSONObject) getJsonObjectByKey(jsonObject,selectPipeline)).get("basicParameters");
 
@@ -618,6 +629,18 @@ public class XnatRunPipelineApi
     }
 
 
+
+    /* Cette fonction permet de générer  la commande qui permet de supprimer (ou non) les donner après la conversion en bids */
+    public String deleteOrNotDataAfterConversionToBIDS(String selectPipeline , String pathDataToDelet){
+
+        if(selectPipeline.equals("yes")){
+            return "rm -rf " + pathDataToDelet + "\n";
+        }
+        else {
+            return "";
+        }
+
+    }
 
 
 

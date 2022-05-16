@@ -229,6 +229,7 @@ $page.setVlinkColor($ui.vlink)
     border-left-color: rgb(195, 230, 203);
 }
 
+.success-msg,
 .error-msg,
 .info-msg {
   margin: 11px 0;
@@ -241,6 +242,11 @@ $page.setVlinkColor($ui.vlink)
   color: #D8000C;
   background-color: #FFBABA;
   width: 340px;
+}
+
+.success-msg {
+  color: #270;
+  background-color: #DFF2BF;
 }
 
 .info-msg{
@@ -262,7 +268,7 @@ $page.setVlinkColor($ui.vlink)
 <h2>INT : RUN Pipeline for $PROJECT_DISPLAY_NAME [$project] </h2>
 	
 		<!-- action="$content.getURI("/xapi/icm-export-data/export-files/$project")" -->
-	<form id="export-project-data-form" class="noHide" action='$content.getURI("/xapi/icm-export-data/export-files/$project")' method="POST" >
+	<div id="export-project-data-form" class="noHide"  >
 
 		
 			<div class="container"> 
@@ -373,6 +379,10 @@ $page.setVlinkColor($ui.vlink)
 			
 			<div class="containerItem">
 			
+			<div class="success-msg">
+				<i class="fa fa-info-circle"></i>
+				Set computation parameters
+			</div>
 				<h3 id="monColor"  >Choose the name of your team 
 					<span class="tip_icon" style="margin-right:3px;">
 				 		<span class="tip shadowed" style="top:20px;z-index:10000;white-space:normal;left:0x;width:300px;background-color:#ffc;">
@@ -391,6 +401,40 @@ $page.setVlinkColor($ui.vlink)
 				</div>
 
 				<br/>
+
+
+
+				<label > <h3> Name Export Dir ( E.G :  /hpc/team)
+							<span class="tip_icon" style="margin-right:3px;">
+				 				<span class="tip shadowed" style="top:20px;z-index:10000;white-space:normal;left:0x;width:300px;background-color:#ffc;">
+				 					This field is not editable, it allows you to make sure that you have chosen the right working directory 
+								</span>
+							</span>
+						</h3>
+				</label>
+				<input class="inputStep3" type="text" id="nameExportDir" name="nameExportDir" disabled required>
+				<br/><br/>
+					<div style="display: inline-block;"> 
+						<label> <strong> Delete raw data after BIDS conversion ? </strong></label>
+						<label>
+							<input type="radio" name="choice-radio" value="yes">
+							Yes
+						</label>
+						
+						<label>
+							<input type="radio" name="choice-radio" value="no" checked>
+							No
+						</label>
+
+						<span class="tip_icon" style="margin-right:10px;">
+				 				<span class="tip shadowed" style="top:20px;z-index:10000;white-space:normal;left:0x;width:300px;background-color:#ffc;">
+				 					If you want to <strong>delete </strong> the data once the conversion to BIDS has been done click on <strong>Yes</strong>
+								</span>
+						</span>
+
+					</div>
+
+				<br/> <br/>
 				<label > <h3> Name of Slurm Job (optional) 
 					<span class="tip_icon" style="margin-right:3px;">
 				 		<span class="tip shadowed" style="top:20px;z-index:10000;white-space:normal;left:0x;width:300px;background-color:#ffc;">
@@ -402,8 +446,51 @@ $page.setVlinkColor($ui.vlink)
 				</label>
 				<input class="inputStep3" type="text" id="nameSlurmJob" name="nameSlurmJob" >
 				<br/><br/>
+			
+				<div class="success-msg">
+					<i class="fa fa-info-circle"></i>
+					Set command parameters
+				</div>
 
-				<label > <h3> Additional parameters 
+
+
+				<label > <h3> command start 
+
+							<span class="tip_icon" style="margin-right:3px;">
+				 				<span class="tip shadowed" style="top:20px;z-index:10000;white-space:normal;left:0x;width:300px;background-color:#ffc;">
+				 					If you have other parameters that you consider interesting for the Singularity command , add them here.  Separate by spaces !
+								</span>
+							</span>
+						
+						 </h3></label>
+				<input class="inputStep3" type="text" id="commande_befor" name="commande_befor" >
+				<br/><br/>
+				<label > <h3> command parameters 
+
+							<span class="tip_icon" style="margin-right:3px;">
+				 				<span class="tip shadowed" style="top:20px;z-index:10000;white-space:normal;left:0x;width:300px;background-color:#ffc;">
+				 					If you have other parameters that you consider interesting for the Singularity command , add them here.  Separate by spaces !
+								</span>
+							</span>
+						
+						 </h3></label>
+				<input class="inputStep3" type="text" id="commande_after" name="commande_after" >
+				<br/><br/>
+				<label > <h3> command participant parameters
+
+							<span class="tip_icon" style="margin-right:3px;">
+				 				<span class="tip shadowed" style="top:20px;z-index:10000;white-space:normal;left:0x;width:300px;background-color:#ffc;">
+				 					If you have other parameters that you consider interesting for the Singularity command , add them here.  Separate by spaces !
+								</span>
+							</span>
+						
+						 </h3></label>
+				<input class="inputStep3" type="text" id="commande_participant" name="commande_participant" >
+				<br/><br/>
+
+
+
+				<label > <h3> command extra parameters 
 
 							<span class="tip_icon" style="margin-right:3px;">
 				 				<span class="tip shadowed" style="top:20px;z-index:10000;white-space:normal;left:0x;width:300px;background-color:#ffc;">
@@ -414,18 +501,7 @@ $page.setVlinkColor($ui.vlink)
 						 </h3></label>
 				<input class="inputStep3" type="text" id="additionalParams" name="additionalParams" >
 				<br/><br/>
-
-				<label > <h3> Name Export Dir ( E.G :  /hpc/team/name.f/pipelineOutput)
-							<span class="tip_icon" style="margin-right:3px;">
-				 				<span class="tip shadowed" style="top:20px;z-index:10000;white-space:normal;left:0x;width:300px;background-color:#ffc;">
-				 					This field is not editable, it allows you to make sure that you have chosen the right working directory 
-								</span>
-							</span>
-						</h3>
-				</label>
-				<input class="inputStep3" type="text" id="nameExportDir" name="nameExportDir" disabled required>
-				<br/><br/>
-				<button class="btn1" id="btnStartPipline" data="$content.getURI("/xapi/int-run-pipline/start-pipeline/$project")" > start computation </button>
+				<button class="btn1" id="btnStartPipline" data='$content.getURI("/xapi/int-run-pipline/start-pipeline/$project")' > start computation </button>
 
 			</div>
 			
@@ -440,7 +516,7 @@ $page.setVlinkColor($ui.vlink)
 		</div>
 
 	
-	</form>
+	</div>
 
 <!--<button id="modal-btn" class="button">Click Here</button> -->
 
@@ -510,18 +586,15 @@ $page.setVlinkColor($ui.vlink)
 
 
 
-
-
-
-
 <script>
 
 
 
-
+/*
  $(function() {
     $( document ).tooltip();
   });
+  */
 
 
 
@@ -553,6 +626,7 @@ $(function() {
 			console.log("  tu as choisis les sujet : "+subject_ids);
 
 			let selectOptionsPipeline = "";
+			
 
 			$.ajax({
 				url: _urlGetPiplines,
@@ -578,7 +652,7 @@ $(function() {
 						});
 
 						const pipeline = $('#monselectPipeLine option:selected').text()
-						printLinkPipelineSelected(pipeline); // reccupérer le lien de la doc du pipeline selectionné
+						getInfAboutPipelineSelected(pipeline); // reccupérer le lien de la doc du pipeline selectionné
 
 						$('#div-info-msg').show();
 
@@ -626,9 +700,10 @@ $(function (){
 
 		let pipeline  = $(this).find(":selected").text();
 		
-		printLinkPipelineSelected(pipeline);
+		getInfAboutPipelineSelected(pipeline);
 
 		$('#nameSlurmJob').val(pipeline);
+
 
 	});
 
@@ -761,9 +836,9 @@ $(function (){
 
 
 
-function printLinkPipelineSelected(pipeline) {
+function getInfAboutPipelineSelected(pipeline) {
 
-	let _url = "/xapi/int-run-pipline/get-link-pipeline";
+	let _url = "/xapi/int-run-pipline/get-infos-pipeline";
 
 
 	$.ajax({
@@ -779,7 +854,13 @@ function printLinkPipelineSelected(pipeline) {
 				$('#link-pipeline').html('  For more information about   <span style="color:blue">'  +    pipeline
 					+ '  </span> click  <a href="' + data.linkDoc + '" target="_blank">  <span style="color:blue"> here </span> </a></h3>');
 				
+				$('#commande_befor').val(data.commande_befor);
+				$('#commande_after').val(data.commande_after);
+				$('#commande_participant').val(data.commande_participant);
+				
 				$('#div-info-msg').show();
+
+
 
 			}
 
@@ -850,6 +931,9 @@ $(function() {
 		let subject_ids = $('#subjects_list').val();
 		let nameExportDir = $('#nameExportDir').val();
 		let additionalParams = $('#additionalParams').val();
+		let commande_befor = $('#commande_befor').val();
+		let commande_after = $('#commande_after').val();
+		let commande_participant = $('#commande_participant').val();
 		
 		subject_ids = subject_ids.toString();
 
@@ -857,11 +941,13 @@ $(function() {
 
 				subject_ids = "all";
 			}
-
+		
+		let radioValue = $("input[name='choice-radio']:checked").val(); // si (yes/no) pour supprimer les données après la conversion
 
 		$.ajax({
 			url: _urlStarttPiplines,
-			data: {"idCluster":idCluster, "selectPipeline":selectPipeline, "subject_ids":subject_ids,"nameExportDir":nameExportDir,"additionalParams":additionalParams, "sessions_ids":_sessions_ids},
+			data: {"idCluster":idCluster, "selectPipeline":selectPipeline, "subject_ids":subject_ids,"nameExportDir":nameExportDir, "additionalParams":additionalParams, 
+				"sessions_ids":_sessions_ids, "radioValue":radioValue, "commande_befor":commande_befor, "commande_after":commande_after, "commande_participant" : commande_participant},
 			method:'POST',
 			success: function(data) {
 				
@@ -914,7 +1000,6 @@ $(function() {
 
 
 });
-
 
 
 
@@ -1107,30 +1192,7 @@ function outsideClickContinue(e) {
 
 
 
-
-function insertAfter(referenceNode, newNode) {
-  referenceNode.parentNode.insertBefore(newNode, referenceNode.nextSibling);
-}
-
-function prepareFrame() {	
-        var ifrm = document.createElement("iframe");
-		ifrm.setAttribute("src", "https://wayou.github.io/t-rex-runner/");
-		ifrm.setAttribute("class", "framed");
-		ifrm.setAttribute("name", "framed");
-		ifrm.setAttribute("autofocus", "true");
-		ifrm.setAttribute("scrolling","no");
-		ifrm.setAttribute("muted","true");
-		
-		ifrm.setAttribute("volume","0");
-        ifrm.style.width = "640px";
-		ifrm.style.height = "480px";
-			
-		var div = document.getElementById("forframe");
-		insertAfter(div, ifrm);
-		ifrm.contentWindow.focus();
-	}
-
-
+/*
 $(function() {
   $('#export-project-data-form').submit(function(e) {
 	event.preventDefault();
@@ -1144,9 +1206,9 @@ $(function() {
 	}
 	processExportProjectForm ();
 	document.getElementById("loader").classList.add('is-active');
-	document.getElementById("mysubmit").blur();
+	//document.getElementById("mysubmit").blur();
 	setTimeout(function() {
-			prepareFrame();
+			//prepareFrame();
 		document.getElementById("loader").setAttribute("data-text", "Loading... Bored.... Press spacebar to start");
 
 	 }, 15000); 
@@ -1193,7 +1255,7 @@ $(function() {
     });		
 });
 
-
+*/
 
 
 $(function () {
