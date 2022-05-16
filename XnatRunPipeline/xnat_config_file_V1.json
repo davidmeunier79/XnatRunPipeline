@@ -39,7 +39,7 @@
 
       "macapype_v0.3.0.1.sif" : {
             "name" : "macapype_v0.3.0.1.sif",
-            "linkDoc":"https://qsiprep.readthedocs.io/en/latest/",
+            "linkDoc":"https://macatools.github.io/macapype/",
             "singularityCleanEnv" : "",
             "inputDataBids" : "data/macapype ",
             "output" : "out " ,
@@ -56,7 +56,7 @@
 
       "macapype_v0.3.0.2.sif" : {
             "name" : "macapype_v0.3.0.2.sif",
-            "linkDoc":"https://qsiprep.readthedocs.io/en/latest/",
+            "linkDoc":"https://macatools.github.io/macapype/",
             "singularityCleanEnv" : "",
             "inputDataBids" : "data/macapype ",
             "output" : "out " ,

@@ -576,9 +576,9 @@ $(function() {
 							$("<option>").val(key).text(value).appendTo($select); // Create HTML <option> element, set its value with currently iterated key and its text content with currently iterated item and finally append it to the <select>.
 
 						});
-						
-						$('#link-pipeline').html("  For more information about   <span style=\"color:blue\">"  +   $('#monselectPipeLine option:selected').text() 
-									+ "  </span> click  <a href=\"http://www.google.com\" target=\"_blank\">  <span style=\"color:blue\"> here </span> </a></h3>");
+
+						const pipeline = $('#monselectPipeLine option:selected').text()
+						printLinkPipelineSelected(pipeline); // reccupérer le lien de la doc du pipeline selectionné
 
 						$('#div-info-msg').show();
 
@@ -599,7 +599,6 @@ $(function() {
 
 					}
 
-					
 
 
 					// Activer le bouton start computation
@@ -624,16 +623,13 @@ $(function (){
 
 		 
 		//$('#nameExportDir').val("/hpc/" +nameSelectedTeam);
-		$('#nameSlurmJob').val($(this).find(":selected").val());
 
-		$('#link-pipeline').html("  For more information about   <span style=\"color:blue\">"  +   $('#monselectPipeLine').val() 
-					+ "  </span> click  <a href=\"http://www.google.com\" target=\"_blank\">  <span style=\"color:blue\"> here </span> </a></h3>");
+		let pipeline  = $(this).find(":selected").text();
+		
+		printLinkPipelineSelected(pipeline);
 
+		$('#nameSlurmJob').val(pipeline);
 
-
-
-
-	
 	});
 
 });
@@ -763,6 +759,43 @@ $(function (){
 
 
 
+
+
+function printLinkPipelineSelected(pipeline) {
+
+	let _url = "/xapi/int-run-pipline/get-link-pipeline";
+
+
+	$.ajax({
+		url: _url,
+		method:'POST',
+		data: {"pipelineSelected":pipeline},
+
+		success: function(data) {
+			
+			if(data != null){
+				console.log("link de ce pipeline est : " + data)
+
+				$('#link-pipeline').html('  For more information about   <span style="color:blue">'  +    pipeline
+					+ '  </span> click  <a href="' + data.linkDoc + '" target="_blank">  <span style="color:blue"> here </span> </a></h3>');
+				
+				$('#div-info-msg').show();
+
+			}
+
+			else {
+			console.log("vous avez pas recu de linkDoc")
+			}
+			
+
+		}
+	});	
+
+
+}
+
+
+
 /* Cette fonction permet d'envoyer les paramètres choisies par l'utilisateur pour générer un le fichiers batsh*/
 $(function() {
 
@@ -771,7 +804,7 @@ $(function() {
 	$('#btnStartPipline').on("click" , function(e) {
 	
 		
-		$('#pipelineSelected').html(" <h3> Pipeline selected :  <span style=\"color:blue\">"  +   $('#monselectPipeLine').val() + " </span></h3>");	
+		$('#pipelineSelected').html(" <h3> Pipeline selected :  <span style=\"color:blue\">"  +    $('#monselectPipeLine option:selected').text() + " </span></h3>");	
 
 		let projectSelect = "$project";	
 		
@@ -809,7 +842,7 @@ $(function() {
 
 		let _sessions_ids = $('#subsession_list').val().toString();
 		
-		let selectPipeline = $('#monselectPipeLine').val();
+		let selectPipeline =  $('#monselectPipeLine option:selected').text();
 
 		let idCluster = $('#idNiolon').val();
 
@@ -890,8 +923,12 @@ $('#btnOkFinale').on("click" , function(e) {
 		/* pour récupérer le contenu du tag <p>    dans  le modal */
 	let text = document.getElementById('idJob').textContent 
 		    + "\n" + document.getElementById('workindDirectory').textContent 
-			+ "\n" + document.getElementById('pathWithnNameScriptSbatch').textContent; 
-	let nomfile = document.getElementById('workindDirectory').textContent;
+			+ "\n" + document.getElementById('pathWithnNameScriptSbatch').textContent 
+			+ "\n" + document.getElementById('pathErrorLogOut').textContent
+			+ "\n" + document.getElementById('pathErrorLogErr').textContent;
+	
+	let nomfile = document.getElementById('workindDirectory').textContent + '.txt';
+		nomfile = nomfile.substring(nomfile.lastIndexOf("/") +1);
 		
   if ('Blob' in window) {
     var fileName = prompt('Please enter file name to save', nomfile+'.txt');
@@ -921,6 +958,7 @@ $('#btnOkFinale').on("click" , function(e) {
         downloadLink.click();
       }
     }
+	closeModalContinue();
   } else {
     alert('Your browser does not support the HTML5 Blob.');
   }

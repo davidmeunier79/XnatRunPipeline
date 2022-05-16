@@ -225,27 +225,6 @@ public class XnatRunPipelineApi
         }*/
 
         
-        
-        String cle1 = "cle1";
-        String valeur1 = "cow ";
-
-
-        String cle2 = "cle2";
-        String valeur2 = "fmriprep-20.0.4.sif";
-
-        String cle3 = "cle3";
-        String valeur3 = "fmriprep_20.2.3.simg";
-
-        String cle4 = "cle4";
-        String valeur4 = "macapype_v0.2.2.1";
-        
-        String cle5 = "cle5";
-        String valeur5 = "macapype_v0.2.2.3";
-        
-        
-        String cle6 = "cle6";
-        String valeur6 = "mriqc_0.16.1.simg";
-        
         response.setContentType("application/json");
             
         response.setCharacterEncoding("UTF-8");
@@ -253,248 +232,99 @@ public class XnatRunPipelineApi
         JSONObject obj = new JSONObject();
             
 
-        //final SSHConnection sshConncetion = new SSHConnection();
 
-            if (checkIfIdUserExist(idCluster)) {
+        if (checkIfIdUserExist(idCluster)) {
 
+            Map<String, String> _listPipelines  = new HashMap<>();
 
+            /*try {
+            /*
+            doConnectionCluster(passwordniolon);
+            */
 
-                Map<String, String> _listPipelines  = new HashMap<>();
+            String linkImgeSingularity = (String) jsonObject.get("linkAllImgSingularity");
 
-                /*try {
-                /*
-                doConnectionCluster(passwordniolon);
-                */
+            JSONArray jsonArray = (JSONArray) jsonObject.get("listPipelines");
+
+            listImages = new String[jsonArray.size()];
+                            
+            obj.put("pipelines", jsonArray);       
+            
+        } else {
+
+            obj.put("pipelines","null");
+
+        }
+
+        log(" l'objet de la liste des pipelines a envoyer est "+ obj.toString());
     
-                String linkImgeSingularity = (String) jsonObject.get("linkAllImgSingularity");
-    
-    
-                JSONArray jsonArray = (JSONArray) jsonObject.get("listPipelines");
-    
-                listImages = new String[jsonArray.size()];
-                
-                /*
-                for (Object pipeline : jsonArray) {
-                    
-                    _listPipelines.put(pipeline.toString(), pipeline.toString());
-    
-                    log("  " + pipeline.toString() + " :  " + pipeline.toString());
-                }*/   
-                
-                obj.put("pipelines", jsonArray);
+        PrintWriter out = response.getWriter();
 
-                //obj.putAll(_listPipelines);
-                
-                
-            } else {
+        out.print(obj);
 
-                obj.put("pipelines","null");
-
-            }
-
-            log(" l'objet de la liste des pipelines a envoyer est "+ obj.toString());
-        
-            PrintWriter out = response.getWriter();
-    
-            out.print(obj);
-    
-            out.flush();
-
-
-            /*        
-            }catch (InterruptedException e) { 
-                e.printStackTrace();
-                    
-            }catch (JSchException  jshe){
-
-
-            }catch (IOException ioe){
-
-
-            } */
+        out.flush();
 
         
 
         log( "\n La date de création de ce fichier est : "+getDateTimeNow() + "    \n\n");
- 
 
-
-        /*
-        try {
-            System.out.println("Subjects = " + subject_ids);
-            if ("all".equals(subject_ids)) {
-                final QueryOrganizer qo = new QueryOrganizer("xnat:subjectData", xnatUser, "all");
-                final CriteriaCollection cc = new CriteriaCollection("OR");
-                cc.addClause("xnat:subjectData/project", (Object)id_project);
-                cc.addClause("xnat:subjectData/sharing/share/project", (Object)id_project);
-                qo.setWhere(cc);
-                final String query = qo.buildQuery();
-                final XFTTable table = XFTTable.Execute(query, xnatUser.getDBName(), xnatUser.getLogin());
-                for (final Object[] array : table.rows()) {
-                    final Object[] row = array;
-                    for (final Object o : array) {
-                        subjectsList.add(o.toString());
-                    }
-                }
-            }
-            else {
-                final String[] split;
-                final String[] tokens = split = subject_ids.split("[,]");
-                for (final String token : split) {
-                    subjectsList.add(token);
-                }
-            }
-            String fileName = "XNAT-" + id_project;
-            if ("BIDS".equals(disk_tree_format_choice)) {
-                fileName += "_BIDS";
-            }
-            
-            else {
-                if ("CENIR".equals(disk_tree_format_choice)) {
-                    fileName += "_CENIR";
-                }
-                if (this._imageFormatAddDicoms || this._imageFormatAddBothImageFormats) {
-                    fileName += "_DICOM";
-                }
-                if (this._imageFormatAddNiftis || this._imageFormatAddBothImageFormats) {
-                    fileName += "_NIFTI";
-                }
-            }
-
-            log("\n ");
-            final Calendar now = Calendar.getInstance();
-            String dateTime = "" + now.get(1);
-            dateTime += "-";
-            if (now.get(2) + 1 < 10) {
-                dateTime += "0";
-            }
-            dateTime += now.get(2) + 1;
-            dateTime += "-";
-            if (now.get(5) < 10) {
-                dateTime += "0";
-            }
-            dateTime += now.get(5);
-            dateTime += "_";
-            if (now.get(11) < 10) {
-                dateTime += "0";
-            }
-            dateTime += now.get(11);
-            dateTime += "h";
-            if (now.get(12) < 10) {
-                dateTime += "0";
-            }
-            dateTime = dateTime + now.get(12) + "";
-            fileName = fileName + "-" + dateTime;
-            this._tempBuildPath = XDAT.getSiteConfigPreferences().getBuildPath();
-            this._tempBuildPath = this._tempBuildPath + "/" + id_project + "/xnat-icm-export-" + id_project;
-            this._tempBuildPath = this._tempBuildPath + "-" + Calendar.getInstance().getTime().getTime();
-            if ("BIDS".equals(disk_tree_format_choice)) {
-                final XnatToBidsUtils xnatToBidsUtils = new XnatToBidsUtils(this._tempBuildPath);
-                final String bidsZipFile = xnatToBidsUtils.convertToBidsFunction(id_project, subjectsList);
-                baos = new ByteArrayOutputStream();
-                final FileInputStream in = new FileInputStream(new File(bidsZipFile));
-                final byte[] buffer = new byte[1024];
-                int length;
-                while ((length = in.read(buffer)) > 0) {
-                    baos.write(buffer, 0, length);
-                }
-                in.close();
-                baos.flush();
-                baos.close();
-            }
-            else {
-                this._imageFormatAddDicoms = "DICOM".equals(image_format_choice);
-                this._imageFormatAddNiftis = "NIFTI".equals(image_format_choice);
-                this._imageFormatAddBothImageFormats = "BOTH".equals(image_format_choice);
-                if (this._imageFormatAddNiftis || this._imageFormatAddBothImageFormats) {
-                    new File(this._tempBuildPath).mkdir();
-                }
-                final BaseXnatProjectdata projectData = (BaseXnatProjectdata)BaseXnatProjectdata.getProjectByIDorAlias(id_project, xnatUser, false);
-                baos = new ByteArrayOutputStream();
-                ZipOutputStream zos = new ZipOutputStream(baos);
-                final List<String> ssid = new ArrayList<String>();
-                for (final String sid : subjectsList) {
-                    log("Exporting for subject [" + sid + "]...");
-                    final XnatSubjectdata xnatSubject = XnatSubjectdata.getXnatSubjectdatasById((Object)sid, xnatUser, false);
-                    ssid.add(xnatSubject.getLabel());
-                }
-                final String listOfSubject = String.join(" ", ssid);
-                log("list of subject " + listOfSubject);
-                zos = this.exportSubjectFiles(zos, id_project, fileName, subjectsList, ssid);
-                zos.finish();
-                zos.close();
-            }
-            final File directoryToZip = new File("/data/xnat/tmp/" + fileName);
-            final List<File> fileList = new ArrayList<File>();
-            log("---Getting references to all files in: " + directoryToZip.getCanonicalPath());
-            log("---Creating zip file");
-            this.zip2(fileName);
-            log("---Done");
-            response.setContentType("application/zip");
-            response.setHeader("Content-Disposition", "attachment; filename=" + fileName + ".tar.gz");
-            final File file = new File("/data/xnat/tmp/" + fileName + ".tar.gz");
-            final FileInputStream fileIn = new FileInputStream(file);
-            System.out.println("Writing to output stream..");
-            final byte[] outputByte = new byte[4096];
-            while (fileIn.read(outputByte, 0, 4096) != -1) {
-                response.getOutputStream().write(outputByte, 0, 4096);
-            }
-            fileIn.close();
-            clean(fileName);
-            response.flushBuffer();
-        }
-        catch (Exception e) {
-            e.printStackTrace();
-            if (baos != null) {
-                try {
-                    baos.close();
-                }
-                catch (Exception ex) {
-                    ex.printStackTrace();
-                }
-            }
-            if (!"".equals(this._tempBuildPath)) {
-                try {
-                    FileUtils.deleteDirectory(new File(this._tempBuildPath));
-                    log("Temporary folder [" + this._tempBuildPath + "] deleted");
-                }
-                catch (IOException ioe) {
-                    ioe.printStackTrace();
-                }
-            }
-        }
-        finally {
-            if (baos != null) {
-                try {
-                    baos.close();
-                }
-                catch (Exception e2) {
-                    e2.printStackTrace();
-                }
-            }
-            if (!"".equals(this._tempBuildPath)) {
-                try {
-                    FileUtils.deleteDirectory(new File(this._tempBuildPath));
-                    log("Temporary folder [" + this._tempBuildPath + "] deleted");
-                }
-                catch (IOException ioe2) {
-                    ioe2.printStackTrace();
-                }
-            }
-        }
-        log("Exporting done for project [" + id_project + "].");
-        log("**************************** ");
-        log("**************************** ");
-        
-        log("**************************** ");
-        log("**************************** ");
-
-        */
 
     }
 
 
-    /* Cette route permet de lancer le pipeline voulu dans le cluster de calcul */
+
+    /* Cette fonction permet de récuperer les le lien de la doc qui correspond à un pipeline */
+    @ApiOperation(value = "Get link of pipeline", notes = "Custom")
+    @ApiResponses({ @ApiResponse(code = 200, message = "Connection success "), @ApiResponse(code = 401, message = "Must be authenticated to access the XNAT Rest Api"), @ApiResponse(code = 500, message = "Unexpected internal serval error") })
+    @RequestMapping(value = { "/get-link-pipeline" }, produces = { "application/json" }, method = { RequestMethod.POST })
+    @ResponseBody  
+    public void getLinkOfPipeline(final HttpServletResponse response, @RequestParam("pipelineSelected") final String pipelineSelected)  throws IOException{
+
+
+        if(jsonObject.equals(null)){
+
+            /* Lire le fichier et initialisation des params */ 
+            try {
+
+                readConfigFileJson();
+        
+            } catch (IOException ioe){
+                ioe.printStackTrace();
+
+            } catch (Exception e){
+                e.printStackTrace();
+
+            }
+        }
+
+        String linkDoc = (String) ((JSONObject) getJsonObjectByKey(jsonObject,pipelineSelected)).get("linkDoc");
+        // Préparer le listSessionOfSubject à envoyer en json
+
+        response.setContentType("application/json");
+        
+        response.setCharacterEncoding("UTF-8");
+        
+        JSONObject obj = new JSONObject();
+
+        obj.put("linkDoc",linkDoc);
+        
+        log("lien a envoyer est  : " +obj.toString());
+
+        PrintWriter out = response.getWriter();
+
+        out.print(obj);
+
+        out.flush();
+    
+    }
+
+
+
+
+
+
+
+    /* Cette fonction permet de lancer le pipeline voulu dans le cluster de calcul */
 
     @ApiOperation(value = "Start piplines in cluster", notes = "Custom")
     @ApiResponses({ @ApiResponse(code = 200, message = "Connection success "), @ApiResponse(code = 401, message = "Must be authenticated to access the XNAT Rest Api"), @ApiResponse(code = 500, message = "Unexpected internal serval error") })
@@ -797,7 +627,7 @@ public class XnatRunPipelineApi
     @ApiResponses({ @ApiResponse(code = 200, message = "Connection success "), @ApiResponse(code = 401, message = "Must be authenticated to access the XNAT Rest Api"), @ApiResponse(code = 500, message = "Unexpected internal serval error") })
     @RequestMapping(value = { "/get-sessions/{id_project}" }, produces = { "application/json" }, method = { RequestMethod.POST })
     @ResponseBody  
-    public void exportFiles(final HttpServletResponse response, @PathVariable final String id_project, @RequestParam("selectedSubject") final String selectedSubject)  throws IOException{
+    public void getSessionsOfSubjects(final HttpServletResponse response, @PathVariable final String id_project, @RequestParam("selectedSubject") final String selectedSubject)  throws IOException{
         final UserI xnatUser = XDAT.getUserDetails();
         ByteArrayOutputStream baos = null;
         final List<String> subjectsList = new LinkedList<String>();
