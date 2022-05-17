@@ -337,13 +337,13 @@ public class XnatRunPipelineApi
     @ApiResponses({ @ApiResponse(code = 200, message = "Connection success "), @ApiResponse(code = 401, message = "Must be authenticated to access the XNAT Rest Api"), @ApiResponse(code = 500, message = "Unexpected internal serval error") })
     @RequestMapping(value = { "/start-pipeline/{id_project}" }, produces = { "application/json" }, method = { RequestMethod.POST })
     @ResponseBody
-    public void startPipelineInCluster(final HttpServletResponse response, @PathVariable final String id_project, @RequestParam("selectPipeline") final String selectPipeline,  @RequestParam("idCluster") final String  userName, @RequestParam("subject_ids") final String subject_ids, @RequestParam("nameExportDir") final String nameExportDir, 
+    public void startPipelineInCluster(final HttpServletResponse response, @PathVariable final String id_project, @RequestParam("selectPipeline") final String selectPipeline,  @RequestParam("idCluster") final String idCluster, @RequestParam("subject_ids") final String subject_ids, @RequestParam("nameExportDir") final String nameExportDir, 
                  @RequestParam("additionalParams") final String additionalParams, @RequestParam("sessions_ids") final String sessions_ids, 
                     @RequestParam("radioValue")  final String radioValue, @RequestParam("commande_befor")  final String commande_befor, @RequestParam("commande_after")  final String commande_after,
                     @RequestParam("commande_participant")  final String commande_participant)  throws IOException{
 
         final UserI xnatUser = XDAT.getUserDetails();
-        final String idCluster = xnatUser.getUsername().replace("_", ".");
+        final String userName  = xnatUser.getUsername().replace("_", ".");
         final List<String> subjectsList = new LinkedList<String>();
         String listOfSubjectWithSpaceSeparated = null;
         String listOfSubjectWithCamasSeparated = "";
@@ -495,7 +495,7 @@ public class XnatRunPipelineApi
         log(prepareCommandSingularity(selectPipeline,inputAndOutputDirectory,id_project, commande_befor, commande_after, commande_participant));
         
         // To send file to the cluster
-       
+       /*
         try{
 
            ligneRetunrCommandeStartPipeline = sendFileToCluster(passwordniolon,namFileGenerated, idCluster);
@@ -518,7 +518,7 @@ public class XnatRunPipelineApi
         }catch (SftpException sftpe){
             sftpe.printStackTrace();
         } 
-             
+        */  
         log("done !");
 
 
@@ -717,7 +717,7 @@ public class XnatRunPipelineApi
     @ApiResponses({ @ApiResponse(code = 200, message = "Connection success "), @ApiResponse(code = 401, message = "Must be authenticated to access the XNAT Rest Api"), @ApiResponse(code = 500, message = "Unexpected internal serval error") })
     @RequestMapping(value = { "/get-team-names" }, produces = { "application/json" }, method = { RequestMethod.POST })
     @ResponseBody  
-    public void getTeamNames(final HttpServletResponse response)  throws IOException{
+    public void getTeamNames(final HttpServletResponse response, @RequestParam("idCluster") final String idCluster)  throws IOException{
 
         final UserI xnatUser = XDAT.getUserDetails();
         final String userName = xnatUser.getUsername().replace("_", ".");
@@ -736,7 +736,7 @@ public class XnatRunPipelineApi
         }
        
         JSONArray teamNames = (JSONArray) jsonObject.get("teamNames");
-     
+        JSONObject js = new JSONObject();
         
 
 
@@ -746,7 +746,7 @@ public class XnatRunPipelineApi
             //final String programName = userName ;
             final List<String> cmd = new ArrayList<String>();
             cmd.add(program);
-            cmd.add(userName); 
+            cmd.add(idCluster); 
             log(cmd.toString());
 
             final ProcessBuilder pb = new ProcessBuilder(cmd);
@@ -761,38 +761,43 @@ public class XnatRunPipelineApi
             log(e.toString());
         }
 
-        String []  tabTeamUser = ligne.split(" ");
-        String [] array = new String[teamNames.size()] ;
-        int i=0;
-        for (Object ele : teamNames){
-            array[i] = ele.toString();
-            i++;
+
+        if(ligne != null){
+
+
+            String []  tabTeamUser = ligne.split(" ");
+            String [] array = new String[teamNames.size()] ;
+            int i=0;
+            for (Object ele : teamNames){
+                array[i] = ele.toString();
+                i++;
+            }
+    
+            HashSet<String> set = new HashSet<>(); 
+         
+            set.addAll(Arrays.asList(tabTeamUser));
+             
+            set.retainAll(Arrays.asList(array));
+             
+            System.out.println(set);
+             
+            //convert to array
+            String[] intersection = {};
+            intersection = set.toArray(intersection);
+             
+            System.out.println(Arrays.toString(intersection));
+    
+            final Map<String, String> listTeam  = new HashMap<>();
+            // Stockage des teams dans une HashMap
+            for (String el : intersection) {
+                listTeam.put(el, el);
+            }
+            
+            js.putAll(listTeam);
+
+        } else {
+            js.put("data", "null");
         }
-
-        HashSet<String> set = new HashSet<>(); 
-     
-        set.addAll(Arrays.asList(tabTeamUser));
-         
-        set.retainAll(Arrays.asList(array));
-         
-        System.out.println(set);
-         
-        //convert to array
-        String[] intersection = {};
-        intersection = set.toArray(intersection);
-         
-        System.out.println(Arrays.toString(intersection));
-
-        final Map<String, String> listTeam  = new HashMap<>();
-        // Stockage des teams dans une HashMap
-        for (String el : intersection) {
-            listTeam.put(el, el);
-        }
-
-        JSONObject js = new JSONObject();
-
-        js.putAll(listTeam);
-
 
         response.setContentType("application/json");
         

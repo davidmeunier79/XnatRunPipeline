@@ -611,6 +611,11 @@ $(function() {
 
 	$('#btnGetPiplines').on("click" , function(e) {
 
+
+
+			getTeams()
+
+
 		//get url
 		let _urlGetPiplines = document.getElementById("btnGetPiplines").getAttribute("data");
 			//alert(_urlGetPiplines);
@@ -628,7 +633,7 @@ $(function() {
 
 				subject_ids = "all";
 				}
-			console.log("  tu as choisis les sujet : "+subject_ids);
+			console.log("  tu as choisis les sujets : "+subject_ids);
 
 			let selectOptionsPipeline = "";
 			
@@ -775,14 +780,14 @@ $(function (){
 
 
 
-
+/*
 
 // Cette fonction permet de récupérer les noms d'équipes 
 $(function (){
 
 	let _url = "/xapi/int-run-pipline/get-team-names";
 	console.log(_url);
-
+	let idCluster = $('#idNiolon').val();
 
 	
 	$.ajax({
@@ -790,6 +795,7 @@ $(function (){
 			method:'POST',
 			global: true,
 			async: true,
+			data:{"idCluster":idCluster},
 			success: function(data) {
 				
 				if(data != null){
@@ -836,6 +842,76 @@ $(function (){
 	});		
 	
 });
+
+*/
+
+
+
+function getTeams(){
+
+	let _url = "/xapi/int-run-pipline/get-team-names";
+	console.log(_url);
+	let idCluster = $('#idNiolon').val();
+
+	
+	$.ajax({
+			url: _url,
+			method:'POST',
+			global: true,
+			async: true,
+			data:{"idCluster":idCluster},
+			success: function(data) {
+				
+				if(data.data != "null"){
+
+				console.log("Tres bien reçu les noms des équipes")
+				console.log(data)	
+
+				$("#teamListenames").html("");
+
+				$.each(data, function(i) {
+    				$("#teamListenames").append("<label>   <input type='checkbox' class='radio' value=" + data[i] + " name='team'/> <b>"  + data[i] +
+												 " <b> </label>");
+  				});
+
+				$("input:checkbox").on('click', function() {
+					// in the handler, 'this' refers to the box clicked on
+					let $box = $(this);
+					if ($box.is(":checked")) {
+						// the name of the box is retrieved using the .attr() method
+						// as it is assumed and expected to be immutable
+						let group = "input:checkbox[name='" + $box.attr("name") + "']";
+						// the checked state of the group/box on the other hand will change
+						// and the current value is retrieved using .prop() method
+						$(group).prop("checked", false);
+						$box.prop("checked", true);
+					} else {
+						$box.prop("checked", false);
+					}
+					console.log($(this).attr("value"));
+					// On récupère la valeur du nom d'équipe selectionné par l'usr
+					nameSelectedTeam = $(this).attr("value");
+					console.log("votre repértoire sera /hpc/" + nameSelectedTeam)
+					$('#nameExportDir').val("/hpc/" +nameSelectedTeam);
+
+
+					
+				});
+
+
+			}
+				
+
+		}
+	});	
+
+}
+
+
+
+
+
+
 
 
 
@@ -976,7 +1052,7 @@ $(function() {
 
 				$('#idJob').html(" <h3> Success :  <span style=\"color:blue\">"  +  data.idJob + " </span></h3>");
 				
-				$('#workindDirectory').html(" <h3> Path to export directory is  :  <span style=\"color:blue\">"  +  data.workindDirectory + " </span></h3>");
+				$('#workindDirectory').html(" <h3> Path to export directory is  :  <span style=\"color:blue\">"  +  data.workindDirectory + "</span></h3>");
 				
 				$('#pathWithnNameScriptSbatch').html(" <h3> The full path and name of the generated file is :  <span style=\"color:blue\">"  +  data.pathWithnNameScriptSbatch + " </span></h3>");
 
@@ -993,6 +1069,11 @@ $(function() {
 
 
 				$("#div_step3").hide();
+				$('#div-info-msg').hide();
+				// Supprimer toutes les options si déja la liste était initialisée
+				$('#monselectPipeLine')
+					.empty()
+					.append('<option selected="selected" value="">Please choose a pipeline</option>');
 
 				
 				
@@ -1021,7 +1102,7 @@ $('#btnSave').on("click" , function(e) {
 		nomfile = nomfile.substring(nomfile.lastIndexOf("/") +1);
 		
   if ('Blob' in window) {
-    var fileName = prompt('Please enter file name to save', nomfile+'.txt');
+    var fileName = prompt('Please enter file name to save', nomfile);
     if (fileName) {
       var textFileAsBlob = new Blob([text], { type: 'text/plain' });
 
@@ -1055,12 +1136,12 @@ $('#btnSave').on("click" , function(e) {
 });
 
 
-
+// on ok on fait rien
 document.getElementById("btnOkFinale").addEventListener("click", function(){
 
 
 	closeModalContinue();
-	
+
 }, false);
 
 
@@ -1083,13 +1164,13 @@ function download(filename, text) {
 
 
 
-
+/*
 // Start file download.
 document.getElementById("btnSave").addEventListener("click", function(){
     // Generate download of hello.txt file with some content
    
 
-   		/* pour récupérer le contenu du tag <p>    dans  le modal */
+   		//pour récupérer le contenu du tag <p>    dans  le modal 
 	let text = document.getElementById('idJob').textContent 
 		    + "\n" + document.getElementById('workindDirectory').textContent 
 			+ "\n" + document.getElementById('pathWithnNameScriptSbatch').textContent 
@@ -1106,7 +1187,7 @@ document.getElementById("btnSave").addEventListener("click", function(){
 
 	closeModalContinue();
 }, false);
-
+*/
 
 
 
