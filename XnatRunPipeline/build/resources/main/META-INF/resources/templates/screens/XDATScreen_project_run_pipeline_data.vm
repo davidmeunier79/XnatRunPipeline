@@ -247,6 +247,10 @@ $page.setVlinkColor($ui.vlink)
 .success-msg {
   color: #270;
   background-color: #DFF2BF;
+  font-size: 13pt;
+  width : 450px;
+  line-height : 20px;
+
 }
 
 .info-msg{
@@ -414,7 +418,7 @@ $page.setVlinkColor($ui.vlink)
 				</label>
 				<input class="inputStep3" type="text" id="nameExportDir" name="nameExportDir" disabled required>
 				<br/><br/>
-					<div style="display: inline-block;"> 
+					<div style="display: inline;"> 
 						<label> <strong> Delete raw data after BIDS conversion ? </strong></label>
 						<label>
 							<input type="radio" name="choice-radio" value="yes">
@@ -433,7 +437,7 @@ $page.setVlinkColor($ui.vlink)
 						</span>
 
 					</div>
-
+				<!--
 				<br/> <br/>
 				<label > <h3> Name of Slurm Job (optional) 
 					<span class="tip_icon" style="margin-right:3px;">
@@ -445,6 +449,7 @@ $page.setVlinkColor($ui.vlink)
 				
 				</label>
 				<input class="inputStep3" type="text" id="nameSlurmJob" name="nameSlurmJob" >
+				-->
 				<br/><br/>
 			
 				<div class="success-msg">
@@ -702,7 +707,7 @@ $(function (){
 		
 		getInfAboutPipelineSelected(pipeline);
 
-		$('#nameSlurmJob').val(pipeline);
+		//$('#nameSlurmJob').val(pipeline);
 
 
 	});
@@ -1003,7 +1008,7 @@ $(function() {
 
 
 
-$('#btnOkFinale').on("click" , function(e) {
+$('#btnSave').on("click" , function(e) {
 
 		/* pour récupérer le contenu du tag <p>    dans  le modal */
 	let text = document.getElementById('idJob').textContent 
@@ -1051,6 +1056,14 @@ $('#btnOkFinale').on("click" , function(e) {
 
 
 
+document.getElementById("btnOkFinale").addEventListener("click", function(){
+
+
+	closeModalContinue();
+	
+}, false);
+
+
 
 
 
@@ -1067,6 +1080,8 @@ function download(filename, text) {
 
     document.body.removeChild(element);
 }
+
+
 
 
 // Start file download.
