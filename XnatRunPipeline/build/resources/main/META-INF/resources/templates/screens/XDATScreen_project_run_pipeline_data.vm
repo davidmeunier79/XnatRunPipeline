@@ -278,8 +278,8 @@ $page.setVlinkColor($ui.vlink)
 			<div class="container"> 
 				<div class="withColor containerTitle">Step 1 : ENTER YOUR  ID TO GET PIPELINES EXISTS ON CLUSTER  </div>
 					<br/>
-					<div style="display:inline; ">
-						<div class="containerItem">	 			
+					<div style="display:inline;">
+						<div class="containerItem" >	 			
 							<label > <strong> ID user niolon : </strong> </label>
 							<input type="text" id="idNiolon" name="iDniolon" placeholder="$placeholderId" required="true" >
 							<!--    <label > Mot de passe </label>
@@ -621,8 +621,6 @@ $(function() {
 			//alert(_urlGetPiplines);
 
 			let idCluster = $('#idNiolon').val();
-			//let password = $('#password').val();
-			let password = "*******";
 			let btnStartPipline = $('#btnStartPipline').disabled; 
 
 			//let subject_ids = $('#subject_ids').val();
@@ -640,7 +638,7 @@ $(function() {
 
 			$.ajax({
 				url: _urlGetPiplines,
-				data: {"idCluster":idCluster, "password":password, "subject_ids":subject_ids},
+				data: {"idCluster":idCluster , "subject_ids":subject_ids},
 				method:'POST',
 				success: function(data) {
 					if(data.pipelines !="null"){
@@ -648,8 +646,8 @@ $(function() {
 						console.log("Vous avez  reçu" + data.toString())
 					// To sort data
 						
-						
-						
+
+						$("#idNiolon").prop("disabled",true);
 						const sortObject = obj => Object.keys(obj).sort().reduce((res, key) => (res[key] = obj[key], res), {});
 						data = sortObject(data.pipelines);
 						$("#div-error-msg").hide();

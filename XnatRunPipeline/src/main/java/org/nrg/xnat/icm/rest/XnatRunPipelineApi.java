@@ -103,7 +103,6 @@ public class XnatRunPipelineApi
     private static String fullPathScriptSlurm = "";
  	// Les paramètres du cluster à distance 
     public  static String user = "";
-    private  static String passwordniolon = "";
     //private  static String host = "niolon.int.univ-amu.fr";
     private  static String host = "niolon02";
 
@@ -146,7 +145,7 @@ public class XnatRunPipelineApi
     @ApiResponses({ @ApiResponse(code = 200, message = "Connection success "), @ApiResponse(code = 401, message = "Must be authenticated to access the XNAT Rest Api"), @ApiResponse(code = 500, message = "Unexpected internal serval error") })
     @RequestMapping(value = { "/get-pipelines/{id_project}" }, produces = { "application/json" }, method = { RequestMethod.POST })
     @ResponseBody
-    public void exportFiles(final HttpServletResponse response, @PathVariable final String id_project, @RequestParam("idCluster") final String idCluster, @RequestParam("password") final String password, @RequestParam("subject_ids") final String subject_ids)  throws IOException{
+    public void exportFiles(final HttpServletResponse response, @PathVariable final String id_project, @RequestParam("idCluster") final String idCluster, @RequestParam("subject_ids") final String subject_ids)  throws IOException{
         final UserI xnatUser = XDAT.getUserDetails();
         ByteArrayOutputStream baos = null;
         final List<String> subjectsList = new LinkedList<String>();
@@ -158,12 +157,6 @@ public class XnatRunPipelineApi
         log("id niolon = "+idCluster);
 
         user = idCluster;   
-
-        //log("password = "+ password);
-
-        passwordniolon = password;
-
-
         log("la liste séléctionné est   !! : "+subject_ids);
 
         /* Read config file and initialize  params */ 
