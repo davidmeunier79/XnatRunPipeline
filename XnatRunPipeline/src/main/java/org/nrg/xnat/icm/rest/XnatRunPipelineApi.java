@@ -233,7 +233,7 @@ public class XnatRunPipelineApi
             
 
 
-        if (checkIfIdUserExist(idCluster)) {
+        if (checkIfIdUserExist(idCluster) && !("admin-xnat-root".contains(idCluster))) {
 
             Map<String, String> _listPipelines  = new HashMap<>();
 
@@ -762,7 +762,7 @@ public class XnatRunPipelineApi
         }
 
 
-        if(ligne != null){
+        if(ligne != null && !("admin-xnat-root".contains(idCluster)) ){
 
 
             String []  tabTeamUser = ligne.split(" ");
