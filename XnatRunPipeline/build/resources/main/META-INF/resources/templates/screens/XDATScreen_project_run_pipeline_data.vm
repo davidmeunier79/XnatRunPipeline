@@ -278,7 +278,7 @@ $page.setVlinkColor($ui.vlink)
 			<div class="container"> 
 				<div class="withColor containerTitle">Step 1 : ENTER YOUR  ID TO GET PIPELINES EXISTS ON CLUSTER  </div>
 					<br/>
-					<div style="display:inline;">
+					<div style="display:inline; display: none;" id="div-id-user">
 						<div class="containerItem" >	 			
 							<label > <strong> ID user niolon : </strong> </label>
 							<input type="text" id="idNiolon" name="iDniolon" placeholder="$placeholderId" required="true" >
@@ -610,9 +610,10 @@ let namfileTogenerateByBrowser = "";
 
 
 
-/*
+
 // Shorthand for $( document ).ready()
 $(function() {
+			
 			// on check si l'ID xnat est le même sur niolon , si oui on affiche la suite si non on propose de saisir son id niolon	
 			$.ajax({
 				url: "/xapi/int-run-pipline/check-user-id",
@@ -623,6 +624,11 @@ $(function() {
 						console.log("Vous avez  reçu" + data.toString())
 					// To sort data
 						
+						
+						$("#idNiolon").val(data.id);
+
+
+						getTeams()
 
 						$("#idNiolon").prop("disabled",true);
 						const sortObject = obj => Object.keys(obj).sort().reduce((res, key) => (res[key] = obj[key], res), {});
@@ -646,6 +652,7 @@ $(function() {
 					else {
 
 						//console.log("aucune donnée reçu" + data);
+						$("#div-id-user").show();
 						$("#div_step3").hide();
 						$("#div-info-msg").hide();
 						$("#div-error-msg").show();
@@ -671,7 +678,7 @@ $(function() {
 
 });
 
-*/
+
 
 
 
@@ -1039,7 +1046,7 @@ $(function() {
 	
 
 	$('#btnStartPipline').on("click" , function(e) {
-	
+
 		
 		$('#pipelineSelected').html(" <h3> Pipeline selected :  <span style=\"color:blue\">"  +    $('#monselectPipeLine option:selected').text() + " </span></h3>");	
 
@@ -1151,6 +1158,7 @@ $(function() {
 					.append('<option selected="selected" value="">Please choose a pipeline</option>');
 
 				
+				$("#div-id-user").show();	
 				
 
 					

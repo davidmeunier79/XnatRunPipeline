@@ -151,10 +151,7 @@ public class XnatRunPipelineApi
     @ResponseBody
     public void checkIdXnatIfIsIdCluster(final HttpServletResponse response)  throws IOException{
         final UserI xnatUser = XDAT.getUserDetails();
-        final String idCluster = xnatUser.getUsername().replace("_", ".");
-        ByteArrayOutputStream baos = null;
-        final List<String> subjectsList = new LinkedList<String>();
-       
+        final String idCluster = xnatUser.getUsername().replace("_", ".");  
         // Read config file and initialise  params  
 
        try {
@@ -170,7 +167,7 @@ public class XnatRunPipelineApi
 
        
 
-       /* Recupérer la list  séléctionné des sujet */
+       /* Recupérer la list  séléctionné des sujets */
 
         /*
        try {
@@ -236,7 +233,8 @@ public class XnatRunPipelineApi
 
             listImages = new String[jsonArray.size()];
                             
-            obj.put("pipelines", jsonArray);       
+            obj.put("pipelines", jsonArray);
+            obj.put("id", idCluster);       
             
         } else {
 
@@ -244,7 +242,7 @@ public class XnatRunPipelineApi
 
         }
 
-        log(" l'objet de la liste des pipelines a envoyer est "+ obj.toString());
+        log("L'objet de la liste des pipelines a envoyer est "+ obj.toString());
     
         PrintWriter out = response.getWriter();
 
@@ -798,7 +796,7 @@ public class XnatRunPipelineApi
     }
 
 
-    /* Cette fonction permet de récuperer les la liste de noms des groupes corréspondante à un utilisateur */
+    /* Cette fonction permet de récuperer la liste des noms des groupes corréspondante à un utilisateur */
     @ApiOperation(value = "Get list of team names", notes = "Custom")
     @ApiResponses({ @ApiResponse(code = 200, message = "Connection success "), @ApiResponse(code = 401, message = "Must be authenticated to access the XNAT Rest Api"), @ApiResponse(code = 500, message = "Unexpected internal serval error") })
     @RequestMapping(value = { "/get-team-names" }, produces = { "application/json" }, method = { RequestMethod.POST })
