@@ -607,15 +607,92 @@ $page.setVlinkColor($ui.vlink)
 let nameSelectedTeam = "";
 let namfileTogenerateByBrowser = "";
 
+
+
+
+/*
+// Shorthand for $( document ).ready()
+$(function() {
+			// on check si l'ID xnat est le même sur niolon , si oui on affiche la suite si non on propose de saisir son id niolon	
+			$.ajax({
+				url: "/xapi/int-run-pipline/check-user-id",
+				method:'POST',
+				success: function(data) {
+					if(data.pipelines !="null"){
+						
+						console.log("Vous avez  reçu" + data.toString())
+					// To sort data
+						
+
+						$("#idNiolon").prop("disabled",true);
+						const sortObject = obj => Object.keys(obj).sort().reduce((res, key) => (res[key] = obj[key], res), {});
+						data = sortObject(data.pipelines);
+						$("#div-error-msg").hide();
+						$("#div_step3").show();
+						var $select = $("#monselectPipeLine");                           // Locate HTML DOM element with ID "someselect".
+						$select.find("option").remove();                          // Find all child elements with tag name "option" and remove them (just to prevent duplicate options when button is pressed again).
+						$.each(data, function(key, value) {               // Iterate over the JSON object.
+							$("<option>").val(key).text(value).appendTo($select); // Create HTML <option> element, set its value with currently iterated key and its text content with currently iterated item and finally append it to the <select>.
+
+						});
+
+						const pipeline = $('#monselectPipeLine option:selected').text()
+						getInfAboutPipelineSelected(pipeline); // reccupérer le lien de la doc du pipeline selectionné
+
+						$('#div-info-msg').show();
+
+					}
+					
+					else {
+
+						//console.log("aucune donnée reçu" + data);
+						$("#div_step3").hide();
+						$("#div-info-msg").hide();
+						$("#div-error-msg").show();
+
+						// Supprimer toutes les options si déja la liste était initialisée
+						$('#monselectPipeLine')
+							.empty()
+							.append('<option selected="selected" value="">Please choose a pipeline</option>');
+
+
+					}
+
+
+
+					// Activer le bouton start computation
+					//$('#btnStartPipline').disabled =true;
+					//alert("Tres bien envoyer")
+
+					
+				}
+			});
+
+
+});
+
+*/
+
+
+
+
+
+
+
+
+
+
+
+
+
 $(function() {
 
 	$('#btnGetPiplines').on("click" , function(e) {
 
 
 
-			getTeams()
-
-
+		getTeams()
+		
 		//get url
 		let _urlGetPiplines = document.getElementById("btnGetPiplines").getAttribute("data");
 			//alert(_urlGetPiplines);

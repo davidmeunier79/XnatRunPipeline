@@ -140,27 +140,23 @@ public class XnatRunPipelineApi
     public static JSONObject jsonObject;
     public static ArrayList<String> listKeysJsonFile = null;
 
+
     
-    @ApiOperation(value = "Get list of piplines in cluster", notes = "Custom")
+
+
+
+    @ApiOperation(value = "Get list of piplines in cluster on load page", notes = "Custom")
     @ApiResponses({ @ApiResponse(code = 200, message = "Connection success "), @ApiResponse(code = 401, message = "Must be authenticated to access the XNAT Rest Api"), @ApiResponse(code = 500, message = "Unexpected internal serval error") })
-    @RequestMapping(value = { "/get-pipelines/{id_project}" }, produces = { "application/json" }, method = { RequestMethod.POST })
+    @RequestMapping(value = { "/check-user-id" }, produces = { "application/json" }, method = { RequestMethod.POST })
     @ResponseBody
-    public void exportFiles(final HttpServletResponse response, @PathVariable final String id_project, @RequestParam("idCluster") final String idCluster, @RequestParam("subject_ids") final String subject_ids)  throws IOException{
+    public void checkIdXnatIfIsIdCluster(final HttpServletResponse response)  throws IOException{
         final UserI xnatUser = XDAT.getUserDetails();
+        final String idCluster = xnatUser.getUsername().replace("_", ".");
         ByteArrayOutputStream baos = null;
         final List<String> subjectsList = new LinkedList<String>();
        
-        
-        log("Runin pipeLine from [" + id_project + "]");
-        
+        // Read config file and initialise  params  
 
-        log("id niolon = "+idCluster);
-
-        user = idCluster;   
-        log("la liste séléctionné est   !! : "+subject_ids);
-
-        /* Read config file and initialize  params */ 
-       /*
        try {
 
             readConfigFileJson();
@@ -170,7 +166,7 @@ public class XnatRunPipelineApi
        } catch (Exception e){
 
 
-       }*/
+       }
 
        
 
@@ -218,6 +214,103 @@ public class XnatRunPipelineApi
         }*/
 
         
+        response.setContentType("application/json");
+            
+        response.setCharacterEncoding("UTF-8");
+        
+        JSONObject obj = new JSONObject();
+            
+
+        if (checkIfIdUserExist(idCluster) && !("admin-xnat-root".contains(idCluster))) {
+
+            Map<String, String> _listPipelines  = new HashMap<>();
+
+            /*try {
+            /*
+            doConnectionCluster(passwordniolon);
+            */
+
+            String linkImgeSingularity = (String) jsonObject.get("linkAllImgSingularity");
+
+            JSONArray jsonArray = (JSONArray) jsonObject.get("listPipelines");
+
+            listImages = new String[jsonArray.size()];
+                            
+            obj.put("pipelines", jsonArray);       
+            
+        } else {
+
+            obj.put("pipelines","null");
+
+        }
+
+        log(" l'objet de la liste des pipelines a envoyer est "+ obj.toString());
+    
+        PrintWriter out = response.getWriter();
+
+        out.print(obj);
+
+        out.flush();
+
+        
+
+        log( "\n La date de création de ce fichier est : "+getDateTimeNow() + "    \n\n");
+
+
+    }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    @ApiOperation(value = "Get list of piplines in cluster", notes = "Custom")
+    @ApiResponses({ @ApiResponse(code = 200, message = "Connection success "), @ApiResponse(code = 401, message = "Must be authenticated to access the XNAT Rest Api"), @ApiResponse(code = 500, message = "Unexpected internal serval error") })
+    @RequestMapping(value = { "/get-pipelines/{id_project}" }, produces = { "application/json" }, method = { RequestMethod.POST })
+    @ResponseBody
+    public void getPipelinesOnBtnClick(final HttpServletResponse response, @PathVariable final String id_project, @RequestParam("idCluster") final String idCluster, @RequestParam("subject_ids") final String subject_ids)  throws IOException{
+        final UserI xnatUser = XDAT.getUserDetails();
+        ByteArrayOutputStream baos = null;
+        final List<String> subjectsList = new LinkedList<String>();
+       
+        
+        log("Runin pipeLine from [" + id_project + "]");
+        
+
+        log("id niolon = "+idCluster);
+
+        user = idCluster;   
+        log("la liste séléctionné est   !! : "+subject_ids);        
         response.setContentType("application/json");
             
         response.setCharacterEncoding("UTF-8");
@@ -1452,15 +1545,15 @@ public class XnatRunPipelineApi
 
           if(!allOrListSubject.equals("all") && (sessions_ids.equals(""))){
 
-            commande +=   " --subj " + subjectSelected + "  -s all --rs all \n";
+            commande +=   " --subj " + subjectSelected + "  -s all --rs NIFTI,BIDS \n";
 
           } else if(!allOrListSubject.equals("all") && !(sessions_ids.equals(""))){
 
-            commande += " --sess " + sessions_ids + " -s all --rs all";
+            commande += " --sess " + sessions_ids + " -s all --rs NIFTI,BIDS";
             
           }else {
               
-            commande += " all -s all --rs all \n";
+            commande += " all -s all --rs NIFTI,BIDS \n";
               
           } 
 
