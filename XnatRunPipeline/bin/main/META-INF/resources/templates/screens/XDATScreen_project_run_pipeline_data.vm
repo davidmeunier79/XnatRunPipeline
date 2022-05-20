@@ -15,6 +15,9 @@
 
 #* #addGlobalCustomScreens("topBar") *#
 
+#* #addGlobalCustomScreens("header") *#
+
+
 $page.setTitle("Run_Pipeline_Cluster")
 $page.setLinkColor($ui.alink)
 $page.setVlinkColor($ui.vlink)
@@ -363,24 +366,10 @@ $page.setVlinkColor($ui.vlink)
 
 		</div>
 
-<!--
-		<div class="container"  id="divInfoPipeline" style="display=none;">
-			<div class="withColor containerTitle">Information about selected pipeline </div>
-			<label class="access-label" title="All subjects in the project"> </label>
-			
-			<div class="containerItem">
-				<label > <b>  </b></label>
-				<br>
-				<input type="text" id="id123" name="">
-				<br/><br/>
-				<input type="text" id="id456" name="" >
-				<br/><br/>
-			</div>
-			
-			<br/><br/>
-		</div>
 
--->
+
+
+
 		<br/><br/><br/>
 		<div class="container" id="div_step3" style="display:none;">
 			<div class="withColor containerTitle">Step 3 : Enter the parameters : </div>

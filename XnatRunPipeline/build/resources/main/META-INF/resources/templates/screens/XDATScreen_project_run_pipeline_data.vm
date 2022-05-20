@@ -15,6 +15,9 @@
 
 #* #addGlobalCustomScreens("topBar") *#
 
+#* #addGlobalCustomScreens("header") *#
+
+
 $page.setTitle("Run_Pipeline_Cluster")
 $page.setLinkColor($ui.alink)
 $page.setVlinkColor($ui.vlink)
