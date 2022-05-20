@@ -151,7 +151,10 @@ public class XnatRunPipelineApi
     @ResponseBody
     public void checkIdXnatIfIsIdCluster(final HttpServletResponse response)  throws IOException{
         final UserI xnatUser = XDAT.getUserDetails();
-        final String idCluster = xnatUser.getUsername().replace("_", ".");  
+        final String idCluster = xnatUser.getUsername().replace("_", "."); 
+        String ligne = "";
+        
+        
         // Read config file and initialise  params  
 
        try {
@@ -165,52 +168,8 @@ public class XnatRunPipelineApi
 
        }
 
-       
+        JSONArray teamNames = (JSONArray) jsonObject.get("teamNames");
 
-       /* Recupérer la list  séléctionné des sujets */
-
-        /*
-       try {
-            //System.out.println("Subjects = " + subject_ids);
-            if ("all".equals(subject_ids)) {
-                final QueryOrganizer qo = new QueryOrganizer("xnat:subjectData", xnatUser, "all");
-                final CriteriaCollection cc = new CriteriaCollection("OR");
-                cc.addClause("xnat:subjectData/project", (Object)id_project);
-                cc.addClause("xnat:subjectData/sharing/share/project", (Object)id_project);
-                qo.setWhere(cc);
-                final String query = qo.buildQuery();
-                final XFTTable table = XFTTable.Execute(query, xnatUser.getDBName(), xnatUser.getLogin());
-                for (final Object[] array : table.rows()) {
-                    final Object[] row = array;
-                    for (final Object o : array) {
-                        subjectsList.add(o.toString());
-                    }
-                }
-            }
-            else {
-                final String[] split;
-                final String[] tokens = split = subject_ids.split(",");
-                for (final String token : split) {
-                    subjectsList.add(token);
-                }
-            }
-
-
-            final List<String> ssid = new ArrayList<String>();
-                for (final String sid : subjectsList) {
-                    log("subject   [" + sid + "]...");
-                    final XnatSubjectdata xnatSubject = XnatSubjectdata.getXnatSubjectdatasById((Object)sid, xnatUser, false);
-                    ssid.add(xnatSubject.getLabel());
-                }
-                final String listOfSubject = String.join(" ", ssid);
-                log("list of subject " + listOfSubject);
-
-
-        }catch ( Exception e) {
-            e.printStackTrace();
-        }*/
-
-        
         response.setContentType("application/json");
             
         response.setCharacterEncoding("UTF-8");
@@ -218,23 +177,58 @@ public class XnatRunPipelineApi
         JSONObject obj = new JSONObject();
             
 
-        if (checkIfIdUserExist(idCluster) && !("admin-xnat-root".contains(idCluster))) {
+        try {
 
-            Map<String, String> _listPipelines  = new HashMap<>();
+            final String program = "groups";
+            //final String programName = userName ;
+            final List<String> cmd = new ArrayList<String>();
+            cmd.add(program);
+            cmd.add(idCluster); 
+            log(cmd.toString());
 
-            /*try {
-            /*
-            doConnectionCluster(passwordniolon);
-            */
+            final ProcessBuilder pb = new ProcessBuilder(cmd);
+            final Process p = pb.start();
+            final InputStreamReader isr = new InputStreamReader(p.getInputStream());
+            final BufferedReader br = new BufferedReader(isr);
+            ligne = br.readLine();
+        }
+        catch (Exception e) {
+            log(e.toString());
+        }
 
-            String linkImgeSingularity = (String) jsonObject.get("linkAllImgSingularity");
 
-            JSONArray jsonArray = (JSONArray) jsonObject.get("listPipelines");
+        if (ligne!=null && !("admin-xnat-root".contains(idCluster))) {
 
-            listImages = new String[jsonArray.size()];
-                            
-            obj.put("pipelines", jsonArray);
-            obj.put("id", idCluster);       
+            String []  tabTeamUser = ligne.split(" ");
+            String [] array = new String[teamNames.size()] ;
+            int i=0;
+            for (Object ele : teamNames){
+                array[i] = ele.toString();
+                i++;
+            }
+    
+            HashSet<String> set = new HashSet<>(); 
+         
+            set.addAll(Arrays.asList(tabTeamUser));
+             
+            set.retainAll(Arrays.asList(array));
+            if(set.size()>=1){
+
+                Map<String, String> _listPipelines  = new HashMap<>();
+            
+                String linkImgeSingularity = (String) jsonObject.get("linkAllImgSingularity");
+    
+                JSONArray jsonArray = (JSONArray) jsonObject.get("listPipelines");
+    
+                listImages = new String[jsonArray.size()];
+                                
+                obj.put("pipelines", jsonArray);
+                obj.put("id", idCluster);  
+
+
+             }else {
+                obj.put("pipelines","null");
+             }
             
         } else {
 
@@ -579,10 +573,10 @@ public class XnatRunPipelineApi
         log(prepareCommandSingularity(selectPipeline,inputAndOutputDirectory,id_project, commande_befor, commande_after, commande_participant));
         
         // To send file to the cluster
-       /*
+       
         try{
 
-           ligneRetunrCommandeStartPipeline = sendFileToCluster(passwordniolon,namFileGenerated, idCluster);
+           ligneRetunrCommandeStartPipeline = sendFileToCluster(namFileGenerated, idCluster);
            
            log("\nLe fichier a été envoyer avec succé");
 
@@ -602,7 +596,7 @@ public class XnatRunPipelineApi
         }catch (SftpException sftpe){
             sftpe.printStackTrace();
         } 
-        */  
+        
         log("done !");
 
 
@@ -863,21 +857,35 @@ public class XnatRunPipelineApi
              
             set.retainAll(Arrays.asList(array));
              
-            System.out.println(set);
+
+
+
+            if(set.size()>=1){
+
+
+                System.out.println(set);
              
-            //convert to array
-            String[] intersection = {};
-            intersection = set.toArray(intersection);
-             
-            System.out.println(Arrays.toString(intersection));
-    
-            final Map<String, String> listTeam  = new HashMap<>();
-            // Stockage des teams dans une HashMap
-            for (String el : intersection) {
-                listTeam.put(el, el);
-            }
-            
-            js.putAll(listTeam);
+                //convert to array
+                String[] intersection = {};
+                intersection = set.toArray(intersection);
+                 
+                System.out.println(Arrays.toString(intersection));
+        
+                final Map<String, String> listTeam  = new HashMap<>();
+                // Stockage des teams dans une HashMap
+                for (String el : intersection) {
+                    listTeam.put(el, el);
+                }
+                
+                js.putAll(listTeam);
+
+             }else {
+                js.put("data","null");
+             }
+                        
+
+
+
 
         } else {
             js.put("data", "null");
@@ -1070,7 +1078,7 @@ public class XnatRunPipelineApi
     }
 
     /* Cette fonction à pour but d'envoyer le fichier généré au cluster de calcul */
-    public  String sendFileToCluster(String password, String nameFileGenerated, String idCluster) throws InterruptedException, JSchException, IOException, SftpException {
+    public  String sendFileToCluster( String nameFileGenerated, String idCluster) throws InterruptedException, JSchException, IOException, SftpException {
 
         /* Chemin vers le local file */
         String localFile = fullPathScriptSlurm;

@@ -31,7 +31,7 @@
             "output_key": "-out",
             "data_key": "-data",
             "commande_befor" : "segment_pnh",
-            "commande_after" : "-soft ANTS -species macaque ",
+            "commande_after" : "-soft ANTS -species macaque -deriv",
             "commande_participant" : "",
             "work_dir_params" : "" ,
             "basicParameters" : "" 
@@ -48,7 +48,7 @@
             "output_key": "-out",
             "data_key": "-data",
             "commande_befor" : "segment_pnh",
-            "commande_after" : "-soft ANTS -species macaque ",
+            "commande_after" : "-soft ANTS -species macaque -deriv ",
             "commande_participant" : "",
             "work_dir_params" : "" ,
             "basicParameters" : "" 
@@ -57,7 +57,7 @@
       "macapype_v0.3.1.sif" : {
             "name" : "macapype_v0.3.1.sif",
             "linkDoc":"https://macatools.github.io/macapype/",
-            "singularityCleanEnv" : "",
+            "singularityCleanEnv" : "-B /hpc:/hpc -B /envau:/envau",
             "inputDataBids" : "data/macapype ",
             "output" : "out " ,
             "path_licence" : "",
@@ -65,7 +65,7 @@
             "output_key": "-out",
             "data_key": "-data",
             "commande_befor" : "segment_pnh",
-            "commande_after" : "-soft ANTS -species macaque ",
+            "commande_after" : "-soft ANTS -species macaque -deriv ",
             "commande_participant" : "",
             "work_dir_params" : "" ,
             "basicParameters" : "" 

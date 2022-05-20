@@ -10,7 +10,7 @@
 #* @vtlvariable name="turbineUtils" type="org.nrg.xdat.turbine.utils.TurbineUtils" *#
 #* @vtlvariable name="ui" type="org.apache.turbine.services.pull.util.UIManager" *#
 #* @vtlvariable name="vr" type="org.nrg.xft.utils.ValidationUtils.ValidationResults" *#
-
+#* #addGlobalCustomScreens("header") *#
 $page.setTitle("Run_Pipeline_Cluster")
 $page.setLinkColor($ui.alink)
 $page.setVlinkColor($ui.vlink)
