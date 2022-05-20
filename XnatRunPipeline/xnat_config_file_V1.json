@@ -23,7 +23,7 @@
       "macapype_v0.2.2.13.sif" : {
             "name" : "macapype_v0.2.2.13.sif",
             "linkDoc":"https://macatools.github.io/macapype/",
-            "singularityCleanEnv" : "",
+            "singularityCleanEnv" : "-B /hpc:/hpc -B /envau:/envau",
             "inputDataBids" : "data/macapype ",
             "output" : "out " ,
             "path_licence" : "",
@@ -40,7 +40,7 @@
       "macapype_v0.3.0.1.sif" : {
             "name" : "macapype_v0.3.0.1.sif",
             "linkDoc":"https://macatools.github.io/macapype/",
-            "singularityCleanEnv" : "",
+            "singularityCleanEnv" : "-B /hpc:/hpc -B /envau:/envau",
             "inputDataBids" : "data/macapype ",
             "output" : "out " ,
             "path_licence" : "",

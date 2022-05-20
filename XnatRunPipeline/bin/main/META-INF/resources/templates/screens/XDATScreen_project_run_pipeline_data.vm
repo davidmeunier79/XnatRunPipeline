@@ -1,3 +1,4 @@
+
 #* @vtlvariable name="data" type="org.apache.turbine.util.RunData" *#
 #* @vtlvariable name="edit_screen" type="java.lang.String" *#
 #* @vtlvariable name="item" type="org.nrg.xft.XFTItem" *#
@@ -11,6 +12,9 @@
 #* @vtlvariable name="ui" type="org.apache.turbine.services.pull.util.UIManager" *#
 #* @vtlvariable name="vr" type="org.nrg.xft.utils.ValidationUtils.ValidationResults" *#
 #* #addGlobalCustomScreens("header") *#
+
+#* #addGlobalCustomScreens("topBar") *#
+
 $page.setTitle("Run_Pipeline_Cluster")
 $page.setLinkColor($ui.alink)
 $page.setVlinkColor($ui.vlink)
@@ -21,6 +25,7 @@ $page.setVlinkColor($ui.vlink)
 
 #set( $placeholderId = "entry your id niolon" )
 #set( $placeholderPwd = "entry your password" )
+
 
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@9"></script>
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
