@@ -284,7 +284,7 @@ $page.setVlinkColor($ui.vlink)
 
 		
 			<div class="container"> 
-				<div class="withColor containerTitle">Step 1 : ENTER YOUR  ID TO GET PIPELINES EXISTS ON CLUSTER  </div>
+				<div class="withColor containerTitle">Step 1 : ENTER YOUR  ID TO GET PIPELINES LIST EXISTS ON CLUSTER  </div>
 					<br/>
 					<div style="display:inline; display: none;" id="div-id-user">
 						<div class="containerItem" >	 			
@@ -292,7 +292,7 @@ $page.setVlinkColor($ui.vlink)
 							<input type="text" id="idNiolon" name="iDniolon" placeholder="$placeholderId" required="true" >
 							<!--    <label > Mot de passe </label>
 							<input type="password" id="password" name="password" placeholder="$placeholderPwd" required="true"> -->	
-							<button class="btn1" id="btnGetPiplines" data='$content.getURI("/xapi/int-run-pipline/get-pipelines/$project")' > Get Pipelines</button>
+							<button class="btn1" id="btnGetPiplines" data='$content.getURI("/xapi/int-run-pipline/get-pipelines/$project")' > Get Pipelines List</button>
 							<br/><br/>
 							<div class="error-msg" id="div-error-msg">
 								<i class="fa fa-times-circle"></i>
@@ -310,6 +310,7 @@ $page.setVlinkColor($ui.vlink)
 			</div>
 			<br/><br/>
 
+
 				<!--
 					<div class="bandeau-message"> 
 						<div class="alert-success" role="alert" tabindex="0"> 
@@ -317,6 +318,7 @@ $page.setVlinkColor($ui.vlink)
 						</div>
 					</div>
 				-->	
+			
 				<div class="info-msg"  id="div-info-msg" style="display:none;">
 					  <i class="fa fa-info-circle" id="link-pipeline" > </i>
   					   
@@ -366,24 +368,10 @@ $page.setVlinkColor($ui.vlink)
 
 		</div>
 
-<!--
-		<div class="container"  id="divInfoPipeline" style="display=none;">
-			<div class="withColor containerTitle">Information about selected pipeline </div>
-			<label class="access-label" title="All subjects in the project"> </label>
-			
-			<div class="containerItem">
-				<label > <b>  </b></label>
-				<br>
-				<input type="text" id="id123" name="">
-				<br/><br/>
-				<input type="text" id="id456" name="" >
-				<br/><br/>
-			</div>
-			
-			<br/><br/>
-		</div>
 
--->
+
+
+
 		<br/><br/><br/>
 		<div class="container" id="div_step3" style="display:none;">
 			<div class="withColor containerTitle">Step 3 : Enter the parameters : </div>
@@ -1365,11 +1353,6 @@ function outsideClickContinue(e) {
     modalContinue.style.display = 'none';
   }
 }
-
-
-
-
-
 
 
 
