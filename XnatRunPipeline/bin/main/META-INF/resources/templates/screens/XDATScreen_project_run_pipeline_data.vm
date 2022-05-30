@@ -1154,7 +1154,8 @@ $(function() {
 					.append('<option selected="selected" value="">Please choose a pipeline</option>');
 
 				
-				$("#div-id-user").show();	
+				$("#div-id-user").show();
+				$('#additionalParams').val("");	
 				
 
 					
@@ -1320,7 +1321,7 @@ function outsideClick(e) {
 // Open
 function openLoader() {
    
-  loader.style.opacity = 
+  
   loader.style.display = 'block';
 
 	
