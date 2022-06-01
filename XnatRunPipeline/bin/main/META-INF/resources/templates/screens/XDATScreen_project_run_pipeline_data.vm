@@ -481,7 +481,7 @@ $page.setVlinkColor($ui.vlink)
 
 							<span class="tip_icon" style="margin-right:3px;">
 				 				<span class="tip shadowed" style="top:20px;z-index:10000;white-space:normal;left:0x;width:300px;background-color:#ffc;">
-				 					If you have other parameters that you consider interesting for the Singularity command , add them here.  Separate by spaces !
+				 					participant or group !
 								</span>
 							</span>
 						
@@ -984,7 +984,6 @@ function getTeams(){
 	});	
 
 }
-
 
 
 
