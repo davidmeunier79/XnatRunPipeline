@@ -1536,6 +1536,7 @@ public class XnatRunPipelineApi
         
         /* L'uri de XNAT */ 
         URI_HOST_XNAT = (String) jsonObject.get("URI_HOST_XNAT");
+        String xnat2bids = (String) jsonObject.get("xnat2bids");
 
         String filenameTxt = "\"" + dirIputdata + "/download_commandLine.txt" +"\"";
         
@@ -1574,7 +1575,7 @@ public class XnatRunPipelineApi
                     + "\n" +  "fi"
                     + "\n" +  "\n" + "\n" + "\n"
                     + "\n" +  "dirDataInBIDS=\"" + dirDataInBIDS + "\"\n"
-                    + "\n" +  "python /envau/work/nit/xnat-cluster/xnat2bids/xnat2bids_reconstruct_afterDownload.py " 
+                    + "\n" +  "python " + xnat2bids + " " 
                     + dirIputdata + "/" + projectName + " " + "$dirDataInBIDS" 
                     + "\n";
                     //+  " " + lisSubjectWithSpaceSeparated +"\n";
