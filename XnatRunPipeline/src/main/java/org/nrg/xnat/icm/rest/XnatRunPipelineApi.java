@@ -418,7 +418,7 @@ public class XnatRunPipelineApi
     public void startPipelineInCluster(final HttpServletResponse response, @PathVariable final String id_project, @RequestParam("selectPipeline") final String selectPipeline,  @RequestParam("idCluster") final String idCluster, @RequestParam("subject_ids") final String subject_ids, @RequestParam("nameExportDir") final String nameExportDir, 
                  @RequestParam("additionalParams") final String additionalParams, @RequestParam("sessions_ids") final String sessions_ids, 
                     @RequestParam("radioValue")  final String radioValue, @RequestParam("commande_befor")  final String commande_befor, @RequestParam("commande_after")  final String commande_after,
-                    @RequestParam("commande_participant")  final String commande_participant)  throws IOException{
+                    @RequestParam("commande_participant")  final String commande_participant, @RequestParam("command_extra_bids")  final String command_extra_bids)  throws IOException{
 
         final UserI xnatUser = XDAT.getUserDetails();
         final String userName  = xnatUser.getUsername().replace("_", ".");
@@ -555,7 +555,7 @@ public class XnatRunPipelineApi
             + "\n" +  "   chmod -R +777 " + exportDirectory 
             + "\n" +  "fi"
             + "\n" +  "\n" + "\n" + "\n"
-            + "\n" + "" + commandeDownloadData(listOfSubjectWithCamasSeparated, id_project, inputAndOutputDirectory, listOfSubjectWithSpaceSeparated, sessions_ids)
+            + "\n" + "" + commandeDownloadData(listOfSubjectWithCamasSeparated, id_project, inputAndOutputDirectory, listOfSubjectWithSpaceSeparated, sessions_ids, command_extra_bids)
             + "\n" + LOAD_IMG_SINGULARITY
             /*+ "\n" + whichCommandSingularity(selectPipeline, inputAndOutputDirectory)*/
             + "\n" + prepareCommandSingularity(selectPipeline,inputAndOutputDirectory,id_project, commande_befor, commande_after, commande_participant)
@@ -1532,7 +1532,7 @@ public class XnatRunPipelineApi
     
     }
 
-    public static String  commandeDownloadData(String subjectSelected, String projectName, String dirIputdata, String lisSubjectWithSpaceSeparated, String sessions_ids){
+    public static String  commandeDownloadData(String subjectSelected, String projectName, String dirIputdata, String lisSubjectWithSpaceSeparated, String sessions_ids, String command_extra_bids){
         
         /* L'uri de XNAT */ 
         URI_HOST_XNAT = (String) jsonObject.get("URI_HOST_XNAT");
@@ -1576,7 +1576,7 @@ public class XnatRunPipelineApi
                     + "\n" +  "\n" + "\n" + "\n"
                     + "\n" +  "dirDataInBIDS=\"" + dirDataInBIDS + "\"\n"
                     + "\n" +  "python " + xnat2bids + " " 
-                    + dirIputdata + "/" + projectName + " " + "$dirDataInBIDS" 
+                    + dirIputdata + "/" + projectName + " " + "$dirDataInBIDS" + " " + command_extra_bids 
                     + "\n";
                     //+  " " + lisSubjectWithSpaceSeparated +"\n";
                     

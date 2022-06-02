@@ -447,7 +447,22 @@ $page.setVlinkColor($ui.vlink)
 				<input class="inputStep3" type="text" id="nameSlurmJob" name="nameSlurmJob" >
 				-->
 				<br/><br/>
-			
+
+
+				<label > <h3> extra parameters command xnat2bids
+
+							<span class="tip_icon" style="margin-right:3px;">
+				 				<span class="tip shadowed" style="top:20px;z-index:10000;white-space:normal;left:0x;width:300px;background-color:#ffc;">
+				 					Par défaut vide ! Pour toute autre option consultez la doc.
+								</span>
+							</span>
+						
+						 </h3></label>
+				<input class="inputStep3" type="text" id="command_extra_bids" name="command_extra_bids" >
+				<br/><br/>
+
+
+
 				<div class="success-msg">
 					<i class="fa fa-info-circle"></i>
 					Set command parameters
@@ -1092,6 +1107,7 @@ $(function() {
 		let commande_befor = $('#commande_befor').val();
 		let commande_after = $('#commande_after').val();
 		let commande_participant = $('#commande_participant').val();
+		let command_extra_bids = $('#command_extra_bids').val();
 		
 		subject_ids = subject_ids.toString();
 
@@ -1105,7 +1121,7 @@ $(function() {
 		$.ajax({
 			url: _urlStarttPiplines,
 			data: {"idCluster":idCluster, "selectPipeline":selectPipeline, "subject_ids":subject_ids,"nameExportDir":nameExportDir, "additionalParams":additionalParams, 
-				"sessions_ids":_sessions_ids, "radioValue":radioValue, "commande_befor":commande_befor, "commande_after":commande_after, "commande_participant" : commande_participant},
+				"sessions_ids":_sessions_ids, "radioValue":radioValue, "commande_befor":commande_befor, "commande_after":commande_after, "commande_participant" : commande_participant, "command_extra_bids" : command_extra_bids},
 			method:'POST',
 			success: function(data) {
 				
@@ -1155,6 +1171,7 @@ $(function() {
 				
 				$("#div-id-user").show();
 				$('#additionalParams').val("");	
+				$('#command_extra_bids').val("");
 				
 
 					
