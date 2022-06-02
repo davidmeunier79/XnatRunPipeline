@@ -12,13 +12,7 @@
       "listPipelines" : ["macapype_v0.2.2.13.sif", "macapype_v0.3.0.1.sif", "macapype_v0.3.1.sif",  "fmriprep-20.0.4.sif", 
             "mriqc_0.16.1.sif",  "mriqc_0.14.2.sif", "qsiprep_0.14.3.sif", "bids_validator_v1.8.1-dev.0.sif"],
 
-
-      "pageInfo": {
-            "pageName": "abc",
-            "pagePic": "http://example.com/content.jpg",
-            "work_dir_params" : "" ,
-            "basicParameters" : "" 
-      },
+            
 
       "macapype_v0.2.2.13.sif" : {
             "name" : "macapype_v0.2.2.13.sif",
