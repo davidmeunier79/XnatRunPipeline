@@ -1441,17 +1441,17 @@ public class XnatRunPipelineApi
 		
 		System.out.println(jsonObject.keySet());	
 		
-		String  pageInfo = jsonObject.get("pageInfo").toString();
+		//String  pageInfo = jsonObject.get("pageInfo").toString();
 		 
-		System.out.println("\n" + "pageName : " + pageInfo);
+		//System.out.println("\n" + "pageName : " + pageInfo);
 		 
-		JSONObject pageNameObjectJson = (JSONObject) jsonObject.get("pageInfo");
+		//JSONObject pageNameObjectJson = (JSONObject) jsonObject.get("pageInfo");
 		 
-		String pagePic = pageNameObjectJson.get("pagePic").toString();
+		//String pagePic = pageNameObjectJson.get("pagePic").toString();
 		 
-		System.out.println("\n" + "pagePic : " + pagePic);
+		//System.out.println("\n" + "pagePic : " + pagePic);
 	
-		String [] arrayPost = null;
+		//String [] arrayPost = null;
 				
 		// System.out.println(jsonObject.get("mriqc_0.14.2.sif"));
 		
