@@ -10,7 +10,7 @@
       "xnat2bids" : "/hpc/shared/apps/x86_64/utils/xnat-cluster/xnat2bids/xnat2bids_reconstruct_afterDownload.py",
       "teamNames" : ["bagamore","brainets", "comco", "imapath", "invibe", "meca", "neopto",
             "p3m", "scalp", "banco", "canop", "crise", "inphim", "irmf", "mircos", "nit", "sane"],
-      "listPipelines" : ["macapype_v0.2.2.13.sif", "macapype_v0.3.0.1.sif", "macapype_v0.3.1.sif",  "fmriprep-20.0.4.sif", 
+      "listPipelines" : ["macapype_v0.2.2.13.sif", "macapype_v0.3.0.1.sif", "macapype_v0.3.1.sif",  "fmriprep-20.0.4.sif", "fmriprep-21.0.2.sif", 
             "mriqc_0.16.1.sif",  "mriqc_0.14.2.sif", "qsiprep_0.14.3.sif", "bids_validator_v1.8.1-dev.0.sif"],
 
 
@@ -68,6 +68,23 @@
 
       "fmriprep-20.0.4.sif" : {
             "name" : "fmriprep-20.0.4.sif",
+            "linkDoc" : "https://fmriprep.org/en/stable/",
+            "singularityCleanEnv" : "--cleanenv ",
+            "inputDataBids" : "work_dir ",
+            "output" : "output " ,
+            "path_licence" : "-B /hpc/shared/apps/x86_64/softs/freesurfer/7.1.1:/license_path ",
+            "licence_Params" : "--fs-license-file /license_path/.license ",
+            "output_key": "",
+            "data_key": "",
+            "commande_befor" : "",
+            "commande_after" : "--cifti-output --low-mem --mem-mb 32000 --nthreads 64 ",
+            "commande_participant" : "participant ",
+            "work_dir_params" : "-w /output/temp_data_test/ " ,
+            "basicParameters" : "" 
+      },
+
+      "fmriprep-21.0.2.sif" : {
+            "name" : "fmriprep-21.0.2.sif",
             "linkDoc" : "https://fmriprep.org/en/stable/",
             "singularityCleanEnv" : "--cleanenv ",
             "inputDataBids" : "work_dir ",
