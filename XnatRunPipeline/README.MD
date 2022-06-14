@@ -1,50 +1,45 @@
-# ICM - XNAT Export Data Plugin
+**INT - XNAT RUN PIPELINE CLUSTER Plugin**
 
-Use of java>=11 : `export JAVA_HOME=/usr/lib/jvm/java-11-openjdk-amd64`
+**Prérequis**
 
-This project adds a plugin which
-1. Adds an "Export Data (ICM)" item to the menu of a XNAT project screen
-2. This item opens a custom webpage for exporting data
-3. The users selects the subject(s) / type of files (DICOM / NIFTI + JSON / BOTH) / folder structure format (XNAT / CENIR / BIDS  [BETA])
-4. The webpage returns a zip file which the user can download
+Utilisation de java>=11 : `export JAVA_HOME=/usr/lib/jvm/java-11-openjdk-amd64`
 
-# Prerequisites
+Pour déployer le plugin il faut installer `gradle`
 
-To build this plugin, you need to install gradle
+**Déploiement et utilisation du plugin sur XNAT**
 
-## Build and use the plugin with XNAT
+1. Allez sur le répertoire **XnatRunPipeline**
 
-1. Clone the repository:
-```
-$ git clone git@gitlab.icm-institute.org:iconics/ICM-XNAT.git
-$ cd ICM-XNAT/plugins/xnat-plugin-export-data
-```
+   ```
+   ~$: cd XnatRunPipeline
+   ```
+2. Déployer avec gradle
 
-2. Build using gradle:
-```
-$ ./gradlew build
-```
+   ```
+   ~$: ./gradlew build 
+   ```
+3. Allez sur le répertoire **XnatRunPipeline/build/libs**
 
-3. This plugin needs then to be copied to the XNAT plugins folder (see the configuration of XNAT, usually in /data/xnat/home/plugins)
+   ```
+   ~$: cd XnatRunPipeline/build/libs
+   ```
+4. Le plugin `xnat-plugin-run-pipeline-data-1.1.1.jar` sera généré
+5. Ce plugin doit ensuite être copié dans le dossier des plugins de XNAT (voir la configuration de XNAT, généralement dans `/data/xnat/home/plugins`).
 
-4. Copy the "org.json.simple" JAR to the Tomcat "lib" folder. 
-You can obtain the file from [this link](http://central.maven.org/maven2/org/apache/clerezza/ext/org.json.simple/0.4/org.json.simple-0.4.jar).
+   ```
+   ~$: scp xnat-plugin-run-pipeline-data-1.1.1.jar xnat@10.164.0.82:/data/xnat/home/plugins
+   ```
+6. Redémarrer **tomcat sur xnat**
 
-5. Copy the "org.apache.commons" CSV JAR to the Tomcat "lib" folder.
-You can obtain the file from [this link](http://central.maven.org/maven2/org/apache/commons/commons-csv/1.6/commons-csv-1.6.jar).
+   ```
+   ~$: sudo systemctl restart tomcat8.service
+   ```
 
-6. You need then to restart Tomcat
+**Configuration json file xnat**
 
-6. The ["dcm2niix"](https://github.com/rordenlab/dcm2niix) tool must be installed
-```
-$ Go to the link above
-$ Follow the install instructions under the "Build command line version with cmake (Linux, MacOS, Windows)" section
-$ For the last step, use "make install" instead of "make"
-```
+Pour rajouter une nouvelle image :
 
-## TODO
-```
-$ Add logging
-$ Add a waiting screen while the zip file is generated
-$ What to do in case the zip file is very large
-```
+Sur xnat allez dans le fichier **/var/lib/tomcat8/xnat\_config\_file\_V1.json**
+
+* la clé : **listPipelines : ajouter le nom de l'image.**
+* copier coller une image existant et modifiez la, avec les paramètres de la nouvelle image.
