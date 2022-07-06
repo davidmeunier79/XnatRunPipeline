@@ -445,9 +445,9 @@ public class XnatRunPipelineApi
         
         log("Runin pipeLine from [" + id_project + "]");
 
-        log(" vous avez selectionné le pojet ou sujets :  : [" + subject_ids + "]");
+        log(" vous avez selectionné le projet ou sujets :  : [" + subject_ids + "]");
 
-        log("le export path param   est : " + nameExportDir );
+        log("l Export path params   est : " + nameExportDir );
 
         
             
@@ -535,8 +535,8 @@ public class XnatRunPipelineApi
         }
 
         inputAndOutputDirectory = nameExportDir + "/" + data_xnat + "/" + idCluster + "_" +  selectPipeline + "_" + id_project + "_" + datTimeNow;
-        pathErrorLogOut = "/home/"+ idCluster  + "/" /* "/xnat_batch_scripts/" */ + selectPipeline + "_" + id_project + "_" + datTimeNow + ".out";
-        pathErrorLogErr = "/home/"+ idCluster  + "/" /* "/xnat_batch_scripts/" */ +  selectPipeline + "_" + id_project + "_" + datTimeNow + ".err";
+        pathErrorLogOut = "/home/"+ idCluster  + "/" + "/xnat_batch_scripts/" + selectPipeline + "_" + id_project + "_" + datTimeNow + ".out";
+        pathErrorLogErr = "/home/"+ idCluster  + "/" + "/xnat_batch_scripts/" +  selectPipeline + "_" + id_project + "_" + datTimeNow + ".err";
         
         SCRIPT_SBATCH_GLOBAL = SCRIPT_SBATCH_GLOBAL 
             + SCRIPT_SBATCH  
@@ -1496,8 +1496,8 @@ public class XnatRunPipelineApi
     }
 
     /* 
-     * Pour chaque objet JSON dans le fichier de configue
-     * on récupére tout les  (key, value)     
+     * Pour chaque objet JSON dans le fichier de config
+     * on récupére toutes les  (key, value)     
      */
 	
 	public Map< String, String> getInfoJsonObject(JSONObject jsonObject){
