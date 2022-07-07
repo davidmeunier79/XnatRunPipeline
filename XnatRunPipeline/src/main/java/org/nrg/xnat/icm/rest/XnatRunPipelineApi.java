@@ -535,8 +535,8 @@ public class XnatRunPipelineApi
         }
 
         inputAndOutputDirectory = nameExportDir + "/" + data_xnat + "/" + idCluster + "_" +  selectPipeline + "_" + id_project + "_" + datTimeNow;
-        pathErrorLogOut = "/home/"+ idCluster  + "/" + "/xnat_batch_scripts/" + selectPipeline + "_" + id_project + "_" + datTimeNow + ".out";
-        pathErrorLogErr = "/home/"+ idCluster  + "/" + "/xnat_batch_scripts/" +  selectPipeline + "_" + id_project + "_" + datTimeNow + ".err";
+        pathErrorLogOut = "/home/"+ idCluster  + "/" + xnat_batch_scripts + "/" + selectPipeline + "_" + id_project + "_" + datTimeNow + ".out";
+        pathErrorLogErr = "/home/"+ idCluster  + "/" + xnat_batch_scripts + "/" +  selectPipeline + "_" + id_project + "_" + datTimeNow + ".err";
         
         SCRIPT_SBATCH_GLOBAL = SCRIPT_SBATCH_GLOBAL 
             + SCRIPT_SBATCH  
