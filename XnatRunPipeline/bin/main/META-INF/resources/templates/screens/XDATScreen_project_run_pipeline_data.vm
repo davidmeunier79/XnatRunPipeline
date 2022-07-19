@@ -453,7 +453,7 @@ $page.setVlinkColor($ui.vlink)
 
 							<span class="tip_icon" style="margin-right:3px;">
 				 				<span class="tip shadowed" style="top:20px;z-index:10000;white-space:normal;left:0x;width:300px;background-color:#ffc;">
-				 					Par défaut vide ! Pour toute autre option consultez la doc.
+				 					Par defaut vide ! Pour toute autre option consultez la doc.
 								</span>
 							</span>
 						
@@ -677,26 +677,12 @@ $(function() {
 					}
 
 
-
-					// Activer le bouton start computation
-					//$('#btnStartPipline').disabled =true;
-					//alert("Tres bien envoyer")
-
 					
 				}
 			});
 
 
 });
-
-
-
-
-
-
-
-
-
 
 
 
@@ -790,7 +776,7 @@ $(function() {
 
 });
 
-/* Cette fonction permet d'initialiser les params par défaut pour toute pipeline */
+/* Cette fonction permet d'initialiser les params par défaut pour tous les pipelines */
 
 $(function (){
 
@@ -938,7 +924,7 @@ $(function (){
 
 */
 
-
+// La fonction qui récupère la liste des groupes dont il fait partie l'utilisateur 
 
 function getTeams(){
 
@@ -1007,7 +993,7 @@ function getTeams(){
 
 
 
-
+// Récupérer les  informations liées à la BIDSApss choisie
 
 function getInfAboutPipelineSelected(pipeline) {
 
@@ -1184,7 +1170,7 @@ $(function() {
 });
 
 
-
+//  Savegarder les information dans un fichier .txt 
 $('#btnSave').on("click" , function(e) {
 
 		/* pour récupérer le contenu du tag <p>    dans  le modal */
@@ -1232,7 +1218,7 @@ $('#btnSave').on("click" , function(e) {
 });
 
 
-// on ok on fait rien
+// si le choix est  'ok' on fait rien
 document.getElementById("btnOkFinale").addEventListener("click", function(){
 
 
@@ -1375,74 +1361,6 @@ function outsideClickContinue(e) {
 
 
 
-
-
-
-
-/*
-$(function() {
-  $('#export-project-data-form').submit(function(e) {
-	event.preventDefault();
-        let option = document.getElementById("subjects_list").value;
-	console.log(option)
-	if (option  == "" && !$('#all_subjects').attr("checked", "checked"))
-	{	
-		window.alert('No subject selected ')
-		console.log('No subject selected')
-		return;
-	}
-	processExportProjectForm ();
-	document.getElementById("loader").classList.add('is-active');
-	//document.getElementById("mysubmit").blur();
-	setTimeout(function() {
-			//prepareFrame();
-		document.getElementById("loader").setAttribute("data-text", "Loading... Bored.... Press spacebar to start");
-
-	 }, 15000); 
-
-		
-		
-	$.ajax({
-		url: $(this).attr('action'),
-		data: $(this).serialize(),
-		method:$(this).attr('method'),
-		
-        xhrFields:{
-            responseType: 'blob'
-		},
-		
-		success: function(data, status, xhr) {
-			document.getElementById("loader").classList.remove('is-active');
-			
-			document.querySelectorAll('iframe').forEach(
-
-				function(elem){
-					elem.parentNode.removeChild(elem);
-				});
-                if(data.type.indexOf('text/html') != -1){//If instead of a file you get an error page
-                    var reader = new FileReader();
-                    reader.readAsText(data);
-                    reader.onload = function() {alert(reader.result);};
-                    return;
-                }
-                var link = document.createElement('a'),
-                    filename = 'file.xlsx';
-                if(xhr.getResponseHeader('Content-Disposition')){//filename 
-                    filename = xhr.getResponseHeader('Content-Disposition');
-                    filename=filename.match(/filename=(.*)/)[1];
-                    filename=decodeURIComponent(escape(filename));
-                }
-                link.href = URL.createObjectURL(data);
-                link.download = filename;
-				link.click();
-				
-            }
-        });
-        return false;
-    });		
-});
-
-*/
 
 
 $(function () {
