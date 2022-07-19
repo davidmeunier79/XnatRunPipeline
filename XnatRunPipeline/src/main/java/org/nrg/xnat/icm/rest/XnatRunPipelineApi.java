@@ -53,21 +53,11 @@ import java.io.InputStream;
 import java.io.ObjectInputStream.GetField;
 import java.io.PrintWriter;
 import java.io.FileReader;
-
-
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.text.ParseException;
-
 import org.json.simple.*;
-
 import org.json.simple.parser.JSONParser;
-/* Les importations de SSHJ 
-
-import net.schmizz.sshj.SSHClient;
-import net.schmizz.sshj.xfer.FileSystemFile;
-
-*/
 
 
 @Api(description = "run pipeline on Cluster")
@@ -82,17 +72,10 @@ public class XnatRunPipelineApi
     private boolean _imageFormatAddDicoms;
     private boolean _imageFormatAddNiftis;
     private boolean _imageFormatAddBothImageFormats;
-
-
-
     public static String listImages[] = null;
 	private static String allOrListSubject;
 	
-
-
-
     // Paramètres création session cluster à distance : 
-
     private static int port = 22;
     private static ChannelExec channel = null;
     private static Session session = null;
@@ -103,45 +86,33 @@ public class XnatRunPipelineApi
     private static String fullPathScriptSlurm = "";
  	// Les paramètres du cluster à distance 
     public  static String user = "";
-    //private  static String host = "niolon.int.univ-amu.fr";
-    private  static String host = "niolon02";
+    private  static String host = "";
 
     private static String ID_PROJECT = "";
     private static String datTimeNow = "";
+    // Paramèttres par défaut de l'entête du script qui sont des constantes :
 	private static String SCRIPT_SBATCH = "#!/bin/bash\n"
                                         + "#SBATCH -p batch\n";
-    
     private static String NUMBER_OF_JOBS_PER_NODES = "#SBATCH --ntasks-per-node=1\n";
     private static String MAXIMAL_TIME_COMPUTATION = "#SBATCH -t 00:06:00\n";
     private static String NUMBER_OF_NODES = "#SBATCH -N 1\n";
-    private static String STANDARD_OUTPUT_FILE = "#SBATCH -o ";   // à ajouter  le path vers l'output + un retour à la ligne ! !
-    private static String STANDARD_ERROR_FILE = "#SBATCH -e ";    // à ajouter  le path vers l'error  + un retour à la ligne ! !
-    private static String NAME_OF_SLURM_JOB = "#SBATCH -J";       // à ajouter l nom + un retour à la ligne
+    private static String STANDARD_OUTPUT_FILE = "#SBATCH -o ";   // définir le fichier des log.out !
+    private static String STANDARD_ERROR_FILE = "#SBATCH -e ";    // définir le fichier des log.out !
+    private static String NAME_OF_SLURM_JOB = "#SBATCH -J";       // attribuer un nom a  job lancé
     private static String LOAD_MODULES = "\n\nmodule purge\n"
                                        + "module load all\n"
                                        + "\nmodule load anaconda/3\n";
-
-    private static String GET_USER_ENV = "\n#SBATCH --get-user-env=L\n";
+    private static String GET_USER_ENV = "\n#SBATCH --get-user-env=L\n";  // Pour sourcer l'env de l'user
     private static String LOAD_IMG_SINGULARITY = "";
     private static String ADDITIONAL_PARAMS = "\n";
-
     public static String ID_CLUSTER = "";
-
-    public static String URI_HOST_XNAT = "--host http://10.164.0.82:8080 ";
-
+    public static String URI_HOST_XNAT = "";
     public static String CHANGE_WORKING_DIRECTORY = "#SBATCH --chdir=/tmp\n";
 
-    // Path to config file xnat
-		
+    // path vers le fichier de configuration /var/lib/tomcat8/xnat_config_file_V1.json dans xnat. 
 	private static String config_file_xnat = "xnat_config_file_V1.json"; 
-	
-
-
     public static JSONObject jsonObject;
     public static ArrayList<String> listKeysJsonFile = null;
-
-
-    
 
 
 
@@ -242,47 +213,10 @@ public class XnatRunPipelineApi
 
         out.print(obj);
 
-        out.flush();
-
-        
+        out.flush();      
 
         log( "\n La date de création de ce fichier est : "+getDateTimeNow() + "    \n\n");
-
-
     }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 
@@ -346,7 +280,6 @@ public class XnatRunPipelineApi
 
         log( "\n La date de création de ce fichier est : "+getDateTimeNow() + "    \n\n");
 
-
     }
 
 
@@ -405,11 +338,7 @@ public class XnatRunPipelineApi
 
 
 
-
-
-
-
-    /* Cette fonction permet de lancer le pipeline voulu dans le cluster de calcul */
+    /* Cette fonction permet de lancer le pipeline choisi dans le cluster de calcul */
 
     @ApiOperation(value = "Start piplines in cluster", notes = "Custom")
     @ApiResponses({ @ApiResponse(code = 200, message = "Connection success "), @ApiResponse(code = 401, message = "Must be authenticated to access the XNAT Rest Api"), @ApiResponse(code = 500, message = "Unexpected internal serval error") })
@@ -450,6 +379,10 @@ public class XnatRunPipelineApi
         log("l Export path params   est : " + nameExportDir );
 
         
+        /**
+         *  On récupère la list des sujets ou des sessions choisies 
+         * 
+         */
             
         try {
             //System.out.println("Subjects = " + subject_ids);
@@ -534,9 +467,11 @@ public class XnatRunPipelineApi
             ADDITIONAL_PARAMS = "\n";
         }
 
+        
+
         inputAndOutputDirectory = nameExportDir + "/" + data_xnat + "/" + idCluster + "_" +  selectPipeline + "_" + id_project + "_" + datTimeNow;
-        pathErrorLogOut = "/home/"+ idCluster  + "/" + xnat_batch_scripts + "/" + selectPipeline + "_" + id_project + "_" + datTimeNow + ".out";
-        pathErrorLogErr = "/home/"+ idCluster  + "/" + xnat_batch_scripts + "/" +  selectPipeline + "_" + id_project + "_" + datTimeNow + ".err";
+        pathErrorLogOut = "/home/"+ idCluster  + "/" + xnat_batch_scripts + "/" + idCluster + "_" + selectPipeline + "_" + id_project + "_" + datTimeNow + ".out";
+        pathErrorLogErr = "/home/"+ idCluster  + "/" + xnat_batch_scripts + "/" + idCluster + "_" + selectPipeline + "_" + id_project + "_" + datTimeNow + ".err";
         
         SCRIPT_SBATCH_GLOBAL = SCRIPT_SBATCH_GLOBAL 
             + SCRIPT_SBATCH  
@@ -564,12 +499,12 @@ public class XnatRunPipelineApi
             
             log(SCRIPT_SBATCH_GLOBAL);        
 
-        final String namFileGenerated = generateFIleScripte(SCRIPT_SBATCH_GLOBAL, selectPipeline, idCluster);
+        final String namFileGenerated = generateFIleScripte(SCRIPT_SBATCH_GLOBAL, selectPipeline, idCluster, id_project);
 
         log( "Le fichier à envoyer est  " + namFileGenerated );
         
 
-        log("\nLa commade généer avec la nouvele fonction est : ");
+        log("\nLa commade générée est : ");
         log(prepareCommandSingularity(selectPipeline,inputAndOutputDirectory,id_project, commande_befor, commande_after, commande_participant));
         
         // To send file to the cluster
@@ -602,10 +537,10 @@ public class XnatRunPipelineApi
 
 
 
-
-        // Prepapre les données à envoyer: 
-
-
+        /* Preparé les données à envoyer: 
+        * ce sont les informations qui  corréspond au lancement du calcul afin qu'un utilsateur puisse les sauvegarder 
+        * en .txt garder une trace
+        */
         response.setContentType("application/json");
         
         response.setCharacterEncoding("UTF-8");
@@ -614,17 +549,11 @@ public class XnatRunPipelineApi
         
         String pathWithnNameScriptSbatch = "/home/" + idCluster + "/" + xnat_batch_scripts + "/" + namFileGenerated;
 
-
         obj.put("idJob",ligneRetunrCommandeStartPipeline);
         obj.put("workindDirectory", inputAndOutputDirectory);
         obj.put("pathWithnNameScriptSbatch", pathWithnNameScriptSbatch);
         obj.put("pathErrorLogOut", pathErrorLogOut);
         obj.put("pathErrorLogErr", pathErrorLogErr);
-
-
-
-
-
         
         log("les sessions à envoyer sont : " +obj.toString());
 
@@ -666,6 +595,9 @@ public class XnatRunPipelineApi
 
 
         /* Préparation de la commande */
+        // On exclu bids_validator car il ne fait qu'un test de vérification si les données sont en BIDS, du coup 
+        // il a pas besoin de répertoire des outputs
+
         if(!selectPipeline.contains("bids_validator")){
 
         commande  = commande + singulartyRun 
@@ -700,12 +632,7 @@ public class XnatRunPipelineApi
         return commande;
 
 
-
-
-
-
     }
-
 
 
     /* Cette fonction permet de générer  la commande qui permet de supprimer (ou non) les donner après la conversion en bids */
@@ -719,8 +646,6 @@ public class XnatRunPipelineApi
         }
 
     }
-
-
 
 
     /* Cette fonction permet de récuperer les la liste des sessions corréspondant à un sujet */
@@ -817,7 +742,6 @@ public class XnatRunPipelineApi
         JSONObject js = new JSONObject();
         
 
-
         try {
 
             final String program = "groups";
@@ -858,8 +782,6 @@ public class XnatRunPipelineApi
             set.retainAll(Arrays.asList(array));
              
 
-
-
             if(set.size()>=1){
 
 
@@ -882,10 +804,6 @@ public class XnatRunPipelineApi
              }else {
                 js.put("data","null");
              }
-                        
-
-
-
 
         } else {
             js.put("data", "null");
@@ -1025,9 +943,9 @@ public class XnatRunPipelineApi
             channel.setOutputStream(responseStream);
             channel.connect();
             
-            System.out.println(" ************************************************ ");
+            System.out.println(" ls success");
 
-            log("*************************");
+            log("ls success");
             
             while (channel.isConnected()) {
                 Thread.sleep(100);
@@ -1350,10 +1268,10 @@ public class XnatRunPipelineApi
 
     // A partir de cette méthode on génère le fichier final à soumetre au cluster
     // Penser à passer le nom de projet en paramétre
-    public static String generateFIleScripte(String codeSbatch, String pipeLineSelected, String userIdCluster) {
+    public static String generateFIleScripte(String codeSbatch, String pipeLineSelected, String userIdCluster , String idProject) {
 
       String    dirOutputpath = "/tmp/";
-      String suiteName = userIdCluster + "_" + pipeLineSelected + "_" + datTimeNow + ".sh";
+      String suiteName = userIdCluster + "_" + pipeLineSelected + "_" + idProject + "_" + datTimeNow + ".sh";
       
       /* On concerver le nom  pour récupérer le bon fichier */
       fullPathScriptSlurm = dirOutputpath+suiteName;
@@ -1415,14 +1333,9 @@ public class XnatRunPipelineApi
 	
 		 jsonObject =  (JSONObject) parser.parse(new FileReader(config_file_xnat));
 		 
-		 JSONObject aaa =  (JSONObject) getJsonObjectByKey(jsonObject, "qsiprep_0.14.3.sif");
+		 System.out.println("Le fichier de config a été bien lu et parsé ");
 		 
-		 System.out.println("la taille de l'objet qsiprep_0.14.3.sif est :" + aaa.size());
-		 
-		 String key_outputDirectory = "outputDirectory";
-		
-		 System.out.println(jsonObject.get(key_outputDirectory));
-		
+
 		} catch (IOException e) {
 			
             e.printStackTrace();
@@ -1433,27 +1346,13 @@ public class XnatRunPipelineApi
 		System.out.println("\n\n------------- Debut du programme ----------------\n");
 
 		
-		System.out.println(jsonObject);
+		//System.out.println(jsonObject);
 		
 		System.out.println("This file contain " + jsonObject.size() + " objects");
 		
 		System.out.println("List of  objects ");
 		
 		System.out.println(jsonObject.keySet());	
-		
-		//String  pageInfo = jsonObject.get("pageInfo").toString();
-		 
-		//System.out.println("\n" + "pageName : " + pageInfo);
-		 
-		//JSONObject pageNameObjectJson = (JSONObject) jsonObject.get("pageInfo");
-		 
-		//String pagePic = pageNameObjectJson.get("pagePic").toString();
-		 
-		//System.out.println("\n" + "pagePic : " + pagePic);
-	
-		//String [] arrayPost = null;
-				
-		// System.out.println(jsonObject.get("mriqc_0.14.2.sif"));
 		
 		JSONObject objectJsonOfPipeline = null;	
 		
@@ -1532,6 +1431,9 @@ public class XnatRunPipelineApi
     
     }
 
+    /*
+     * Cette fonction s'occupe de générer la commande Xnatdownload pour télécharger les données selon les chox de l'usr
+     */
     public static String  commandeDownloadData(String subjectSelected, String projectName, String dirIputdata, String lisSubjectWithSpaceSeparated, String sessions_ids, String command_extra_bids){
         
         /* L'uri de XNAT */ 
