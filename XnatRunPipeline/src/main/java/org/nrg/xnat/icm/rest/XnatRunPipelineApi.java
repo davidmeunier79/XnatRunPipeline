@@ -995,7 +995,7 @@ public class XnatRunPipelineApi
 	
     }
 
-    /* Cette fonction à pour but d'envoyer le fichier généré au cluster de calcul */
+    /* Cette fonction a pour but d'envoyer le fichier généré au cluster de calcul */
     public  String sendFileToCluster( String nameFileGenerated, String idCluster) throws InterruptedException, JSchException, IOException, SftpException {
 
         /* Chemin vers le local file */
@@ -1040,13 +1040,7 @@ public class XnatRunPipelineApi
                 log(e.toString());
             }
 
-      
-
-
-
-
-
-
+    
         
                 
 /*         try {

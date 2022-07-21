@@ -1246,33 +1246,6 @@ function download(filename, text) {
 
 
 
-/*
-// Start file download.
-document.getElementById("btnSave").addEventListener("click", function(){
-    // Generate download of hello.txt file with some content
-   
-
-   		//pour récupérer le contenu du tag <p>    dans  le modal 
-	let text = document.getElementById('idJob').textContent 
-		    + "\n" + document.getElementById('workindDirectory').textContent 
-			+ "\n" + document.getElementById('pathWithnNameScriptSbatch').textContent 
-			+ "\n" + document.getElementById('pathErrorLogOut').textContent
-			+ "\n" + document.getElementById('pathErrorLogErr').textContent;
-	
-	let nomfile = document.getElementById('workindDirectory').textContent + '.txt';
-		nomfile = nomfile.substring(nomfile.lastIndexOf("/") +1);
-
-	//var prompta = prompt('Please enter file name to save', 'text par défaut ');	
-    
-    
-    download(nomfile, text);
-
-	closeModalContinue();
-}, false);
-*/
-
-
-
 
 
 // Get DOM Elements
