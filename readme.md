@@ -1,6 +1,6 @@
 # **INT - XNAT RUN PIPELINE CLUSTER Plugin**
 
-***Les instructions pour créer un projet plugin xnat sont dans la doc officielle de XNAT via ce lien*** <https://wiki.xnat.org/documentation/xnat-developer-documentation/working-with-xnat-plugins/developing-xnat-plugins/creating-an-xnat-plugin-project>
+***Les instructions pour créer un projet plugin xnat sont dans la doc officielle de XNAT*** [via ce lien](https://wiki.xnat.org/documentation/xnat-developer-documentation/working-with-xnat-plugins/developing-xnat-plugins/creating-an-xnat-plugin-project)
 
 #### **Prérequis**
 
@@ -28,10 +28,9 @@ Pour déployer le plugin il faut installer `gradle`
   ```
 * Créé un lien symbolique
 
-```
-~$ : sudo ln -s /opt/gradle/gradle-${VERSION} /opt/gradle/latest
-```
-
+  ```
+  ~$ : sudo ln -s /opt/gradle/gradle-${VERSION} /opt/gradle/latest
+  ```
 * Configuration de variable d'env
 
   ```
@@ -91,17 +90,24 @@ Pour déployer le plugin il faut installer `gradle`
    ```
    ~$: sudo systemctl restart tomcat8.service
    ```
+7. XNAT prendra un moment pour décompresser et incorporer le nouveau plugin avant que l'application ne soit remise en ligne. Vous pouvez suivre la progression de l'application pendant sa construction en suivant le fichier de log **catalina.out**.
+
+   ```
+   ~$ : tail -f /var/lib/tomcat8/logs/catalina.out 
+   ```
+
+   Lorsque vous voyez un message dans le fichier de log du type **INFO : Server Startup in 105462 ms,** votre XNAT est à nouveau prêt à être utilisé.
 
 #### **Iformation json file xnat**
 
-Sur xnat allez dans le fichier **/var/lib/tomcat8/xnat\_config\_file\_V1.json**
+Sur xnat allez dans le fichier **/var/lib/tomcat8/xnat_config_xnat_run_pipeline.json**
 
-* **xnat\_batch\_scripts** : répertoire où seront stockés les scripts bash générés et leurs propres fichiers des logs (.out et .err)
-* **data\_xnat** : le nom du répertoire partagé par tous les membres d'une équipe et qui contient l'ensemble des données, les résultats des calculs lancés par chaque membre.
+* **xnat_batch_scripts** : répertoire où seront stockés les scripts bash générés et leurs propres fichiers des logs (.out et .err)
+* **data_xnat** : le nom du répertoire partagé par tous les membres d'une équipe et qui contient l'ensemble des données, les résultats des calculs lancés par chaque membre.
 * **linkAllImgSingularity** : Chemin vers l'endroit où se trouvent toutes les **BIDSApps**
 * **singulartyRun** : Début de la commande Singularity
-* **URI\_HOST\_XNAT** : URI de XNAT
-* **xnat2bids** : chemin vers le scripte **xnat2bids\_reconstruct\_afterDownload.py**
+* **URI_HOST_XNAT** : URI de XNAT
+* **xnat2bids** : chemin vers le scripte **xnat2bids_reconstruct_afterDownload.py**
 * **teamNames** : tableau des noms de toutes les équipes du labo
 * **listPipelines** : tableau contient les noms des **BIDSApps.**
 
@@ -111,21 +117,25 @@ Sur xnat allez dans le fichier **/var/lib/tomcat8/xnat\_config\_file\_V1.json**
 
 Pour rajouter une nouvelle image :
 
-Sur xnat allez dans le fichier **/var/lib/tomcat8/xnat\_config\_file\_V1.json**
+Sur xnat allez dans le fichier **/var/lib/tomcat8/xnat_config_xnat_run_pipeline.json**
 
 * la clé : **listPipelines : ajouter le nom de l'image.**
 * copier - coller une image déjà existante et modifiez la, avec les paramètres de la nouvelle image.
   * **name** : le nom de la BIDSApps
   * **linkDoc** : lien de la documentation officielle.
-  * **singularityCleanEnv** : si la commande exige un --cleanenv mettez le ici, vous pouvez aussi rajouter tout les Binding nécessaire à votre commande.
+  * **singularityCleanEnv** : si la commande exige un **--cleanenv** mettez le ici, vous pouvez aussi rajouter tout les Binding nécessaire à votre commande.
   * **inputDataBids** : correspond à l'argument pour dire le chemin des données en BIDS (input data). Si la commande n'exige pas d'argument --> laissez vide.
-  * **output** : correspond à l'argument pour dire le chemin où seront sotckés les résultats (output dir). Si la commande n'exige pas d'argument --> laissez vide.
-  * **path\_licence** : chemin vers licence si la commande utilise des application qui nécessitent une licence.
-  * **licence\_Params** : la façon dont vous appelez cette licence dans la commande.
-  * **output\_key** :
-  * **data\_key** :
-  * **commande\_befor** : des arguments que peut prendre la commande singularity avant de faire appel à la commande de BIDSApps.
-  * **commande\_after** : tous les arguments qui peuvent être ajouter après l'appel de la BIDSApps.
-  * **commande\_participant** : participant, label, group, etc ... Laissez vide dans le cas contraire.
-  * **work\_dir\_params** : le param workdir si la commande l'exige (e.g -w)
+  * **output** : correspond à l'argument pour dire le chemin où seront stockés les résultats (output dir). Si la commande n'exige pas d'argument --> laissez vide.
+  * **path_licence** : chemin vers licence si la commande utilise des application qui nécessitent une licence.
+  * **licence_Params** : la façon dont vous appelez cette licence dans la commande.
+  * **output_key** :
+  * **data_key** :
+  * **commande_befor** : des arguments que peut prendre la commande singularity avant de faire appel à la commande de BIDSApps.
+  * **commande_after** : tous les arguments qui peuvent être ajouter après l'appel de la BIDSApps.
+  * **commande_participant** : participant, label, group, etc ... Laissez vide dans le cas contraire.
+  * **work_dir_params** : le param workdir si la commande l'exige (e.g -w)
   * **basicParameters** : autres paramètres qui peuvent être utiles à la commande, pour pouvez mettre d'autres paramètres qui vont être ajouter à la fin de la commande par défaut.
+
+# **Documentation **
+
+  [documentation des code plugin xnat-run-pipeline](./doc-fonction-plugin-xnat-run-pipeline.md)
