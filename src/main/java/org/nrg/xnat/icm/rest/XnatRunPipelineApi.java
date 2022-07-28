@@ -109,8 +109,8 @@ public class XnatRunPipelineApi
     public static String URI_HOST_XNAT = "";
     public static String CHANGE_WORKING_DIRECTORY = "#SBATCH --chdir=/tmp\n";
 
-    // path vers le fichier de configuration /var/lib/tomcat8/xnat_config_xnat_run_pipeline.json dans xnat. 
-	private static String config_file_xnat = "xnat_config_xnat_run_pipeline.json"; 
+    // path vers le fichier de configuration /var/lib/tomcat8/xnat_config_run_pipeline_cluster.json dans xnat. 
+	private static String config_file_xnat = "xnat_config_run_pipeline_cluster.json"; 
     public static JSONObject jsonObject;
     public static ArrayList<String> listKeysJsonFile = null;
 

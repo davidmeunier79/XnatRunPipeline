@@ -110,7 +110,7 @@ public String deleteOrNotDataAfterConversionToBIDS(String selectPipeline , Strin
 public static void readConfigFileJson(){}
 ```
 
-* => Cette fonction permet de lire le fichier de configuration **/var/lib/tomcat8/xnat_config_file_V1.json** sur présent sur **xnat**
+* => Cette fonction permet de lire le fichier de configuration **/var/lib/tomcat8/xnat_config_run_pipeline_cluster.json** sur présent sur **xnat**
 
 ```java
 public static Object getJsonObjectByKey(JSONObject jsonObject, Object key){}
@@ -166,10 +166,10 @@ Rq: **XDATScreen_edit_working_somthing.vm** sera le nom de la page à ajouter.
   
   					if(data != null){
   						// your code
-  
+
   					}	
   					else {
-            // your code
+           // your code
   
   					}
   
