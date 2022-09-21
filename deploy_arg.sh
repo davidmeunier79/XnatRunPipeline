@@ -8,13 +8,12 @@ rm -rf build
 echo "Building plugin..."
 ./gradlew build
 echo "Delete old jar..."
-ssh xnat@xnatsand  "rm /data/xnat/home/plugins/xnat-plugin-run-pipeline-cluster-1.1.2.jar | exit   "
+ssh -o PreferredAuthentications=password xnat@xnat  "mv /data/xnat/home/plugins/xnat-plugin-run-pipeline-cluster-$1.jar /data/xnat/home/old_plugins/xnat-plugin-run-pipeline-cluster-$1.ja| exit   "
 
 cd build/libs
 echo "Copying new plugin..."
-scp xnat-plugin-run-pipeline-cluster-1.1.2.jar xnat@xnatsand:/data/xnat/home/plugins
+scp -o PreferredAuthentications=password xnat-plugin-run-pipeline-cluster-$1.jar xnat@xnat:/data/xnat/home/plugins
 
 echo "Restarting tomcat8..."
-ssh -t xnat@xnatsand "sudo systemctl restart tomcat8 | exit   "
-
+ssh -o PreferredAuthentications=password -t xnat@xnat "sudo systemctl restart tomcat8 | exit   "
 
