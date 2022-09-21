@@ -265,7 +265,7 @@ $page.setVlinkColor($ui.vlink)
 
 
   margin-left : 20px;
-  
+
    margin-right : 400px;
   color: #059;
   background-color: #BEF;
@@ -278,20 +278,20 @@ $page.setVlinkColor($ui.vlink)
 <img src="data:image/jpeg;base64,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ldHZley3z1Mxbq2y2OZtLQN1Lh9TOjVK7OEOYKFVFJsRdranc6bQPD8MWyoHZXFR6yMLZgzEk6EWI65FjyMD2mBqllL4hmCnNlVVQMRsGI1I8IG/B4YIatjcu5qHbTMALeXVgR24WjLVGZvrKgqgjRkdcoUrccjTB1geW4bVawqYhmS4JAVEJsQQCw1tpra0D3V4c+d6lKqaeexcZVZSQMoYA7GwA35QA4axSqr1qjM9usCFyW2yAaDx3vzgaMTwmrURqdTEEowswFOmCQdxfl5wLdRbSBmAgICAgICAgICAgICAgICAgICBhhoYFZSwjDovqwCpBZsw1sCCe83PfAxRwThluNQ1y111177ZjpygS8ZRZjdbdh1F+9stvlAj4PCsrg2sMpB7OpNraL5HeB7fDEVCwRTmydY8rbm3PSBilgiSucAgKw1N9S1/lAUcCVFOwGYNcm+uW50vz0tpA1rg20GQZswJqX1PWvfv20t4wNjYHqsbDPnLA31AzXGvLTlA01sE5Zza5LXDXUWGltSLi3hAtoCAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICB/9k=" alt="ICM Logo"/>
 
 <h2>INT : RUN Pipeline for $PROJECT_DISPLAY_NAME [$project] </h2>
-	
+
 		<!-- action="$content.getURI("/xapi/icm-export-data/export-files/$project")" -->
 	<div id="export-project-data-form" class="noHide"  >
 
-		
-			<div class="container"> 
+
+			<div class="container">
 				<div class="withColor containerTitle">Step 1 : ENTER YOUR  ID TO GET PIPELINES LIST EXISTS ON CLUSTER  </div>
 					<br/>
 					<div style="display:inline; display: none;" id="div-id-user">
-						<div class="containerItem" >	 			
+						<div class="containerItem" >
 							<label > <strong> ID user niolon : </strong> </label>
 							<input type="text" id="idNiolon" name="iDniolon" placeholder="$placeholderId" required="true" >
 							<!--    <label > Mot de passe </label>
-							<input type="password" id="password" name="password" placeholder="$placeholderPwd" required="true"> -->	
+							<input type="password" id="password" name="password" placeholder="$placeholderPwd" required="true"> -->
 							<button class="btn1" id="btnGetPiplines" data='$content.getURI("/xapi/int-run-pipline/get-pipelines/$project")' > Get Pipelines List</button>
 							<br/><br/>
 							<div class="error-msg" id="div-error-msg">
@@ -300,28 +300,28 @@ $page.setVlinkColor($ui.vlink)
 							</div>
 						</div>
 
-				</div>	
+				</div>
 
-			<div style="display:inline; margin-left:20px; margin-top: -80px">	
+			<div style="display:inline; margin-left:20px; margin-top: -80px">
 				<label class="access-label"> <strong>Pipelines exists on cluster : </strong></label>
 				<select  id="monselectPipeLine" >
 					<option value="">Please choose a pipeline</option>
-				</select>	
+				</select>
 			</div>
 			<br/><br/>
 
 
 				<!--
-					<div class="bandeau-message"> 
-						<div class="alert-success" role="alert" tabindex="0"> 
-							Etape terminee le 8 mai 2022 a 23:19:01 
+					<div class="bandeau-message">
+						<div class="alert-success" role="alert" tabindex="0">
+							Etape terminee le 8 mai 2022 a 23:19:01
 						</div>
 					</div>
-				-->	
-			
+				-->
+
 				<div class="info-msg"  id="div-info-msg" style="display:none;">
 					  <i class="fa fa-info-circle" id="link-pipeline" > </i>
-  					   
+
 
 				</div>
 
@@ -329,16 +329,16 @@ $page.setVlinkColor($ui.vlink)
 			<br>
 			<!--"display: inline; margin: auto;width: 50%; padding: 10px;"-->
 
-		
+
 		<br/>
 		<br/>
 
 		<div class="container">
 			<div class="withColor containerTitle">Step 2 : Select $SUBJECT_DISPLAY_NAME(s)</div>
 			<div class="containerItem" style="display: inline-block;">
-			
+
 				<div id="subject-select-div" class="radio-toggle" style="display: inline-block;">
-					<label class="access-label" title="All subjects in the project">	
+					<label class="access-label" title="All subjects in the project">
 						<input type="radio" id="all_subjects" checked="checked" name="subject_choice" value="all"/>All
 					</label>
 					<label class="access-label" title="Select subject(s)">
@@ -347,7 +347,7 @@ $page.setVlinkColor($ui.vlink)
 					<!-- http://localhost:8080/xnat/REST/projects/PASSEPORT/subjects/ -->
 							<select multiple size="6" id="subjects_list" name="subjects_list" disabled="disabled" style="width : 130px" >
 
-								
+
 							</select>
 
 					<input type="hidden" id="subject_ids" name="subject_ids" value=""/>
@@ -356,7 +356,7 @@ $page.setVlinkColor($ui.vlink)
 				<div  style="float:right; margin-left: 25px; ">
 						<select multiple size="6" id="subsession_list" name="subsession_list" style="margin-right: 25px; width : 150px">
 
-						</select>	
+						</select>
 				</div>
 
 			</div>
@@ -376,14 +376,14 @@ $page.setVlinkColor($ui.vlink)
 		<div class="container" id="div_step3" style="display:none;">
 			<div class="withColor containerTitle">Step 3 : Enter the parameters : </div>
 			<label class="access-label" title="All subjects in the project"> </label>
-			
+
 			<div class="containerItem">
-			
+
 			<div class="success-msg">
 				<i class="fa fa-info-circle"></i>
 				Set computation parameters
 			</div>
-				<h3 id="monColor"  >Choose the name of your team 
+				<h3 id="monColor"  >Choose the name of your team
 					<span class="tip_icon" style="margin-right:3px;">
 				 		<span class="tip shadowed" style="top:20px;z-index:10000;white-space:normal;left:0x;width:300px;background-color:#ffc;">
 				 			Make sure you choose the right name for your team
@@ -391,7 +391,7 @@ $page.setVlinkColor($ui.vlink)
 				 	</span>
 				</h3>
 				<div id="teamListenames">
-				
+
 				<label>
 					<input type="checkbox" class="radio" value="crise" name="fooby[team][]" />crise</label>
 				<label>
@@ -407,20 +407,20 @@ $page.setVlinkColor($ui.vlink)
 				<label > <h3> Name Export Dir ( E.G :  /hpc/team)
 							<span class="tip_icon" style="margin-right:3px;">
 				 				<span class="tip shadowed" style="top:20px;z-index:10000;white-space:normal;left:0x;width:300px;background-color:#ffc;">
-				 					This field is not editable, it allows you to make sure that you have chosen the right working directory 
+				 					This field is not editable, it allows you to make sure that you have chosen the right working directory
 								</span>
 							</span>
 						</h3>
 				</label>
 				<input class="inputStep3" type="text" id="nameExportDir" name="nameExportDir" disabled required>
 				<br/><br/>
-					<div style="display: inline;"> 
+					<div style="display: inline;">
 						<label> <strong> Delete raw data after BIDS conversion ? </strong></label>
 						<label>
 							<input type="radio" name="choice-radio" value="yes">
 							Yes
 						</label>
-						
+
 						<label>
 							<input type="radio" name="choice-radio" value="no" checked>
 							No
@@ -435,14 +435,14 @@ $page.setVlinkColor($ui.vlink)
 					</div>
 				<!--
 				<br/> <br/>
-				<label > <h3> Name of Slurm Job (optional) 
+				<label > <h3> Name of Slurm Job (optional)
 					<span class="tip_icon" style="margin-right:3px;">
 				 		<span class="tip shadowed" style="top:20px;z-index:10000;white-space:normal;left:0x;width:300px;background-color:#ffc;">
 				 			You can assign a name to your job to track it under this name on the cluster
 				 		</span>
 				 	</span>
 				</h3>
-				
+
 				</label>
 				<input class="inputStep3" type="text" id="nameSlurmJob" name="nameSlurmJob" >
 				-->
@@ -456,7 +456,7 @@ $page.setVlinkColor($ui.vlink)
 				 					Par defaut vide ! Pour toute autre option consultez la doc.
 								</span>
 							</span>
-						
+
 						 </h3></label>
 				<input class="inputStep3" type="text" id="command_extra_bids" name="command_extra_bids" >
 				<br/><br/>
@@ -470,25 +470,25 @@ $page.setVlinkColor($ui.vlink)
 
 
 
-				<label > <h3> command start 
+				<label > <h3> command start
 
 							<span class="tip_icon" style="margin-right:3px;">
 				 				<span class="tip shadowed" style="top:20px;z-index:10000;white-space:normal;left:0x;width:300px;background-color:#ffc;">
 				 					If you have other parameters that you consider interesting for the Singularity command , add them here.  Separate by spaces !
 								</span>
 							</span>
-						
+
 						 </h3></label>
 				<input class="inputStep3" type="text" id="commande_befor" name="commande_befor" >
 				<br/><br/>
-				<label > <h3> command parameters 
+				<label > <h3> command parameters
 
 							<span class="tip_icon" style="margin-right:3px;">
 				 				<span class="tip shadowed" style="top:20px;z-index:10000;white-space:normal;left:0x;width:300px;background-color:#ffc;">
 				 					If you have other parameters that you consider interesting for the Singularity command , add them here.  Separate by spaces !
 								</span>
 							</span>
-						
+
 						 </h3></label>
 				<input class="inputStep3" type="text" id="commande_after" name="commande_after" >
 				<br/><br/>
@@ -499,39 +499,39 @@ $page.setVlinkColor($ui.vlink)
 				 					participant or group !
 								</span>
 							</span>
-						
+
 						 </h3></label>
 				<input class="inputStep3" type="text" id="commande_participant" name="commande_participant" >
 				<br/><br/>
 
 
 
-				<label > <h3> command extra parameters 
+				<label > <h3> command extra parameters
 
 							<span class="tip_icon" style="margin-right:3px;">
 				 				<span class="tip shadowed" style="top:20px;z-index:10000;white-space:normal;left:0x;width:300px;background-color:#ffc;">
 				 					If you have other parameters that you consider interesting for the Singularity command , add them here.  Separate by spaces !
 								</span>
 							</span>
-						
+
 						 </h3></label>
 				<input class="inputStep3" type="text" id="additionalParams" name="additionalParams" >
 				<br/><br/>
 				<button class="btn1" id="btnStartPipline" data='$content.getURI("/xapi/int-run-pipline/start-pipeline/$project")' > start computation </button>
 
 			</div>
-			
-			
+
+
 			<br/><br/>
 		</div>
 
-		
+
 		<div>
 
 
 		</div>
 
-	
+
 	</div>
 
 <!--<button id="modal-btn" class="button">Click Here</button> -->
@@ -539,7 +539,7 @@ $page.setVlinkColor($ui.vlink)
   <div id="my-modal" class="modal">
     <div class="modal-content">
       <div class="modal-header">
-        
+
         <h2 >These are the parameters you have chosen </h2>
       </div>
       <div class="modal-body">
@@ -624,18 +624,18 @@ let namfileTogenerateByBrowser = "";
 
 // Shorthand for $( document ).ready()
 $(function() {
-			
-			// on check si l'ID xnat est le même sur niolon , si oui on affiche la suite si non on propose de saisir son id niolon	
+
+			// on check si l'ID xnat est le même sur niolon , si oui on affiche la suite si non on propose de saisir son id niolon
 			$.ajax({
 				url: "/xapi/int-run-pipline/check-user-id",
 				method:'POST',
 				success: function(data) {
 					if(data.pipelines !="null"){
-						
+
 						console.log("Vous avez  reçu" + data.toString())
 					// To sort data
-						
-						
+
+
 						$("#idNiolon").val(data.id);
 
 
@@ -659,7 +659,7 @@ $(function() {
 						$('#div-info-msg').show();
 
 					}
-					
+
 					else {
 
 						//console.log("aucune donnée reçu" + data);
@@ -677,7 +677,7 @@ $(function() {
 					}
 
 
-					
+
 				}
 			});
 
@@ -696,13 +696,13 @@ $(function() {
 
 
 		getTeams()
-		
+
 		//get url
 		let _urlGetPiplines = document.getElementById("btnGetPiplines").getAttribute("data");
 			//alert(_urlGetPiplines);
 
 			let idCluster = $('#idNiolon').val();
-			let btnStartPipline = $('#btnStartPipline').disabled; 
+			let btnStartPipline = $('#btnStartPipline').disabled;
 
 			//let subject_ids = $('#subject_ids').val();
 			//let subject_ids = "XNAT_INT_S00031";
@@ -715,7 +715,7 @@ $(function() {
 			console.log("  tu as choisis les sujets : "+subject_ids);
 
 			let selectOptionsPipeline = "";
-			
+
 
 			$.ajax({
 				url: _urlGetPiplines,
@@ -723,10 +723,10 @@ $(function() {
 				method:'POST',
 				success: function(data) {
 					if(data.pipelines !="null"){
-						
+
 						console.log("Vous avez  reçu" + data.toString())
 					// To sort data
-						
+
 
 						$("#idNiolon").prop("disabled",true);
 						const sortObject = obj => Object.keys(obj).sort().reduce((res, key) => (res[key] = obj[key], res), {});
@@ -746,7 +746,7 @@ $(function() {
 						$('#div-info-msg').show();
 
 					}
-					
+
 					else {
 
 						//console.log("aucune donnée reçu" + data);
@@ -768,7 +768,7 @@ $(function() {
 					//$('#btnStartPipline').disabled =true;
 					//alert("Tres bien envoyer")
 
-					
+
 				}
 			});
 	})
@@ -784,11 +784,11 @@ $(function (){
 
 
 
-		 
+
 		//$('#nameExportDir').val("/hpc/" +nameSelectedTeam);
 
 		let pipeline  = $(this).find(":selected").text();
-		
+
 		getInfAboutPipelineSelected(pipeline);
 
 		//$('#nameSlurmJob').val(pipeline);
@@ -798,36 +798,36 @@ $(function (){
 
 });
 
-// Cette fonction permet de récupérer les sessions qui corréspond à  un ou plusieur sujet(s) 
+// Cette fonction permet de récupérer les sessions qui corréspond à  un ou plusieur sujet(s)
 $(function (){
 
 	let _url = "/xapi/int-run-pipline/get-sessions/$project";
 	let selectedSubject = "";
 
 	$('#subjects_list').change(function() {
-	
+
 	let sessions_ids = $('#subsession_list').val();
 	sessions_ids = sessions_ids.toString();
 	console.log(sessions_ids)
-	
-		
+
+
 
 	//selectedSubject = $('option:selected', $(this)).text();
 
-	// retourne la liste des sujets  selectionnés  
+	// retourne la liste des sujets  selectionnés
 	selectedSubject = $('option:selected', $(this)).map(function(){ return this.text }).get().join(",");
 
 	console.log(selectedSubject)
 
 	console.log(_url);
 
-	
+
 		$.ajax({
 			url: _url,
 			method:'POST',
 			data: {"selectedSubject":selectedSubject},
 			success: function(data) {
-				
+
 				if(data != null){
 
 
@@ -845,14 +845,14 @@ $(function (){
 					});
 
 				}
-				
-				console.log("Tres bien reçu")			
-				
+
+				console.log("Tres bien reçu")
+
 			}
 		});
 
 
-	});		
+	});
 
 });
 
@@ -861,14 +861,14 @@ $(function (){
 
 /*
 
-// Cette fonction permet de récupérer les noms d'équipes 
+// Cette fonction permet de récupérer les noms d'équipes
 $(function (){
 
 	let _url = "/xapi/int-run-pipline/get-team-names";
 	console.log(_url);
 	let idCluster = $('#idNiolon').val();
 
-	
+
 	$.ajax({
 			url: _url,
 			method:'POST',
@@ -876,11 +876,11 @@ $(function (){
 			async: true,
 			data:{"idCluster":idCluster},
 			success: function(data) {
-				
+
 				if(data != null){
 
 				console.log("Tres bien reçu les noms des équipes")
-				console.log(data)	
+				console.log(data)
 
 				$("#teamListenames").html("");
 
@@ -910,21 +910,21 @@ $(function (){
 					$('#nameExportDir').val("/hpc/" +nameSelectedTeam);
 
 
-					
+
 				});
 
 
 			}
-				
+
 
 		}
-	});		
-	
+	});
+
 });
 
 */
 
-// La fonction qui récupère la liste des groupes dont il fait partie l'utilisateur 
+// La fonction qui récupère la liste des groupes dont il fait partie l'utilisateur
 
 function getTeams(){
 
@@ -932,7 +932,7 @@ function getTeams(){
 	console.log(_url);
 	let idCluster = $('#idNiolon').val();
 
-	
+
 	$.ajax({
 			url: _url,
 			method:'POST',
@@ -940,11 +940,11 @@ function getTeams(){
 			async: true,
 			data:{"idCluster":idCluster},
 			success: function(data) {
-				
+
 				if(data.data != "null"){
 
 				console.log("Tres bien reçu les noms des équipes")
-				console.log(data)	
+				console.log(data)
 
 				$("#teamListenames").html("");
 
@@ -974,15 +974,15 @@ function getTeams(){
 					$('#nameExportDir').val("/hpc/" +nameSelectedTeam);
 
 
-					
+
 				});
 
 
 			}
-				
+
 
 		}
-	});	
+	});
 
 }
 
@@ -1006,17 +1006,18 @@ function getInfAboutPipelineSelected(pipeline) {
 		data: {"pipelineSelected":pipeline},
 
 		success: function(data) {
-			
+
 			if(data != null){
 				console.log("link de ce pipeline est : " + data)
 
 				$('#link-pipeline').html('  For more information about   <span style="color:blue">'  +    pipeline
 					+ '  </span> click  <a href="' + data.linkDoc + '" target="_blank">  <span style="color:blue"> here </span> </a></h3>');
-				
+
 				$('#commande_befor').val(data.commande_befor);
+				$('#command_extra_bids').val(data.command_extra_bids);
 				$('#commande_after').val(data.commande_after);
 				$('#commande_participant').val(data.commande_participant);
-				
+
 				$('#div-info-msg').show();
 
 
@@ -1026,10 +1027,10 @@ function getInfAboutPipelineSelected(pipeline) {
 			else {
 			console.log("vous avez pas recu de linkDoc")
 			}
-			
+
 
 		}
-	});	
+	});
 
 
 }
@@ -1039,15 +1040,15 @@ function getInfAboutPipelineSelected(pipeline) {
 /* Cette fonction permet d'envoyer les paramètres choisies par l'utilisateur pour générer un le fichiers batsh*/
 $(function() {
 
-	
+
 
 	$('#btnStartPipline').on("click" , function(e) {
 
-		
-		$('#pipelineSelected').html(" <h3> Pipeline selected :  <span style=\"color:blue\">"  +    $('#monselectPipeLine option:selected').text() + " </span></h3>");	
 
-		let projectSelect = "$project";	
-		
+		$('#pipelineSelected').html(" <h3> Pipeline selected :  <span style=\"color:blue\">"  +    $('#monselectPipeLine option:selected').text() + " </span></h3>");
+
+		let projectSelect = "$project";
+
 		let subjectsSelect = $('option:selected', $('#subjects_list')).map(function(){ return this.text }).get().join(", ");
 
 		let sessionsSelected = $('option:selected', $('#subsession_list')).map(function(){ return this.text }).get().join(", ");
@@ -1056,7 +1057,7 @@ $(function() {
 		}
 
 		$('#nameProject').html(" <h3> project  :  <span style=\"color:blue\">"  +  projectSelect + " </span></h3>");
-		
+
 		//$('#nameProject').html(" <h3> subject(s)  :  <span style=\"color:blue\">"  +  subjectsSelect + " </span></h3>");
 
 		$('#sessionsSelected').html(" <h3> session(s)  :  <span style=\"color:blue\">"  +  sessionsSelected + " </span></h3>");
@@ -1068,20 +1069,20 @@ $(function() {
 
 		/* pour récupérer le contenu du tag <p>    dans  le modal */
 		console.log(document.getElementById('nameTeamSelected').textContent);
-		
+
 	})
 
 	$('#bntContinue').on("click" , function(e) {
 
 		closeModal()
-		
+
 		//get url
 		let _urlStarttPiplines = document.getElementById("btnStartPipline").getAttribute("data");
-		
+
 		//alert(_urlStarttPiplines);
 
 		let _sessions_ids = $('#subsession_list').val().toString();
-		
+
 		let selectPipeline =  $('#monselectPipeLine option:selected').text();
 
 		let idCluster = $('#idNiolon').val();
@@ -1094,25 +1095,25 @@ $(function() {
 		let commande_after = $('#commande_after').val();
 		let commande_participant = $('#commande_participant').val();
 		let command_extra_bids = $('#command_extra_bids').val();
-		
+
 		subject_ids = subject_ids.toString();
 
 			if (subject_ids == "" && $('#all_subjects').attr("checked", "checked")){
 
 				subject_ids = "all";
 			}
-		
+
 		let radioValue = $("input[name='choice-radio']:checked").val(); // si (yes/no) pour supprimer les données après la conversion
 
 		$.ajax({
 			url: _urlStarttPiplines,
-			data: {"idCluster":idCluster, "selectPipeline":selectPipeline, "subject_ids":subject_ids,"nameExportDir":nameExportDir, "additionalParams":additionalParams, 
+			data: {"idCluster":idCluster, "selectPipeline":selectPipeline, "subject_ids":subject_ids,"nameExportDir":nameExportDir, "additionalParams":additionalParams,
 				"sessions_ids":_sessions_ids, "radioValue":radioValue, "commande_befor":commande_befor, "commande_after":commande_after, "commande_participant" : commande_participant, "command_extra_bids" : command_extra_bids},
 			method:'POST',
 			success: function(data) {
-				
+
 				if(data != null){
-					
+
 					console.log("Aucune data reçu mais l'envoi est bon !! " )
 
 				}
@@ -1120,30 +1121,30 @@ $(function() {
 
 				console.log("Tres bien envoyer")
 
-				
-				//idOfJob.innerHTML = " <h3> L'id de votre job est : </h3> " 
+
+				//idOfJob.innerHTML = " <h3> L'id de votre job est : </h3> "
 				//$('#idOfJob').html("<h3> L'id de votre job est : </h3>")
 
 				console.log(data.idJob)
 				console.log(data.workindDirectory)
 
-				namfileTogenerateByBrowser = data.pathWithnNameScriptSbatch; 
+				namfileTogenerateByBrowser = data.pathWithnNameScriptSbatch;
 
 				$('#idJob').html(" <h3> Success :  <span style=\"color:blue\">"  +  data.idJob + " </span></h3>");
-				
+
 				$('#workindDirectory').html(" <h3> Path to export directory is  :  <span style=\"color:blue\">"  +  data.workindDirectory + "</span></h3>");
-				
+
 				$('#pathWithnNameScriptSbatch').html(" <h3> The full path and name of the generated file is :  <span style=\"color:blue\">"  +  data.pathWithnNameScriptSbatch + " </span></h3>");
 
 				$('#pathErrorLogOut').html(" <h3> The full path of Output log :  <span style=\"color:blue\">"  +  data.pathErrorLogOut + " </span></h3>");
-				
+
 				$('#pathErrorLogErr').html(" <h3> The full path of Error log :  <span style=\"color:blue\">"  +  data.pathErrorLogErr + " </span></h3>");
 
-					
+
 				openLoader()
 
 				setTimeout(function(){
-					openModalContinue()		
+					openModalContinue()
 				}, 3000);
 
 
@@ -1154,13 +1155,9 @@ $(function() {
 					.empty()
 					.append('<option selected="selected" value="">Please choose a pipeline</option>');
 
-				
-				$("#div-id-user").show();
-				$('#additionalParams').val("");	
-				$('#command_extra_bids').val("");
-				
 
-					
+				$("#div-id-user").show();
+				$('#additionalParams').val("");
 			}
 
 		});
@@ -1170,19 +1167,19 @@ $(function() {
 });
 
 
-//  Savegarder les information dans un fichier .txt 
+//  Savegarder les information dans un fichier .txt
 $('#btnSave').on("click" , function(e) {
 
 		/* pour récupérer le contenu du tag <p>    dans  le modal */
-	let text = document.getElementById('idJob').textContent 
-		    + "\n" + document.getElementById('workindDirectory').textContent 
-			+ "\n" + document.getElementById('pathWithnNameScriptSbatch').textContent 
+	let text = document.getElementById('idJob').textContent
+		    + "\n" + document.getElementById('workindDirectory').textContent
+			+ "\n" + document.getElementById('pathWithnNameScriptSbatch').textContent
 			+ "\n" + document.getElementById('pathErrorLogOut').textContent
 			+ "\n" + document.getElementById('pathErrorLogErr').textContent;
-	
+
 	let nomfile = document.getElementById('workindDirectory').textContent + '.txt';
 		nomfile = nomfile.substring(nomfile.lastIndexOf("/") +1);
-		
+
   if ('Blob' in window) {
     var fileName = prompt('Please enter file name to save', nomfile);
     if (fileName) {
@@ -1295,11 +1292,11 @@ function outsideClick(e) {
 
 // Open
 function openLoader() {
-   
-  
+
+
   loader.style.display = 'block';
 
-	
+
 }
 
 
@@ -1310,8 +1307,8 @@ bntModify.addEventListener('click', closeModalContinue)
 
 // Open
 function openModalContinue() {
-  
-  loader.style.display = 'none'; 
+
+  loader.style.display = 'none';
   modalContinue.style.display = 'block';
 }
 
@@ -1320,7 +1317,7 @@ function openModalContinue() {
 // Close
 function closeModalContinue() {
   modalContinue.style.display = 'none';
-  
+
 }
 
 // Close If Outside Click
@@ -1337,8 +1334,8 @@ function outsideClickContinue(e) {
 
 
 $(function () {
-	
-	
+
+
 	var __form = $('#export-project-data-form');
 	var __subjectSelect = $('#subjects_list', __form);
 
@@ -1348,7 +1345,7 @@ $(function () {
 		if (__subjectChoice.val () !== 'some') {
 			__enableSubjectSelect = false;
 		}
-		
+
 		var __subjectSelectDisabled = __subjectSelect.prop('disabled');
 		if (__enableSubjectSelect) {
 			if (__subjectSelectDisabled) {
@@ -1364,7 +1361,7 @@ $(function () {
 
 
 	var __subjectListRequest = serverRoot + "/REST/projects/$project/subjects?XNAT_CSRF=" + csrfToken;
-	
+
 	$.ajax({
 		url : __subjectListRequest,
 		type: 'get',
@@ -1389,7 +1386,7 @@ $(function () {
 					}
 				}
 			}
-			
+
 			$(function() {
 			// choose target dropdown
 			var select = $('#subjects_list');
@@ -1398,7 +1395,7 @@ $(function () {
 				return $(x).text() > $(y).text() ? 1 : -1;
 			}));
 
-			});				
+			});
 			console.log (selectOptions);
 			if (selectOptions !== "") {
 				__subjectSelect.html (selectOptions);
@@ -1410,7 +1407,7 @@ $(function () {
 
 
 function processExportProjectForm () {
-		
+
 		var __form = $('#export-project-data-form');
 
 		var __subjectChoice = $('input[name="subject_choice"]:checked', __form);
@@ -1434,16 +1431,16 @@ function processExportProjectForm () {
 		else {
 			$('#subject_ids', __form).val ("all");
 		}
-		
+
 		console.log ($('#subject_ids', __form).val());
-		
+
 		//__form.attr ('action', __xapiRequest);
-	
+
 		return true;
 }
 
 
-	
+
 
 </script>
 

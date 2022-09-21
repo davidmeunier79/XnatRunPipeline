@@ -309,6 +309,8 @@ public class XnatRunPipelineApi
         }
 
         String linkDoc = (String) ((JSONObject) getJsonObjectByKey(jsonObject,pipelineSelected)).get("linkDoc");
+
+        String command_extra_bids = (String) ((JSONObject) getJsonObjectByKey(jsonObject,pipelineSelected)).get("command_extra_bids");
         String commande_befor = (String) ((JSONObject) getJsonObjectByKey(jsonObject,pipelineSelected)).get("commande_befor");
         String commande_after = (String) ((JSONObject) getJsonObjectByKey(jsonObject,pipelineSelected)).get("commande_after");
         String commande_participant = (String) ((JSONObject) getJsonObjectByKey(jsonObject,pipelineSelected)).get("commande_participant");
@@ -324,6 +326,7 @@ public class XnatRunPipelineApi
         obj.put("commande_befor", commande_befor);
         obj.put("commande_after", commande_after);
         obj.put("commande_participant", commande_participant);
+        obj.put("command_extra_bids", command_extra_bids);
 
 
         log("lien a envoyer est  : " +obj.toString());
